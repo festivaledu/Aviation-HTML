@@ -1,0 +1,23 @@
+button {
+	height: 32px;
+	margin: 16px 0;
+	padding: 0 16px;
+	border-radius: 6px;
+	cursor: pointer;
+	background-color: #00b0ee;
+	color: #fff;
+	transition: opacity .2s;
+	
+	&:active {
+		transition-duration: 0;
+		opacity: 0.75;
+	}
+	
+	&.call {
+		height: auto;
+		font-size: 16px;
+		font-weight: 500;
+		padding: 15px;
+		border-radius: 8px;
+	}
+}

@@ -1,0 +1,16 @@
+{
+  "name": "festival_aviation",
+  "version": "1.0.0",
+  "description": "FESTIVAL Aviation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Team FESTIVAL",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-jade": "^1.0.0",
+    "grunt-contrib-less": "^2.0.0"
+  }
+}

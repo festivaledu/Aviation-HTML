@@ -1,0 +1,43 @@
+.encoded-svg-background(@svg) {
+	@url: `encodeURIComponent(@{svg})`;
+	background-image: url("data:image/svg+xml;charset=utf-8,@{url}");
+}
+
+.make-column() {
+	.column-offset-0 {
+		margin-left: 0;
+	}
+	
+	.col(@i: 1) when (@i <= 12) {
+		@width: (100/12) * @i;
+		
+		&.column-@{i} {
+			width: ~"@{width}%";
+		}
+		
+		&.column-offset-@{i} {
+			margin-left: ~"@{width}%";
+		}
+		
+		.col(@i + 1);
+	} .col;
+}
+.make-column(@className) {
+	.@{className}-offset-0 {
+		margin-left: 0;
+	}
+	
+	.col(@i: 1) when (@i <= 12) {
+		@width: (100/12) * @i;
+		
+		&.@{className}-@{i} {
+			width: ~"@{width}%";
+		}
+		
+		&.@{className}-offset-@{i} {
+			margin-left: ~"@{width}%";
+		}
+		
+		.col(@i + 1);
+	} .col;
+}

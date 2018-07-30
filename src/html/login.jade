@@ -1,0 +1,31 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Anmelden – FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/login.built.css")
+	body
+		//- include _nav
+		.content-wrapper
+			section.logo-container
+				.section-content.row.centered
+					.column.column-12.medium-6
+						img(src="img/logo-dark.svg")
+			
+			section.login
+				.section-content.row.centered
+					.column.column-12.medium-4
+						.login-container
+							form.signin-form(method="POST",action="user-cp.html")
+								.form-textbox-wrapper
+									input.form-textbox(type="email",name="",id="",placeholder=" ")
+									span.form-textbox-placeholder E-Mail
+								.form-textbox-wrapper
+									input.form-textbox(type="password",name="",id="",placeholder=" ")
+									span.form-textbox-placeholder Passwort
+								button.call Anmelden
+							a(href="#") Noch nicht registriert?

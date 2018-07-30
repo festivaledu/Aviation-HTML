@@ -1,0 +1,112 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/landing.built.css")
+	
+		script(src="lib/spring-animatable.js")
+		script(src="lib/scroll-retractor.js")
+	body
+		include _nav
+		
+		section.landing-hero
+			.hero-content
+				img.hero-logo(src="img/logo-light.svg")
+				h2.hero-title Die günstigsten Flugreisen aller Zeiten
+				h4.hero-subtitle Einfach nur das buchen, was du wirklich brauchst – das ist aviation.
+				
+				.hero-search-bar
+					form(method="post",action="search.html")
+						.input-wrapper
+							.column-title
+								img(src="img/icon-departure.svg")
+								p Von (Ort oder Flughafen)
+							input(type="text",placeholder="Abreiseort eingeben")
+						.input-wrapper
+							.column-title
+								img(src="img/icon-arrival.svg")
+								p Nach (Ort oder Flughafen)
+							input(type="text",placeholder="Ankunftsort eingeben")
+						.input-wrapper
+							.column-title
+								img.icon(src="img/icon-date.svg")
+								p Abflugdatum
+							input(type="date",placeholder="Abflugdatum auswählen")
+						button.search-button Suchen
+		//- | 
+		//- | 
+		//- | <%i
+		//- | 	test
+		//- | i%>
+		//- | 
+		section.promo-articles
+			.section-content
+				.promo-article(data-spring-animatable="promo_1")
+					.header.dark(style="background-image: url(img/963_42158716822_afcc8b6c9e_z_630_320_nofilter.jpg)")
+						p.header-heading Test Header
+						p.header-title Test Title
+						p.header-subtitle Example Subtitle
+				.promo-article(data-spring-animatable="promo_2")
+					.header.dark(style="background-image: url(img/1740_41632494185_8153def7b7_z_630_320_nofilter.jpg)")
+						p.header-heading Test Header
+						p.header-title Test Title
+						p.header-subtitle Example Subtitle
+				.promo-article(data-spring-animatable="promo_3")
+					.header.dark(style="background-image: url(img/1785_42279404374_271e7c3596_z_630_320_nofilter.jpg)")
+						p.header-heading Test Header
+						p.header-title Test Title
+						p.header-subtitle Example Subtitle
+						
+		section.promo-text
+			.section-content.row
+				.column.column-12.medium-6
+					h4.eyebrow Test
+					h2.headline Test Headline
+					p.body Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+				
+				.column.column-12.medium-5.medium-offset-1
+					p.body Test
+		
+		include _footer
+		
+		.promo-article-details(data-spring-animatable-target="promo_1")
+			.header.dark(style="background-image: url(img/963_42158716822_afcc8b6c9e_z_630_320_nofilter.jpg)")
+				.close-button
+				p.header-heading Test Header
+				p.header-title Test Title
+				p.header-subtitle Example Subtitle
+			.content-scroll-wrapper
+				.content
+					p #[span.bold.italic Lorem ipsum] dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					p Lorem ipsum dolor sit amet, #[span.italic consetetur] sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					p Lorem ipsum dolor sit amet, #[span.italic consetetur] sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					
+		.promo-article-details(data-spring-animatable-target="promo_2")
+			.header.dark(style="background-image: url(img/1740_41632494185_8153def7b7_z_630_320_nofilter.jpg)")
+				.close-button
+				p.header-heading Test Header
+				p.header-title Test Title
+				p.header-subtitle Example Subtitle
+			.content-scroll-wrapper
+				.content
+					p #[span.bold.italic Lorem ipsum] dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					
+		.promo-article-details(data-spring-animatable-target="promo_3")
+			.header.dark(style="background-image: url(img/1785_42279404374_271e7c3596_z_630_320_nofilter.jpg)")
+				.close-button
+				p.header-heading Test Header
+				p.header-title Test Title
+				p.header-subtitle Example Subtitle
+			.content-scroll-wrapper
+				.content
+					p #[span.bold.italic Lorem ipsum] dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					p Lorem ipsum dolor sit amet, #[span.italic consetetur] sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+		
+		.spring-background
+		
+		script(type="text/javascript",src="js/landing.js")

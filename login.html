@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+		<title>Anmelden – FESTIVAL Aviation</title>
+		<link rel="stylesheet" href="css/festival.aviation.css">
+		<link rel="stylesheet" href="css/login.built.css">
+	</head>
+	<body>
+		<!-- Include through JSP-->
+		<nav>
+			<div class="nav-content">
+				<div class="nav-svg-header">
+					<div class="nav-svg-wrapper" onclick="document.querySelector('nav').classList.toggle('extended'); document.body.classList.toggle('no-scroll')">
+						<svg width="24" height="24" viewBox="0 0 96 96" class="nav-svg nav-svg-top">
+							<rect x="0" y="44" width="96" height="8" fill="#FFFFFF" class="nav-svg-rect nav-svg-rect-top"/>
+						</svg>
+						<svg width="24" height="24" viewBox="0 0 96 96" class="nav-svg nav-svg-mid">
+							<rect x="0" y="44" width="96" height="8" fill="#FFFFFF" class="nav-svg-rect nav-svg-rect-mid"/>
+						</svg>
+						<svg width="24" height="24" viewBox="0 0 96 96" class="nav-svg nav-svg-bottom">
+							<rect x="0" y="44" width="96" height="8" fill="#FFFFFF" class="nav-svg-rect nav-svg-rect-bottom"/>
+						</svg>
+					</div>
+					
+					<a href="#" class="link-home"></a>
+					<a href="login.html" class="link-user-cp"></a>
+				</div>
+				<ul class="nav-list">
+					<li><a href="#" class="link-home"></a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="login.html" class="link-user-cp"></a></li>
+			</div>
+		</nav>
+		
+		<div class="content-wrapper">
+			<section class="logo-container">
+				<div class="section-content row centered">
+					<div class="column column-12 medium-6">
+						<img src="img/logo-dark.svg">
+					</div>
+				</div>
+			</section>
+			
+			<section class="login">
+				<div class="section-content row centered">
+					<div class="column column-12 medium-4">
+						<div class="login-container">
+							<form method="POST" action="user-cp.html" class="signin-form">
+								<div class="form-textbox-wrapper">
+									<input type="email" name="" id="" class="form-textbox" placeholder=" ">
+									<span class="form-textbox-placeholder">E-Mail-Adresse</span>
+								</div>
+								<div class="form-textbox-wrapper">
+									<input type="password" name="" id="" class="form-textbox" placeholder=" ">
+									<span class="form-textbox-placeholder">Passwort</span>
+								</div>
+								
+								<button class="call">Anmelden</button>
+							</form>
+							<a href="#">Noch nicht registriert?</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

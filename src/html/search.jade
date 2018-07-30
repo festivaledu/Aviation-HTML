@@ -1,0 +1,77 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Suchen – FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/search.built.css")
+	body
+		include _nav
+		
+		section.search-results
+			.section-content
+				.search-results-container
+					.search-results-header
+						.row
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-departure.svg")
+									p Von
+								input.column-content(value="Hannover, Deutschland")
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-arrival.svg")
+									p Nach
+								input.column-content(value="Los Angeles, USA")
+						.row
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-date.svg")
+									p Abflugdatum
+								input.column-content(type="date",value="09 November 2027")
+							.column.column-12.medium-2
+								.column-title
+									img(src="img/icon-passenger.svg")
+									p Passagiere
+								input.column-content(type="number",value="1",min="1",max="10")
+							.column.column-12.medium-4
+								.column-title
+									img(src="img/icon-class.svg")
+									p Klassen
+								p.column-content Alle Klassen
+					.scroll-container
+						.result-header
+							h4.date #[span Abflug] – 09 Nov
+							.table-header.row
+								.column.column-2
+									p $Departure
+								.column.column-2.align-right
+									p $Arrival
+								.column.column-2.column-offset-1
+									p Dauer
+								.column.column-1
+									p Stopps
+								.column.column-auto
+									p Flugnummer
+								.column.column-1.align-right
+									p Preis
+						.results
+							.result-cell.row
+								.column.column-2
+									p 09:42
+								.column.column-2.align-right
+									p 22:52
+								.column.column-2.column-offset-1
+									p 13h 10min
+								.column.column-1
+									p 1
+								.column.column-auto
+									p LH420
+								.column.column-1.align-right
+									p ab 184€
+					.fill-background
+					.results-footer
+						

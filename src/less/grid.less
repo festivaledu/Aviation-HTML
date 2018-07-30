@@ -1,0 +1,36 @@
+@import "mixins";
+
+.row {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: flex-start;
+
+	&.centered {
+		justify-content: center;
+	}
+
+	.column {
+		&.column-auto {
+			flex: 1;
+		}
+		
+		.make-column();
+		
+		@media all and (min-width: 576px) {
+			.make-column(small);
+		}
+		
+		@media all and (min-width: 768px) {
+			.make-column(medium);
+		}
+		
+		@media all and (min-width: 992px) {
+			.make-column(large);
+		}
+		
+		@media all and (min-width: 1200px) {
+			.make-column(xlarge);
+		}
+	}
+}
