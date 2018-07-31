@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase /IAE/
+RewriteBase /proj/IAE/
 
 
-RewriteCond %{REQUEST_URI} !^/IAE/(img|lib|js|build)/.*$
+RewriteCond %{REQUEST_URI} !^/.*/(img|lib|js|build)/.*$
 RewriteRule ^(.*)$ build/$1 [L,NS]
