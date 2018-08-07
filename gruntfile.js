@@ -31,10 +31,32 @@ module.exports = function(grunt) {
 					'build/css/user-cp.built.css': ["src/less/user-cp.less"]
 				}
 			}
-		}
+        },
+        copy: {
+            task: {
+                files: [
+                    {
+                        expand: true,
+                        src: 'img/*',
+                        dest: 'build/'
+                    },
+                    {
+                        expand: true,
+                        src: 'js/*',
+                        dest: 'build/'
+                    },
+                    {
+                        expand: true,
+                        src: 'lib/*',
+                        dest: 'build/'
+                    }
+                ]
+            }
+        }
 	});
 
+    grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-jade');
-	grunt.registerTask('default', ['jade', 'less']);
+	grunt.registerTask('default', ['jade', 'less', 'copy']);
 };

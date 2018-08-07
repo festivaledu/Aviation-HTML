@@ -12,5 +12,8 @@
     "grunt": "^1.0.3",
     "grunt-contrib-jade": "^1.0.0",
     "grunt-contrib-less": "^2.0.0"
+  },
+  "dependencies": {
+    "grunt-contrib-copy": "^1.0.0"
   }
 }
