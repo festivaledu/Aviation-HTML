@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'build/index.html': 'src/html/index.jade',
+					'build/index.jsp': 'src/html/index.jade',
 					'build/search.html': 'src/html/search.jade',
 					'build/login.html': 'src/html/login.jade',
 					'build/user-cp.html': 'src/html/user-cp.jade'

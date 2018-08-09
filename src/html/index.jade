@@ -1,3 +1,16 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="javax.naming.*" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.*" %>
+| <%@ page import="java.util.*" %>
+| <%
+| 	Context initialContext = new InitialContext();
+| 	Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
+| 	DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/iae_test");
+| 	Connection conn = dataSource.getConnection();
+| %>
+| 
+
 doctype html
 html
 	head
@@ -38,29 +51,47 @@ html
 								p Abflugdatum
 							input(type="date",placeholder="Abflugdatum auswählen")
 						button.search-button Suchen
-		//- | 
-		//- | 
-		//- | <%i
-		//- | 	test
-		//- | i%>
-		//- | 
 		section.promo-articles
+			| 
+			| <%
+			| 	PreparedStatement categoriesStatement = conn.prepareStatement("SELECT * FROM `promo_categories` ORDER BY RAND()");
+			| 	ResultSet categories = categoriesStatement.executeQuery();
+			| %>
+			| 
 			.section-content
-				.promo-article(data-spring-animatable="promo_1")
-					.header.dark(style="background-image: url(img/963_42158716822_afcc8b6c9e_z_630_320_nofilter.jpg)")
-						p.header-heading Test Header
-						p.header-title Test Title
-						p.header-subtitle Example Subtitle
-				.promo-article(data-spring-animatable="promo_2")
-					.header.dark(style="background-image: url(img/1740_41632494185_8153def7b7_z_630_320_nofilter.jpg)")
-						p.header-heading Test Header
-						p.header-title Test Title
-						p.header-subtitle Example Subtitle
-				.promo-article(data-spring-animatable="promo_3")
-					.header.dark(style="background-image: url(img/1785_42279404374_271e7c3596_z_630_320_nofilter.jpg)")
-						p.header-heading Test Header
-						p.header-title Test Title
-						p.header-subtitle Example Subtitle
+				//- .promo-article(data-spring-animatable="promo_1")
+				//- 	.header.dark(style="background-image: url(img/img.jpg)")
+				//- 		p.header-heading Test Header
+				//- 		p.header-title Test Title
+				//- 		p.header-subtitle Example Subtitle
+				
+				| 
+				| <%
+				| 	int index = 0;
+				| 	String[] locations = new String[3];
+				| 	while (categories.next()) {
+				| 		index++;
+				| 		PreparedStatement locationStatement = conn.prepareStatement("SELECT * FROM `promo_texts` WHERE `promo_texts`.`categoryId` = ? ORDER BY RAND() LIMIT 1");
+				| 		locationStatement.setString(1, categories.getString("id"));
+				| 		ResultSet location = locationStatement.executeQuery();
+				| 		
+				| 		while (location.next()) {
+				| 			locations[index - 1] = location.getString("id");
+				| %>
+				| 
+				.promo-article(data-spring-animatable!="promo_<% out.print(index); %>")
+					.header.dark(style!="background-image: url(<% out.print(location.getString(\"headerImage\")); %>)")
+						p.header-heading Unsere Empfehlung
+						p.header-title <% out.print(categories.getString("title")); %>
+						p.header-subtitle <% out.print(location.getString("location")); %>
+				| 
+				| <%
+				| 		}
+				| 		location.beforeFirst();
+				| 	}
+				|   categories.beforeFirst();
+				| 	index = 0;
+				| %>
 						
 		section.promo-text
 			.section-content.row
@@ -74,38 +105,46 @@ html
 		
 		include _footer
 		
-		.promo-article-details(data-spring-animatable-target="promo_1")
-			.header.dark(style="background-image: url(img/963_42158716822_afcc8b6c9e_z_630_320_nofilter.jpg)")
+		| 
+		| <%
+		| 	while (categories.next()) {
+		| 		index++;
+		| 
+		| 		PreparedStatement locationStatement = conn.prepareStatement("SELECT * FROM `promo_texts` WHERE `promo_texts`.`id` = ?");
+		| 		locationStatement.setString(1, locations[index - 1]);
+		| 		ResultSet location = locationStatement.executeQuery();
+		| 
+		| 		while(location.next()) {
+		| %>
+		| 
+		.promo-article-details(data-spring-animatable-target!="promo_<% out.print(index); %>")
+			.header.dark(style!="background-image: url(<% out.print(location.getString(\"headerImage\")); %>)")
 				.close-button
-				p.header-heading Test Header
-				p.header-title Test Title
-				p.header-subtitle Example Subtitle
+				p.header-heading Unsere Empfehlung
+				p.header-title <% out.print(categories.getString("title")); %>
+				p.header-subtitle <% out.print(location.getString("location")); %>
 			.content-scroll-wrapper
 				.content
-					p #[span.bold.italic Lorem ipsum] dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-					p Lorem ipsum dolor sit amet, #[span.italic consetetur] sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-					p Lorem ipsum dolor sit amet, #[span.italic consetetur] sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-					
-		.promo-article-details(data-spring-animatable-target="promo_2")
-			.header.dark(style="background-image: url(img/1740_41632494185_8153def7b7_z_630_320_nofilter.jpg)")
-				.close-button
-				p.header-heading Test Header
-				p.header-title Test Title
-				p.header-subtitle Example Subtitle
-			.content-scroll-wrapper
-				.content
-					p #[span.bold.italic Lorem ipsum] dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-					
-		.promo-article-details(data-spring-animatable-target="promo_3")
-			.header.dark(style="background-image: url(img/1785_42279404374_271e7c3596_z_630_320_nofilter.jpg)")
-				.close-button
-				p.header-heading Test Header
-				p.header-title Test Title
-				p.header-subtitle Example Subtitle
-			.content-scroll-wrapper
-				.content
-					p #[span.bold.italic Lorem ipsum] dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-					p Lorem ipsum dolor sit amet, #[span.italic consetetur] sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					| 
+					| <% out.print(location.getString("content")); %>
+					| 
+					p Sehen Sie sich auch unsere weiteren Empfehlungen in der Kategorie "<% out.print(categories.getString("title")); %>" an.
+		| 
+		| <%
+		| 		}
+		| 	}
+		| %>
+		| 
+	
+		//- .promo-article-details(data-spring-animatable-target="promo_1")
+		//- 	.header.dark(style="background-image: url(img/963_42158716822_afcc8b6c9e_z_630_320_nofilter.jpg)")
+		//- 		.close-button
+		//- 		p.header-heading Test Header
+		//- 		p.header-title Test Title
+		//- 		p.header-subtitle Example Subtitle
+		//- 	.content-scroll-wrapper
+		//- 		.content
+		//- 			p content text
 		
 		.spring-background
 		
