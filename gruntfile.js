@@ -13,7 +13,8 @@ module.exports = function(grunt) {
 				files: {
 					'build/index.jsp': 'src/html/index.jade',
 					'build/search.html': 'src/html/search.jade',
-					'build/login.html': 'src/html/login.jade',
+					'build/login.jsp': 'src/html/login.jade',
+					'build/register.jsp': 'src/html/register.jade',
 					'build/user-cp.html': 'src/html/user-cp.jade'
 				}
 			}
