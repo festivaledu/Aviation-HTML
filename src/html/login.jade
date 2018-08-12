@@ -1,52 +1,47 @@
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-| <%@ page import="javax.naming.*" %>
-| <%@ page import="javax.sql.DataSource" %>
-| <%@ page import="java.sql.*" %>
+| <%@ page import="ml.festival.aviation.AuthManager" %>
 | <%@ page import="java.util.*" %>
 | <%@ page import="java.nio.charset.StandardCharsets" %>
 | <%@ page import="java.security.MessageDigest" %>
-| <%!
-| 	public String bytesToHex(byte[] bytes) {
-| 		StringBuffer result = new StringBuffer();
-| 		for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
-| 		return result.toString();
-| 	}
-| %>
 | <%
-| 	Context initialContext = new InitialContext();
-| 	Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
-| 	DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/iae_test");
-| 	Connection conn = dataSource.getConnection();
-| 	
-| 	String email = request.getParameter("email");
-| 	String password = request.getParameter("password");
-| 	if (email != null && !email.isEmpty() &&
-| 		password != null && !password.isEmpty()) {
-| 		String hashedPassword = new String(Base64.getEncoder().encode(MessageDigest.getInstance("SHA-256").digest(password.getBytes(StandardCharsets.UTF_8))));
-| 		
-| 		PreparedStatement statement = conn.prepareStatement("SELECT id, password FROM `accounts` WHERE email = ?");
-| 		statement.setString(1, email);
-| 		
-| 		ResultSet users = statement.executeQuery();
-| 		
-| 		if (users.next() && users.getString("password").equals(hashedPassword)) {
-| 			PreparedStatement sessionStatement = conn.prepareStatement("DELETE FROM `sessions` where `userId`= ?");
-| 			sessionStatement.setString(1, users.getString("id"));
-| 			sessionStatement.execute();
-| 			
-| 			sessionStatement = conn.prepareStatement("INSERT INTO `sessions` VALUES (?, ?, default, default)");
-| 			sessionStatement.setString(1, bytesToHex(MessageDigest.getInstance("SHA-256").digest(String.format("%s%s%s%d", users.getString("id"), email, hashedPassword, System.currentTimeMillis() / 1000L).getBytes(StandardCharsets.UTF_8))).substring(0, 32));
-| 			sessionStatement.setString(2, users.getString("id"));
-| 			sessionStatement.execute();
-| 			
-| 			conn.close();
-| 			response.sendRedirect("user-cp.html");
-| 		} else {
-| 			out.println("username or password incorrect");
+| 	Boolean invalidForm = false;
+| 	Boolean userNotFound = false;
+| 	Boolean incorrectPassword = false;
+| 	AuthManager authManager = new AuthManager();
+| 
+| 	Cookie[] cookies = request.getCookies();
+| 	for (int i=0; i<cookies.length; i++) {
+| 		if (cookies[i].getName().equals("sid")) {
+| 			if (authManager.validate(cookies[i].getValue())) {
+| 				response.sendRedirect("dashboard.jsp");
+| 				return;
+| 			}
 | 		}
-| 	} else {
-| 		out.println("form invalid");
 | 	}
+| 
+| 	if (request.getParameter("email") != null &&
+| 		request.getParameter("password") != null) {
+| 		if (!request.getParameter("email").isEmpty() &&
+| 			!request.getParameter("password").isEmpty()) {
+| 			String email = request.getParameter("email");
+| 			String hashedPassword = new String(Base64.getEncoder().encode(MessageDigest.getInstance("SHA-256").digest(request.getParameter("password").getBytes(StandardCharsets.UTF_8))));
+| 
+| 			if (authManager.login(email, hashedPassword) == AuthManager.ErrorCode.OK) {
+| 				if (authManager.generateSession(email) == AuthManager.ErrorCode.OK) {
+| 					Cookie sessionCookie = new Cookie("sid", authManager.getCurrentSessionId(email));
+| 					sessionCookie.setMaxAge(7200);
+| 					response.addCookie(sessionCookie);
+| 
+| 					response.sendRedirect("dashboard.jsp");
+| 				}
+| 			} else {
+| 				incorrectPassword = true;
+| 			}
+| 		} else {
+| 			invalidForm = true;
+| 		}
+| 	}
+| 
 | %>
 | 
 
@@ -68,6 +63,30 @@ html
 					.column.column-12.medium-4
 						img(src="img/logo-dark.svg")
 			
+			| 
+			| <% if (invalidForm || incorrectPassword || userNotFound) { %>
+			
+			section.form-error
+				.section-content.row.centered
+					.column.column-12.medium-4
+						| 
+						| <% if (invalidForm) { %>
+					
+						p Bitte fülle das komplette Formular aus, um dich zu anzumelden.
+						| 
+						| <% } else if (incorrectPassword) { %>
+					
+						p Das von dir angegebene Passwort ist nicht korrekt. Bitte versuche es erneut.
+						| 
+						| <% } else if (userNotFound) { %>
+					
+						p Das von dir angegebene Konto wurde nicht gefunden.
+						| 
+						| <% } %>
+						| 
+			| 
+			| <% } %>
+			| 
 			section.login
 				.section-content.row.centered
 					.column.column-12.medium-4

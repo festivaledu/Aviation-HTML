@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 					'build/search.html': 'src/html/search.jade',
 					'build/login.jsp': 'src/html/login.jade',
 					'build/register.jsp': 'src/html/register.jade',
-					'build/user-cp.html': 'src/html/user-cp.jade'
+					'build/dashboard.jsp': 'src/html/dashboard.jade'
 				}
 			}
 		},
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 			}
         },
         copy: {
-            task: {
+            build: {
                 files: [
                     {
                         expand: true,

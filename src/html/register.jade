@@ -1,39 +1,49 @@
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-| <%@ page import="ml.festival.aviation.*" %>
+| <%@ page import="ml.festival.aviation.AuthManager" %>
 | <%@ page import="java.util.*" %>
 | <%@ page import="java.nio.charset.StandardCharsets" %>
 | <%@ page import="java.security.MessageDigest" %>
 | <%
-| 	Boolean incorrectForm = false;
+| 	Boolean invalidForm = false;
 | 	Boolean passwordNotEqual = false;
 | 	Boolean serverError = false;
 | 	AuthManager authManager = new AuthManager();
 | 
+| 	Cookie[] cookies = request.getCookies();
+| 	for (int i=0; i<cookies.length; i++) {
+| 		if (cookies[i].getName().equals("sid")) {
+| 			if (authManager.validate(cookies[i].getValue())) {
+| 				response.sendRedirect("dashboard.jsp");
+| 				return;
+| 			}
+| 		}
+| 	}
+|  
 | 	if (request.getParameter("firstName") != null &&
 | 		request.getParameter("lastName") != null &&
 | 		request.getParameter("email") != null &&
 | 		request.getParameter("password") != null &&
 | 		request.getParameter("passwordConfirm") != null) {
-| 
+|  
 | 		if (!request.getParameter("firstName").isEmpty() &&
 | 			!request.getParameter("lastName").isEmpty() &&
 | 			!request.getParameter("email").isEmpty() &&
 | 			!request.getParameter("password").isEmpty() &&
 | 			!request.getParameter("passwordConfirm").isEmpty()) {
-| 
+|  
 | 			if (request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
 | 				String firstName = request.getParameter("firstName");
 | 				String lastName = request.getParameter("lastName");
 | 				String email = request.getParameter("email");
 | 				String hashedPassword = new String(Base64.getEncoder().encode(MessageDigest.getInstance("SHA-256").digest(request.getParameter("password").getBytes(StandardCharsets.UTF_8))));
-| 
+|  
 | 				if (authManager.register(firstName, lastName, email, hashedPassword) == AuthManager.ErrorCode.OK) {
 | 					if (authManager.generateSession(email) == AuthManager.ErrorCode.OK) {
 | 						Cookie sessionCookie = new Cookie("sid", authManager.getCurrentSessionId(email));
 | 						sessionCookie.setMaxAge(7200);
 | 						response.addCookie(sessionCookie);
-| 
-| 						response.sendRedirect("user-cp.html");
+|  
+| 						response.sendRedirect("dashboard.jsp");
 | 					}
 | 				} else {
 | 					serverError = true;
@@ -42,7 +52,7 @@
 | 				passwordNotEqual = true;
 | 			}
 | 		} else {
-| 			incorrectForm = true;
+| 			invalidForm = true;
 | 		}
 | 	}
 | %>
@@ -66,13 +76,13 @@ html
 						img(src="img/logo-dark.svg")
 						
 			| 
-			| <% if (incorrectForm || passwordNotEqual || serverError) { %>
+			| <% if (invalidForm || passwordNotEqual || serverError) { %>
 			
 			section.form-error
 				.section-content.row.centered
 					.column.column-12.medium-4
 						| 
-						| <% if (incorrectForm) { %>
+						| <% if (invalidForm) { %>
 					
 						p Bitte fülle das komplette Formular aus, um dich zu registrieren.
 						| 

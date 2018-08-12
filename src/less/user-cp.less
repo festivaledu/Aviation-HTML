@@ -8,10 +8,12 @@ section.user-cp {
 			margin-top: 20px;
 		}
 		
-		li {
+		.menu-item {
+			display: block;
 			position: relative;
 			padding: 8px 10px;
 			line-height: 22px;
+			text-decoration: none;
 			
 			&.heading {
 				pointer-events: none;
@@ -21,7 +23,9 @@ section.user-cp {
 			}
 			
 			&.selected {
-				font-weight: 600;
+				font-weight: 500;
+				color: #000;
+				cursor: default;
 				
 				&:after {
 					content: '';
@@ -32,6 +36,10 @@ section.user-cp {
 					height: 100%;
 					box-shadow: inset 2px 0 0 0 #00B0EE;
 				}
+			}
+			
+			&:not(.selected):hover {
+				background-color: #f6f8fa;
 			}
 			
 			&:not(:last-child) {
