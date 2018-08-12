@@ -1,14 +1,6 @@
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-| <%@ page import="javax.naming.*" %>
-| <%@ page import="javax.sql.DataSource" %>
 | <%@ page import="java.sql.*" %>
-| <%@ page import="java.util.*" %>
-| <%
-| 	Context initialContext = new InitialContext();
-| 	Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
-| 	DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/iae_test");
-| 	Connection conn = dataSource.getConnection();
-| %>
+| <%@ page import="ml.festival.aviation.*" %>
 | 
 
 doctype html
@@ -52,12 +44,6 @@ html
 							input(type="date",placeholder="Abflugdatum auswählen")
 						button.search-button Suchen
 		section.promo-articles
-			| 
-			| <%
-			| 	PreparedStatement categoriesStatement = conn.prepareStatement("SELECT * FROM `promo_categories` ORDER BY RAND()");
-			| 	ResultSet categories = categoriesStatement.executeQuery();
-			| %>
-			| 
 			.section-content
 				//- .promo-article(data-spring-animatable="promo_1")
 				//- 	.header.dark(style="background-image: url(img/img.jpg)")
@@ -67,29 +53,29 @@ html
 				
 				| 
 				| <%
+				| 	PromoManager promoManager = new PromoManager();
+				| 	ResultSet categories = promoManager.getPromoCategories();
 				| 	int index = 0;
 				| 	String[] locations = new String[3];
 				| 	while (categories.next()) {
 				| 		index++;
-				| 		PreparedStatement locationStatement = conn.prepareStatement("SELECT * FROM `promo_texts` WHERE `promo_texts`.`categoryId` = ? ORDER BY RAND() LIMIT 1");
-				| 		locationStatement.setString(1, categories.getString("id"));
-				| 		ResultSet location = locationStatement.executeQuery();
+				| 		ResultSet location = promoManager.getLocationsForCategory(categories.getString("id"));
 				| 		
 				| 		while (location.next()) {
 				| 			locations[index - 1] = location.getString("id");
 				| %>
 				| 
-				.promo-article(data-spring-animatable!="promo_<% out.print(index); %>")
-					.header.dark(style!="background-image: url(<% out.print(location.getString(\"headerImage\")); %>)")
+				.promo-article(data-spring-animatable!="promo_<%= index %>")
+					.header.dark(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
 						p.header-heading Unsere Empfehlung
-						p.header-title <% out.print(categories.getString("title")); %>
-						p.header-subtitle <% out.print(location.getString("location")); %>
+						p.header-title <%= categories.getString("title") %>
+						p.header-subtitle <%= location.getString("location") %>
 				| 
 				| <%
 				| 		}
 				| 		location.beforeFirst();
 				| 	}
-				|   categories.beforeFirst();
+				| 	categories.beforeFirst();
 				| 	index = 0;
 				| %>
 						
@@ -110,31 +96,27 @@ html
 		| 	while (categories.next()) {
 		| 		index++;
 		| 
-		| 		PreparedStatement locationStatement = conn.prepareStatement("SELECT * FROM `promo_texts` WHERE `promo_texts`.`id` = ?");
-		| 		locationStatement.setString(1, locations[index - 1]);
-		| 		ResultSet location = locationStatement.executeQuery();
+		| 		ResultSet location = promoManager.getLocationForId(locations[index - 1]);
 		| 
 		| 		while(location.next()) {
 		| %>
 		| 
-		.promo-article-details(data-spring-animatable-target!="promo_<% out.print(index); %>")
-			.header.dark(style!="background-image: url(<% out.print(location.getString(\"headerImage\")); %>)")
+		.promo-article-details(data-spring-animatable-target!="promo_<%= index %>")
+			.header.dark(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
 				.close-button
 				p.header-heading Unsere Empfehlung
-				p.header-title <% out.print(categories.getString("title")); %>
-				p.header-subtitle <% out.print(location.getString("location")); %>
+				p.header-title <%= categories.getString("title") %>
+				p.header-subtitle <%= location.getString("location") %>
 			.content-scroll-wrapper
 				.content
 					| 
-					| <% out.print(location.getString("content")); %>
+					| <%= location.getString("content") %>
 					| 
-					p Sehen Sie sich auch unsere weiteren Empfehlungen in der Kategorie "<% out.print(categories.getString("title")); %>" an.
+					p Sehen Sie sich auch unsere weiteren Empfehlungen in der Kategorie "<%= categories.getString("title") %>" an.
 		| 
 		| <%
 		| 		}
 		| 	}
-		| 
-		| conn.close();
 		| %>
 		| 
 	
