@@ -1,13 +1,11 @@
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="ml.festival.aviation.AuthManager" %>
 | <%!
-| 	private String defaultPage = "profile";
 | 	public Boolean isCurrentPage(String requestedPage, String pageName) {
 | 		if (requestedPage != null) {
 | 			return pageName.equals(requestedPage);
-| 		} else {
-| 			return pageName.equals(defaultPage);
 | 		}
+| 		return false;
 | 	}
 | %>
 | <%
@@ -27,6 +25,10 @@
 | 	if (!validAuth) {
 | 		response.sendRedirect("login.jsp");
 | 	}
+| 
+| 	if (request.getParameter("p") == null || request.getParameter("p").isEmpty()) {
+| 		response.sendRedirect("dashboard.jsp?p=profile");
+| 	}
 | %>
 | 
 
@@ -36,15 +38,15 @@ html
 		meta(charset="utf-8")
 		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
 	
-		title Benutzer – FESTIVAL Aviation
+		title Dashboard – FESTIVAL Aviation
 		
 		link(rel="stylesheet",href="css/aviation.css")
-		link(rel="stylesheet",href="css/user-cp.built.css")
+		link(rel="stylesheet",href="css/dashboard.built.css")
 	body
 		include _nav
 		
 		.content-wrapper
-			section.user-cp
+			section.dashboard
 				.section-content.row
 					.column.column-3
 						ul.user-cp-menu
@@ -62,13 +64,23 @@ html
 							a(href="?p=complaints",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"complaints\") ? \"selected\" : \"\" %>")
 								li Beschwerden
 						ul.user-cp-menu
-							li.heading Buchungen
-							li Vorherige Buchungen
-							li Tickets
+							li.menu-item.heading Buchungen
+							| 
+							| 
+							a(href="?p=bookings",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"bookings\") ? \"selected\" : \"\" %>")
+								li Alle Buchungen
+							| 
+							| 
+							a(href="?p=tickets",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"tickets\") ? \"selected\" : \"\" %>")
+								li Tickets
 					.column.column-8.offset-1
 						| 
 						| <% if (isCurrentPage(request.getParameter("p"), "profile")) { %>
-						p Profil
+						h2 Profil
+						p Hier kannst du die Details deines Profils anpassen.
+						form(action="#")
+							label(for="firstName") Vorname
+							input(type="text",name="firstName",id="firstName",value!="<%= request.getParameter(\"p\") %>")
 						| 
 						| <% } %>
 						| 
