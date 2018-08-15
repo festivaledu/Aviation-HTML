@@ -73,24 +73,87 @@ html
 							| 
 							a(href="?p=tickets",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"tickets\") ? \"selected\" : \"\" %>")
 								li Tickets
+					| 
+					| <% if (isCurrentPage(request.getParameter("p"), "profile")) { %>
 					.column.column-8.offset-1
-						| 
-						| <% if (isCurrentPage(request.getParameter("p"), "profile")) { %>
 						h2 Profil
 						p Hier kannst du die Details deines Profils anpassen.
 						form(action="#")
 							label(for="firstName") Vorname
-							input(type="text",name="firstName",id="firstName",value!="<%= request.getParameter(\"p\") %>")
-						| 
-						| <% } %>
-						| 
-						| <% if (isCurrentPage(request.getParameter("p"), "billing")) { %>
-						p Rechnungsadresse
-						| 
-						| <% } %>
-						| 
-						| <% if (isCurrentPage(request.getParameter("p"), "complaints")) { %>
-						p Beschwerden
-						| 
-						| <% } %>
+							input(type="text",name="firstName",id="firstName")
+							label(for="lastName") Nachname
+							input(type="text",name="lastName",id="lastName")
+							label(for="email") E-Mail-Adresse
+							input(type="email",name="email",id="email")
+							button Profil speichern
+							
+						h3 Passwort ändern
+						form(action="#")
+							label(for="oldPassword") Altes Passwort
+							input(type="password",name="oldPassword",id="oldPassword")
+							label(for="oldPassword") Neues Passwort
+							input(type="password",name="newPassword",id="newPassword")
+							label(for="oldPassword") Neues Passwort bestätigen
+							input(type="password",name="newPasswordConfirm",id="newPasswordConfirm")
+							button Passwort ändern 
+					| 
+					| <% } %>
+					
+					| 
+					| <% if (isCurrentPage(request.getParameter("p"), "billing")) { %>
+					.column.column-8.offset-1
+						h2 Rechnungsadresse
+						p Zum Buchen von Flügen benötigst du eine gültige Rechnungsadresse. Diese kannst du hier jederzeit ändern.
 						
+						form(action="#")
+							.row.no-justify
+								.column.column-3
+									label(for="title") Anrede
+								.column.column-6
+									select(name="title",id="title")
+										option(value="none",selected)
+										option(value="male") Herr
+										option(value="female") Frau
+							.row.no-justify
+								.column.column-3
+									label(for="firstName") Vorname
+								.column.column-6
+									input(type="text",name="firstName",id="firstName")
+							.row.no-justify
+								.column.column-3
+									label(for="lastName") Nachname
+								.column.column-6
+									input(type="text",name="lastName",id="lastName")
+							
+							.row.no-justify
+								.column.column-3
+									label(for="lastName") Straße
+								.column.column-6
+									input(type="text",name="street",id="street")
+							.row.no-justify
+								.column.column-3
+									label(for="lastName") PLZ/Ort
+								.column.column-2
+									input(type="text",name="zip",id="zip")
+								.column.column-4
+									input(type="text",name="city",id="city")
+							.row.no-justify
+								.column.column-3
+									label(for="country") Land
+								.column.column-6
+									select(name="country",id="country")
+										option(value="de") Deutschland
+										option(value="at") Österreich
+										option(value="ch") Schweiz
+							.row.no-justify
+								.column.column-3
+									label(for="email") E-Mail
+								.column.column-6
+									input(type="email",name="email",id="email")
+							.row.no-justify
+								.column.column-3
+									label(for="phone") Telefon
+								.column.column-6
+									input(type="phone",name="phone",id="phone")
+					| 
+					| <% } %>
