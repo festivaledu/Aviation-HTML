@@ -6,20 +6,67 @@ html
 	
 		title Support Center – FESTIVAL Aviation
 		
-		link(rel="stylesheet", href="css/support-center.built.css")
+		//- link(rel="stylesheet", href="css/support-center.built.css")
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/dashboard.built.css")
 	body
-		div.content
-			h1 Supportcenter
-			p.subtitle Wie können wir dir helfen?
-			div.cards
-				article.card(data-message="Fack")
-					a FAQ
-				article.card(data-message="Kontaggt")
-					a Kontakt
-				article.card(data-message="Schtorno")
-					a Stornierung
-				article.card(data-message="Nix Rechte")
-					a Fluggastrechte
-		div.filler.show.r
-			p.filler-message
+		include _nav
+		
+		.content-wrapper
+			section.dashboard
+				.section-content.row
+					.column.column-3
+						ul.user-cp-menu
+							li.menu-item.heading FAQ
+							a.menu-item.selected
+								li Geht's euch noch ganz astrein?
+							a.menu-item
+								li Seid ihr noch ganz frisch im Kopf?
+							a.menu-item
+								li Sagt mal wie blöd seid ihr eigentlich?
+							a.menu-item
+								li Habt ihr noch alle Tassen im Schrank?
+							a.menu-item
+								li WAT?
+
+						ul.user-cp-menu
+							li.menu-item.heading Support
+							a.menu-item.selected
+								li FAQ
+							a.menu-item
+								li Kontakt
+							a.menu-item
+								li Stornieren
+							a.menu-item
+								li Beschweren
+							a.menu-item
+								li Fluggastrechte
+
+					.column.column-8.offset-1
+						h2 FAQ
+						div.faq-card.expanded
+							p.faq-card-header Geht's euch noch ganz astrein?
+								span.expand-button.rotated
+							div.faq-card-content
+								p Nö.
+						div.faq-card
+							p.faq-card-header Seid ihr noch ganz frisch im Kopf?
+								span.expand-button							
+							div.faq-card-content
+								p Nope.
+						div.faq-card
+							p.faq-card-header Sagt mal wie blöd seid ihr eigentlich?
+								span.expand-button
+							div.faq-card-content
+								p *Zeigt 4 Finger* Drei.
+						div.faq-card
+							p.faq-card-header Habt ihr noch alle Tassen im Schrank?
+								span.expand-button
+							div.faq-card-content
+								p 1.. 2.. 3.. 39.. 40.. 41.. 42. Alle da.
+						div.faq-card
+							p.faq-card-header WAT?
+								span.expand-button
+							div.faq-card-content
+								p WIE VIEL WAAAAAT!
 	script(src="js/support-center.js")

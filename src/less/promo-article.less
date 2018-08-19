@@ -34,16 +34,19 @@
 		background-repeat: no-repeat;
 		background-color: #FFFFFF;
 		z-index: 5;
+		pointer-events: none;
 		
 		p.header-heading {
 			font-weight: 500;
 			text-transform: uppercase;
 			margin-bottom: 6px;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 		}
 		
 		p.header-title {
 			font-size: 28px;
 			font-weight: 500;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 		}
 		
 		p.header-subtitle {
@@ -51,6 +54,7 @@
 			bottom: 21px;
 			font-size: 13px;
 			padding-left: 20px;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 			
 			&:before {
 				content:'';
@@ -71,6 +75,7 @@
 			cursor: pointer;
 			background-position: center center;
 			background-repeat: no-repeat;
+			pointer-events: all;
 		}
 		
 		&.light {

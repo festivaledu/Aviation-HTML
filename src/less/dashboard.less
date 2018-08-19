@@ -1,0 +1,159 @@
+section.dashboard {
+	.user-cp-menu {
+		list-style: none;
+		box-shadow: 0 0 0 1px #c2c2c2;
+		border-radius: 2px;
+		
+		& + .user-cp-menu {
+			margin-top: 20px;
+		}
+		
+		.menu-item {
+			display: block;
+			position: relative;
+			padding: 8px 10px;
+			line-height: 22px;
+			text-decoration: none;
+			
+			&.heading {
+				pointer-events: none;
+				color: #586069;
+				background-color: #f3f5f8;
+				font-weight: 600;
+			}
+			
+			&.selected {
+				font-weight: 500;
+				color: #000;
+				cursor: default;
+				
+				&:after {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					box-shadow: inset 2px 0 0 0 #00B0EE;
+				}
+			}
+			
+			&:not(.selected):hover {
+				background-color: #f6f8fa;
+			}
+			
+			&:not(:last-child) {
+				box-shadow: inset 0 -1px 0 0 #c2c2c2;
+			}
+		}
+	}
+	
+	h2 {
+		font-size: 28px;
+		font-weight: 400;
+		margin-bottom: 10px;
+	}
+	
+	h3 {
+		font-size: 22px;
+		font-weight: 400;
+		margin: 20px 0 10px;
+	}
+	
+	p {
+		margin-bottom: 10px;
+	}
+	
+	label {
+		display: block;
+		font-size: 13px;
+		font-weight: 500;
+		margin-bottom: 5px;
+	}
+	
+	input {
+		width: 100%;
+		max-width: 374px;
+		margin-bottom: 15px;
+		padding: 6px 8px;
+		border: 1px solid #c2c2c2;
+		border-radius: 2px;
+	}
+	
+	select {
+		height: 20px;
+		margin: 6px 0 21px;
+	}
+	
+	.row .column label {
+		line-height: 32px;
+	}
+	
+	form button {
+		display: block;
+		margin-top: 8px;
+    }
+
+    .faq-card {
+        margin-bottom: 1em;
+    }
+
+    .faq-card.expanded .expand-button {
+        border-bottom: none;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        transform: rotate(180deg);
+    }
+
+    .faq-card.expanded .faq-card-content {
+        padding: 1em;
+        transition: all ease .2s;
+
+        & * {
+            font-size: 15px;
+            opacity: 1;
+            transition: font-size .2s ease, opacity .2s ease .2s;
+        }
+    }
+
+    .faq-card-header {
+        border: 1px solid #EEE;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        padding: 10px 1em;
+    }
+    
+    .expand-button {
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2026%2016%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpolygon%20fill%3D%27%239B9B9B%27%20points%3D%273%200%2013%2010%2023%200%2026%203%2013%2016%200%203%27%3E%3C/polygon%3E%3C/svg%3E");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 13px 8px;
+        cursor: pointer;
+        float: right;
+        height: 17px;
+        margin-top: 1px;
+        transition: all .2s linear;
+        width: 13px;
+    }
+
+    .faq-card-content {
+        background: #F3F5F8;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        padding: 0;
+        transition: all .2s ease .2s;
+
+        & * {
+            font-size: 0;
+            opacity: 0;
+            transition: opacity .2s ease, font-size .2s ease .2s;
+        }
+
+        & p {
+            margin: 0;
+        }
+    }
+}
