@@ -59,7 +59,7 @@ html
 				| 	String[] locations = new String[3];
 				| 	while (categories.next()) {
 				| 		index++;
-				| 		ResultSet location = promoManager.getLocationsForCategory(categories.getString("id"));
+				| 		ResultSet location = promoManager.getLocationForCategory(categories.getString("id"));
 				| 		
 				| 		while (location.next()) {
 				| 			locations[index - 1] = location.getString("id");
