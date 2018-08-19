@@ -11,10 +11,11 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'build/index.html': 'src/html/index.jade',
+					'build/index.jsp': 'src/html/index.jade',
 					'build/search.html': 'src/html/search.jade',
-					'build/login.html': 'src/html/login.jade',
-                    'build/user-cp.html': 'src/html/user-cp.jade',                    
+					'build/login.jsp': 'src/html/login.jade',
+					'build/register.jsp': 'src/html/register.jade',
+					'build/dashboard.jsp': 'src/html/dashboard.jade'
 					'build/sc-index.html': 'src/html/sc-index.jade'
 				}
 			}
@@ -29,13 +30,13 @@ module.exports = function(grunt) {
 					'build/css/landing.built.css': ["src/less/landing.less", "src/less/promo-article.less"],
 					'build/css/search.built.css': "src/less/search-results.less",
 					'build/css/login.built.css': ["src/less/login.less"],
-                    'build/css/user-cp.built.css': ["src/less/user-cp.less"],
                     'build/css/support-center.built.css': ["src/less/support-center.less"]
+					'build/css/dashboard.built.css': ["src/less/dashboard.less"]
 				}
 			}
         },
         copy: {
-            task: {
+            build: {
                 files: [
                     {
                         expand: true,
