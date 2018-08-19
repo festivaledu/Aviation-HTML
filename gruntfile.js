@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 					'build/search.html': 'src/html/search.jade',
 					'build/login.jsp': 'src/html/login.jade',
 					'build/register.jsp': 'src/html/register.jade',
-					'build/dashboard.jsp': 'src/html/dashboard.jade',
+					'build/dashboard.jsp': 'src/html/dashboard.jade'
 					'build/sc-index.html': 'src/html/sc-index.jade'
 				}
 			}
