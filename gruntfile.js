@@ -14,7 +14,8 @@ module.exports = function(grunt) {
 					'build/index.html': 'src/html/index.jade',
 					'build/search.html': 'src/html/search.jade',
 					'build/login.html': 'src/html/login.jade',
-					'build/user-cp.html': 'src/html/user-cp.jade'
+                    'build/user-cp.html': 'src/html/user-cp.jade',                    
+					'build/sc-index.html': 'src/html/sc-index.jade'
 				}
 			}
 		},
@@ -28,7 +29,8 @@ module.exports = function(grunt) {
 					'build/css/landing.built.css': ["src/less/landing.less", "src/less/promo-article.less"],
 					'build/css/search.built.css': "src/less/search-results.less",
 					'build/css/login.built.css': ["src/less/login.less"],
-					'build/css/user-cp.built.css': ["src/less/user-cp.less"]
+                    'build/css/user-cp.built.css': ["src/less/user-cp.less"],
+                    'build/css/support-center.built.css': ["src/less/support-center.less"]
 				}
 			}
         },
