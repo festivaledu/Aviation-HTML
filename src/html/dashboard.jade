@@ -24,9 +24,7 @@
 | 
 | 	if (!validAuth) {
 | 		response.sendRedirect("login.jsp");
-| 	}
-| 
-| 	if (request.getParameter("p") == null || request.getParameter("p").isEmpty()) {
+| 	} else if (request.getParameter("p") == null || request.getParameter("p").isEmpty()) {
 | 		response.sendRedirect("dashboard.jsp?p=profile");
 | 	}
 | %>
