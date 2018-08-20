@@ -6,30 +6,29 @@ html
 	
 		title Support Center – FESTIVAL Aviation
 		
-		//- link(rel="stylesheet", href="css/support-center.built.css")
-		link(rel="stylesheet",href="css/aviation.css")
-		link(rel="stylesheet",href="css/dashboard.built.css")
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/support-center.built.css")
 	body
 		include _nav
 		
 		.content-wrapper
-			section.dashboard
+			section.support
 				.section-content.row
-					.column.column-3
-						ul.user-cp-menu
+					.column.column-3(style="position: sticky; top: 75px")
+						ul.sc-menu.contents
 							li.menu-item.heading FAQ
-							a.menu-item.selected
+							a.menu-item(data-q-link="astrein")
 								li Geht's euch noch ganz astrein?
-							a.menu-item
+							a.menu-item(data-q-link="frisch")
 								li Seid ihr noch ganz frisch im Kopf?
-							a.menu-item
+							a.menu-item(data-q-link="bloed")
 								li Sagt mal wie blöd seid ihr eigentlich?
-							a.menu-item
+							a.menu-item(data-q-link="tassen")
 								li Habt ihr noch alle Tassen im Schrank?
-							a.menu-item
+							a.menu-item(data-q-link="wat")
 								li WAT?
 
-						ul.user-cp-menu
+						ul.sc-menu
 							li.menu-item.heading Support
 							a.menu-item.selected
 								li FAQ
@@ -44,27 +43,31 @@ html
 
 					.column.column-8.offset-1
 						h2 FAQ
-						div.faq-card.expanded
+						div.faq-card(data-q="astrein")
 							p.faq-card-header Geht's euch noch ganz astrein?
 								span.expand-button.rotated
 							div.faq-card-content
 								p Nö.
-						div.faq-card
+                        
+						div.faq-card(data-q="frisch")
 							p.faq-card-header Seid ihr noch ganz frisch im Kopf?
 								span.expand-button							
 							div.faq-card-content
 								p Nope.
-						div.faq-card
+                        
+						div.faq-card(data-q="bloed")
 							p.faq-card-header Sagt mal wie blöd seid ihr eigentlich?
 								span.expand-button
 							div.faq-card-content
 								p *Zeigt 4 Finger* Drei.
-						div.faq-card
+                        
+						div.faq-card(data-q="tassen")
 							p.faq-card-header Habt ihr noch alle Tassen im Schrank?
 								span.expand-button
 							div.faq-card-content
 								p 1.. 2.. 3.. 39.. 40.. 41.. 42. Alle da.
-						div.faq-card
+                        
+						div.faq-card(data-q="wat")
 							p.faq-card-header WAT?
 								span.expand-button
 							div.faq-card-content
