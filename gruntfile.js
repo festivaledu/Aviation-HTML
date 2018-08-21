@@ -52,7 +52,13 @@ module.exports = function(grunt) {
                         expand: true,
                         src: 'lib/*',
                         dest: 'build/'
-                    }
+					},
+					{
+						expand: true,
+						cwd: 'out/',
+						src: '*',
+						dest: 'build'
+					}
                 ]
             }
         }
