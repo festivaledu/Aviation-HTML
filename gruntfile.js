@@ -30,8 +30,8 @@ module.exports = function(grunt) {
 					'build/css/landing.built.css': ["src/less/landing.less", "src/less/promo-article.less"],
 					'build/css/search.built.css': "src/less/search-results.less",
 					'build/css/login.built.css': ["src/less/login.less"],
-                    'build/css/support-center.built.css': ["src/less/support-center.less"],
-					'build/css/dashboard.built.css': ["src/less/dashboard.less"]
+					'build/css/dashboard.built.css': ["src/less/dashboard.less"],
+					'build/css/support-center.built.css': ["src/less/support-center.less"],
 				}
 			}
         },
