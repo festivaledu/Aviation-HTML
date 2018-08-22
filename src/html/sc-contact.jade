@@ -1,0 +1,43 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Kontakt – FESTIVAL Aviation Support
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/support-center.built.css")
+	body
+		include _nav
+		
+		.content-wrapper
+			section.support
+				.section-content.row
+					.column.column-3
+						ul.sc-menu
+							li.menu-item.heading Support
+							a.menu-item(href="sc-index.html")
+								li FAQ
+							a.menu-item.selected
+								li Kontakt
+							a.menu-item
+								li Stornieren
+							a.menu-item
+								li Beschweren
+							a.menu-item
+								li Fluggastrechte
+
+					.column.column-8.offset-1
+						h2 Kontakt
+						form(action="#")
+							label(for="firstName") Vorname
+							input(type="text", name="firstName", id="firstName")
+							label(for="lastName") Nachname
+							input(type="text", name="lastName", id="lastName")
+							label(for="email") E-Mail-Adresse
+							input(type="email", name="email", id="email")
+							label(for="message") Ihre Nachricht
+							textarea(name="message", id="message", lines="12")
+							button Absenden
+	script(src="js/support-center.js")

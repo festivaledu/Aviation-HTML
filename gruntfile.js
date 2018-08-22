@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		jade: {
 			compile: {
-				options: {
+                options: {
 					pretty: "\t",
 					data: {
 						debug: false,
@@ -16,7 +16,8 @@ module.exports = function(grunt) {
 					'build/login.jsp': 'src/html/login.jade',
 					'build/register.jsp': 'src/html/register.jade',
 					'build/dashboard.jsp': 'src/html/dashboard.jade',
-					'build/sc-index.html': 'src/html/sc-index.jade'
+					'build/sc-index.html': 'src/html/sc-index.jade',
+					'build/sc-contact.html': 'src/html/sc-contact.jade'
 				}
 			}
 		},
