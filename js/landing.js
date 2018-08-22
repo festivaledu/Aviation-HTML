@@ -79,3 +79,77 @@ document.querySelectorAll("[data-spring-animatable]").forEach(item => {
 
 	animatables.push(animatable);
 });
+
+// Search Experiment
+const loadJSON = (file, callback, callbackError) => {
+	return new Promise((resolve, reject) => {
+		const xhr = new XMLHttpRequest();
+		xhr.overrideMimeType("application/json");
+		xhr.open("GET", file);
+		xhr.onload = resolve;
+		xhr.onerror = reject;
+		xhr.send();
+	})
+};
+
+/*let destTimeout;
+document.querySelector(".hero-search-bar .input-wrapper[data-key=\"departure\"] input#depart").addEventListener("input", (e) => {
+	console.log(e.target.value);
+	
+	if (destTimeout) {
+		clearTimeout(destTimeout);
+	}
+	
+	destTimeout = setTimeout(async () => {
+		const suggestionData = await loadJSON(`airport_lookup.jsp?query=${escape(e.target.value)}`).then(e => { return JSON.parse(e.target.response); });
+
+		const suggestionContainer = document.querySelector(".hero-search-bar .input-wrapper[data-key=\"departure\"] .suggestions");
+		suggestionContainer.classList.add("visible");
+		suggestionContainer.innerHTML = "";
+		
+		suggestionData.forEach(suggestion => {
+			let child = document.createElement("li");
+			child.className = "suggestion-item";
+			child.setAttribute("data-iata", suggestion["iata_code"]);
+			child.innerHTML = `${suggestion["name"]}, ${suggestion["iso_country"]}`;
+			suggestionContainer.appendChild(child);
+		});
+	}, 500);
+});*/
+
+let inputTimeout;
+document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]").forEach(container => {
+	container.querySelector("input:not([name])").addEventListener("input", e => {
+		if (inputTimeout) {
+			clearTimeout(inputTimeout);
+		}
+		
+		inputTimeout = setTimeout(async () => {
+			const suggestionData = await loadJSON(`airport_lookup.jsp?query=${escape(e.target.value)}`).then(e => { return JSON.parse(e.target.response); });
+			
+			const suggestionContainer = container.querySelector(".suggestions");
+			suggestionContainer.classList.add("visible");
+			suggestionContainer.innerHTML = "";
+			
+			suggestionData.forEach(suggestion => {
+				let child = document.createElement("li");
+				child.className = "suggestion-item";
+				child.setAttribute("data-iata", suggestion["iata_code"]);
+				child.innerHTML = suggestion["name"];
+				
+				child.addEventListener("click", () => {
+					container.querySelector("input:not([name])").value = suggestion["name"];
+					container.querySelector("input[name]").value = suggestion["iata_code"];
+					
+					suggestionContainer.classList.remove("visible");
+				});
+				
+				suggestionContainer.appendChild(child);
+			});
+		}, 500);
+	});
+	
+	// container.querySelector("input:not([name])").addEventListener("blur", e => {
+	// 	container.querySelector(".suggestions").classList.remove("visible");
+	// });
+});
