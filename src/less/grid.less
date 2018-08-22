@@ -12,7 +12,21 @@
 
 	&.centered {
 		justify-content: center;
-	}
+    }
+    
+    @media all and (max-width: 768px) {
+        &.reversed {
+            flex-direction: column-reverse;
+
+            .column:first-of-type {
+                margin-bottom: 0 !important;
+            }
+
+            .column:last-of-type {
+                margin-bottom: 1.5em !important;
+            }
+        }
+    }
 
 	.column {
 		&.column-auto {
@@ -35,6 +49,16 @@
 		
 		@media all and (min-width: 1200px) {
 			.make-column(xlarge);
-		}
-	}
+        }
+
+        @media all and (max-width: 768px) {
+            margin-bottom: 1.5em;
+            margin-left: 0;
+            width: 100% !important;
+
+            &:last-of-type {
+                margin-bottom: 0 !important;
+            }
+        }
+    }
 }
