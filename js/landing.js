@@ -147,7 +147,11 @@ document.querySelectorAll(".calendar").forEach(item => {
 				month: "long",
 				year: "numeric"
 			});
-			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date;
+			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
 		}
 	});
+});
+
+document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input:not([name])").addEventListener("focus", () => {
+	document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] .calendar").classList.add("visible");
 });

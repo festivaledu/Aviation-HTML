@@ -1,7 +1,35 @@
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="java.sql.*" %>
-| <%@ page import="ml.festival.aviation.*" %>
+| <%@ page import="javax.sql.*" %>
+| <%@ page import="javax.naming.*" %>
+| <%@ page import="java.time.Instant" %>
+| <%@ page import="java.text.SimpleDateFormat" %>
 | 
+| <%
+| 	InitialContext initialContext = new InitialContext();
+| 	Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
+| 	DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+| 	Connection conn = dataSource.getConnection();
+| 
+|	ResultSet departure = null;
+| 	ResultSet arrival = null;
+| 	if (request.getParameter("depart_iata") != null && !request.getParameter("depart_iata").isEmpty()) {
+| 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM airports WHERE iata_code = ?");
+| 		statement.setString(1, request.getParameter("depart_iata"));
+|		departure = statement.executeQuery();
+| 	}
+| 
+| 	if (request.getParameter("arrv_iata") != null && !request.getParameter("arrv_iata").isEmpty()) {
+| 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM airports WHERE iata_code = ?");
+| 		statement.setString(1, request.getParameter("arrv_iata"));
+|		arrival = statement.executeQuery();
+| 	}
+| 
+| 	java.util.Date departureDate = null;
+| 	if (request.getParameter("depart_date") != null && !request.getParameter("depart_date").isEmpty()) {
+| 		departureDate = Date.from(Instant.parse(request.getParameter("depart_date")));
+| 	}
+| %>
 
 doctype html
 html
@@ -25,18 +53,18 @@ html
 								.column-title
 									img(src="img/icon-departure.svg")
 									p Von
-								input.column-content(value!="<%= request.getParameter(\"depart_iata\") %>")
+								input.column-content(value!="<%= departure != null && departure.next() ? departure.getString(\"name\") : \"\" %>")
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-arrival.svg")
 									p Nach
-								input.column-content(value="Los Angeles, USA")
+								input.column-content(value!="<%= arrival != null && arrival.next() ? arrival.getString(\"name\") : \"\" %>")
 						.row
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-date.svg")
 									p Abflugdatum
-								input.column-content(type="date",value="09 November 2027")
+								input.column-content(type="date", value!="<%= departureDate != null ? new SimpleDateFormat(\"EEEE, dd. MMMM yyyy\").format(departureDate) : \"\" %>")
 							.column.column-12.medium-2
 								.column-title
 									img(src="img/icon-passenger.svg")
