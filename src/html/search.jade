@@ -1,3 +1,8 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="java.sql.*" %>
+| <%@ page import="ml.festival.aviation.*" %>
+| 
+
 doctype html
 html
 	head
@@ -20,7 +25,7 @@ html
 								.column-title
 									img(src="img/icon-departure.svg")
 									p Von
-								input.column-content(value="Hannover, Deutschland")
+								input.column-content(value!="<%= request.getParameter(\"depart_iata\") %>")
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-arrival.svg")
