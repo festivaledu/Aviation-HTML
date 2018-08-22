@@ -31,6 +31,10 @@ document.querySelectorAll(".faq-card[data-q]").forEach(el => {
     document.querySelector(`.faq-card[data-q="${q}"] .faq-card-content`).innerHTML += `<a href="${getURLForQuery(el.getAttribute("data-q"))}" class="permalink">Permalink</a>`;
 });
 
+document.querySelector(".sc-menu.contents .heading").addEventListener("click", ev => {
+    ev.target.parentElement.classList.toggle("expanded");
+});
+
 document.querySelectorAll(".sc-menu.contents a:not(.selected)").forEach(el => {
     el.addEventListener("click", ev => {
         ev.preventDefault();

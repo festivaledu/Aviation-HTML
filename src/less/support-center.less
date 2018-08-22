@@ -5,8 +5,60 @@ section.support {
 		box-shadow: 0 0 0 1px #C2C2C2;
 		border-radius: 2px;
 		
-		&.contents a {
-			cursor: pointer;
+		&.contents {
+			@media all and (max-width: 768px) {
+				.menu-item.heading {
+					box-shadow: inset 0 0 0 0 #C2C2C2;
+					cursor: pointer;
+					pointer-events: all;
+
+					transition: box-shadow .2s ease;
+				}
+
+				.menu-item:not(.heading) {
+					box-shadow: inset 0 0 0 0 #C2C2C2;
+					padding: 0;
+
+					&, * {
+						display: block;
+						font-size: 0;
+						line-height: 0;
+						opacity: 0;
+
+						transition: box-shadow .2s ease .2s, font-size .2s ease .2s, line-height .2s ease .2s, padding .2s ease .2s, opacity .2s ease;
+					}
+				}
+
+				&.expanded .expand-button {
+					transform: rotate(180deg);
+				}
+
+				&.expanded .menu-item.heading {
+					box-shadow: inset 0 -1px 0 0 #C2C2C2;
+
+					transition: box-shadow .2s ease .2s;
+				}
+
+				&.expanded .menu-item:not(.heading) {
+					padding: 8px 10px;
+
+					&, * {					
+						font-size: 15px;
+						line-height: 22px;
+						opacity: 1;
+
+						transition: box-shadow .2s ease, font-size .2s ease, line-height .2s ease, padding .2s ease, opacity .2s ease .2s;
+					}
+
+					&:not(:last-child) {
+						box-shadow: inset 0 -1px 0 0 #C2C2C2;
+					}
+				}
+			}
+
+			a {
+				cursor: pointer;
+			}
 		}
 		
 		+ .sc-menu {
