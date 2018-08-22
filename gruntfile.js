@@ -17,7 +17,8 @@ module.exports = function(grunt) {
 					'build/register.jsp': 'src/html/register.jade',
 					'build/dashboard.jsp': 'src/html/dashboard.jade',
 					'build/sc-index.html': 'src/html/sc-index.jade',
-					'build/sc-contact.html': 'src/html/sc-contact.jade'
+                    'build/sc-contact.html': 'src/html/sc-contact.jade',
+                    'build/sc-cancellations.html': 'src/html/sc-cancellations.jade'
 				}
 			}
 		},
