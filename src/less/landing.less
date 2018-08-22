@@ -54,6 +54,7 @@ section.landing-hero {
 				width: 100%;
 				
 				.input-wrapper {
+					position: relative;
 					display: flex;
 					flex-direction: column;
 					width: 256px;
@@ -88,6 +89,37 @@ section.landing-hero {
 						padding: 2px 0;
 						// margin: 0 5px 0 10px;
 						background: transparent;
+						
+						&.hidden {
+							display: none;
+						}
+					}
+					
+					.suggestions {
+						position: absolute;
+						top: 56px;
+						left: -16px;
+						right: 0;
+						background-color: #F3F3F3;
+						list-style: none;
+						border-radius: 0 0 8px 8px;
+						box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
+						overflow: hidden;
+						
+						&:not(.visible) {
+							display: none;
+						}
+						
+						.suggestion-item {
+							height: 32px;
+							padding: 6px 16px;
+							overflow: hidden ;
+							text-overflow: ellipsis;
+							
+							&:hover:not(:active) {
+								background-color: #FFFFFF;
+							}
+						}
 					}
 					
 					::placeholder {
@@ -96,6 +128,16 @@ section.landing-hero {
 					
 					& + .input-wrapper {
 						margin-left: 12px;
+					}
+					
+					&[data-key="arrival"] {
+						.suggestions {
+							left: -12px;
+							
+							.suggestion-item {
+								padding-left: 12px;
+							}
+						}
 					}
 				}
 			}

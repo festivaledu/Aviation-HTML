@@ -1,7 +1,7 @@
 nav.global-nav
 	.nav-content
 		.nav-svg-header
-			.nav-svg-wrapper
+			.nav-svg-wrapper(onclick="document.querySelector('nav').classList.toggle('extended'); document.body.classList.toggle('no-scroll')")
 				svg.nav-svg.nav-svg-top(width="24",height="24",viewBox="0 0 96 96")
 					rect.nav-svg-rect.nav-svg-rect-top(x="0",y="44",width="96",height="8",fill="#FFFFFF")
 				svg.nav-svg.nav-svg-mid(width="24",height="24",viewBox="0 0 96 96")
@@ -14,7 +14,7 @@ nav.global-nav
 			li
 				a.link-home(href="#")
 			li
-				a(href="#") Link
+				a(href="search.html") Flüge
 			li
 				a(href="#") Link
 			li
@@ -24,6 +24,6 @@ nav.global-nav
 			li
 				a(href="#") Link
 			li
-				a(href="#") Link
+				a(href="sc-index.html") Support
 			li
 				a.link-user-cp(href="dashboard.jsp")

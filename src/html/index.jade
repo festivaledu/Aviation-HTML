@@ -27,16 +27,20 @@ html
 				
 				.hero-search-bar
 					form(method="post",action="search.html")
-						.input-wrapper
+						.input-wrapper(data-key="departure")
 							.column-title
 								img(src="img/icon-departure.svg")
 								p Von (Ort oder Flughafen)
-							input(type="text",placeholder="Abreiseort eingeben")
-						.input-wrapper
+							input(type="text", id="depart", placeholder="Abreiseort eingeben")
+							input.hidden(type="text", id="depart_iata", name="depart_iata")
+							ul.suggestions
+						.input-wrapper(data-key="arrival")
 							.column-title
 								img(src="img/icon-arrival.svg")
 								p Nach (Ort oder Flughafen)
 							input(type="text",placeholder="Ankunftsort eingeben")
+							input.hidden(type="text", id="arrv_iata", name="arrv_iata")
+							ul.suggestions
 						.input-wrapper
 							.column-title
 								img.icon(src="img/icon-date.svg")
@@ -84,7 +88,26 @@ html
 				.column.column-12.medium-6
 					h4.eyebrow Das FESTIVAL Prinzip
 					h2.headline Flugreisen – so wie du sie brauchst
-					p.body Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					p.body Flugreisen sind meist sehr teuer. Das liegt vor allem daran, dass oft Dienste im Preis enthalten sind, die vielleicht gar nicht benötigt werden. Dein Flug geht nur von Hamburg nach Berlin und du hast bereits gut gefrühstückt? Warum solltest du extra für Essen bezahlen, wenn du es doch sowieso nicht essen wirst?<br><br>Genau das will aviation ändern. Du buchst einfach nur deinen Platz im Flugzeug, und das drückt den Preis. Und wenn du einen zusätzlichen Dienst benötigst, buchst du ihn einfach dazu. Besser kann es gar nicht sein.
+				
+				.column.column-12.medium-5.medium-offset-1
+					p.body Test
+		
+		section.promo-text
+			.section-content.row
+				.column.column-12.medium-5.medium-offset-1
+					p.body Test
+				.column.column-12.medium-6
+					h4.eyebrow Gestalte deine Flugreise
+					h2.headline Ein Platz – viele Möglichkeiten
+					p.body Wenn du eine Flugreise über aviation buchst, bekommst du grundsätzlich die Erlaubnis, das Flugzeug betreten zu dürfen. Im Grundpreis enthalten ist eine Beteiligung an den Flugkosten, wie etwa Treibstoff oder Parkgebühren. Das ist in etwa vergleichbar mit Car Sharing, wo sich die Passagiere auch an den Fahrtkosten beteiligen. Willst du zum Beispiel Gepäck mitnehmen, kostet dies nur eine geringe Gebühr statt einer festen Pauschale, die bereits im Ticketpreis enthalten ist. So können wir Flugreisen um bis zu 50% günstiger anbieten als die etablierte Konkurrenz.
+					
+		section.promo-text
+			.section-content.row
+				.column.column-12.medium-6
+					h4.eyebrow Immer für dich da
+					h2.headline Nicht zufrieden? Dann sag's uns!
+					p.body Sollte mal etwas nicht zu deiner Zufriedenheit sein, dann freuen wir uns, von dir zu hören! Nimm einfach Kontakt mit uns auf und wir helfen dir, dein Problem zu lösen. Außerdem arbeiten wir mit immer mehr Fluggesellschaften zusammen, um noch günstigere Reisen anbieten zu können. Damit kannst du dich bald auf eine noch größere Auswahl der bisher günstigsten Flüge freuen!
 				
 				.column.column-12.medium-5.medium-offset-1
 					p.body Test
@@ -117,6 +140,7 @@ html
 		| <%
 		| 		}
 		| 	}
+		| 	promoManager.closeConnection();
 		| %>
 		| 
 	
