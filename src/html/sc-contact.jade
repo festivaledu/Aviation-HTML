@@ -10,6 +10,8 @@ html
 		link(rel="stylesheet", href="css/support-center.built.css")
 	body
 		include _nav
+
+		include _sc-modal
 		
 		.content-wrapper
 			section.support
@@ -37,9 +39,10 @@ html
 							input(type="text", name="lastName", id="lastName")
 							label(for="email") E-Mail-Adresse
 							input(type="email", name="email", id="email")
+							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Warum muss ich eine E-Mail-Adresse angeben?", data-modal-text="Ohne Angabe einer E-Mail-Adresse können wir nicht auf dein Anliegen antworten. Aber keine Sorge, alle deine Daten werden vertraulich behandelt und nur bis zur Aufklärung deiner Anfrage aufbewahrt.") Ist das notwendig?
 							label(for="message") Ihre Nachricht
 							textarea(name="message", id="message", lines="12")
 							button Absenden
 		include _footer
-        
+		
 	script(src="js/support-center.js")

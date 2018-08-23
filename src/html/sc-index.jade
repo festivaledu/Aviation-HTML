@@ -11,6 +11,8 @@ html
 	body
 		include _nav
 		
+		include _sc-modal
+		
 		.content-wrapper
 			section.support
 				.section-content.row.reversed
@@ -49,6 +51,15 @@ html
 							div.faq-card-content
 								p Jedes Ticket kann kostenfrei bis 24h vor dem Abflug storniert werden. Ab 24 Stunden vor Abflug werden 50% des Ticketpreises erstattet, nach dem Abflug werden nicht eingelöste Tickets nur bei Unfällen, Naturkatastrophen, Inneren Unruhen oder offiziellen Reisewarnungen des Auswärtigen Amtes erstattet. Der erstattete Betrag wird als Gutschein einem Aviation-Konto gutgeschrieben und nur in Ausnahmefällen ausbezahlt. Zur Stornierung über den Support ist sowohl die Ticket-, als auch die SVID (Storno-Verifizierungs-ID) notwendig.
 		
+						article(class="flag question")
+							div(class="header")
+								div(class="icon")
+									span
+										include _icon-question
+								span(class="title") Die richtige Antwort war nicht dabei?
+							div(class="content")
+								p Stell uns deine Frage direkt: #[a(href="sc-contact.html") Kontakt]
+						
 		include _footer
 		
 	script(src="js/support-center.js")

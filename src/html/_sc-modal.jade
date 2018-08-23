@@ -1,0 +1,18 @@
+section.modal
+    .modal-inner
+        .content
+            .title-bar(id="modal-title-bar")
+                span.icon.error
+                    include _icon-error
+                span.icon.info
+                    include _icon-info
+                span.icon.question
+                    include _icon-question
+                span.icon.success
+                    include _icon-success
+                span.icon.warning
+                    include _icon-warning
+                p(class="title", id="modal-title")
+            p(id="modal-text")
+        .buttons
+            button(id="close-modal") Schließen
