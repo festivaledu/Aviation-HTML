@@ -1,35 +1,18 @@
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-| <%@ page import="java.sql.*" %>
-| <%@ page import="javax.sql.*" %>
-| <%@ page import="javax.naming.*" %>
-| <%@ page import="java.time.Instant" %>
-| <%@ page import="java.text.SimpleDateFormat" %>
+| <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
+| <%@ page import="org.json.*" %>
+| <%@ page import="java.time.*" %>
+| <%@ page import="java.time.format.DateTimeFormatter"%>
+| <%@ page import="java.sql.Time" %>
 | 
 | <%
-| 	InitialContext initialContext = new InitialContext();
-| 	Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
-| 	DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
-| 	Connection conn = dataSource.getConnection();
+| 	JSONObject demoData = new JSONObject();
 | 
-|	ResultSet departure = null;
-| 	ResultSet arrival = null;
-| 	if (request.getParameter("depart_iata") != null && !request.getParameter("depart_iata").isEmpty()) {
-| 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM airports WHERE iata_code = ?");
-| 		statement.setString(1, request.getParameter("depart_iata"));
-|		departure = statement.executeQuery();
-| 	}
-| 
-| 	if (request.getParameter("arrv_iata") != null && !request.getParameter("arrv_iata").isEmpty()) {
-| 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM airports WHERE iata_code = ?");
-| 		statement.setString(1, request.getParameter("arrv_iata"));
-|		arrival = statement.executeQuery();
-| 	}
-| 
-| 	java.util.Date departureDate = null;
-| 	if (request.getParameter("depart_date") != null && !request.getParameter("depart_date").isEmpty()) {
-| 		departureDate = Date.from(Instant.parse(request.getParameter("depart_date")));
+| 	if (request.getParameter("depart_iata") != null && request.getParameter("arrv_iata") != null && request.getParameter("depart_date") != null) {
+| 		demoData = SearchResultsDemo.getDemoData(request.getParameter("depart_iata"), request.getParameter("arrv_iata"), LocalDate.parse(request.getParameter("depart_date"), DateTimeFormatter.ISO_DATE_TIME));
 | 	}
 | %>
+| 
 
 doctype html
 html
@@ -53,18 +36,18 @@ html
 								.column-title
 									img(src="img/icon-departure.svg")
 									p Von
-								input.column-content(value!="<%= departure != null && departure.next() ? departure.getString(\"name\") : \"\" %>")
+								input.column-content(value!="<%= demoData.get(\"departureName\") != null ? demoData.get(\"departureName\") : \"\" %>", placeholder="Abreiseort eingeben", required)
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-arrival.svg")
 									p Nach
-								input.column-content(value!="<%= arrival != null && arrival.next() ? arrival.getString(\"name\") : \"\" %>")
+								input.column-content(value!="<%= demoData.get(\"arrivalName\") != null ? demoData.get(\"arrivalName\") : \"\" %>", placeholder="Ankunftsort eingeben", required)
 						.row
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-date.svg")
 									p Abflugdatum
-								input.column-content(type="date", value!="<%= departureDate != null ? new SimpleDateFormat(\"EEEE, dd. MMMM yyyy\").format(departureDate) : \"\" %>")
+								input.column-content(type="date", value!="<%= demoData.get(\"departureDate\") != null ? ((LocalDate)demoData.get(\"departureDate\")).format(DateTimeFormatter.ofPattern(\"EEEE, dd. MMMM yyyy\")) : \"\" %>", placeholder="Abflugdatum auswählen", required)
 							.column.column-12.medium-2
 								.column-title
 									img(src="img/icon-passenger.svg")
@@ -75,14 +58,20 @@ html
 									img(src="img/icon-class.svg")
 									p Klassen
 								p.column-content Alle Klassen
-					.scroll-container
+					| 
+					| <%
+					| 	if (demoData.get("items") != null) {
+					| 	 	for (int i=0; i<((JSONArray)demoData.get("items")).length(); i++) {
+					| 			JSONObject resultObj = ((JSONArray)demoData.get("items")).getJSONObject(i);
+					| %>
+					.scroll-container 
 						.result-header
-							h4.date #[span Abflug] – 09 Nov
+							h4.date #[span Abflug] – <%= ((LocalDate)resultObj.get("departureDate")).format(DateTimeFormatter.ofPattern("dd MMM")) %>
 							.table-header.row
 								.column.column-2
-									p $Departure
+									p <%= demoData.get("departureMunicipality") %>
 								.column.column-2.align-right
-									p $Arrival
+									p <%= demoData.get("arrivalMunicipality") %>
 								.column.column-2.column-offset-1
 									p Dauer
 								.column.column-1
@@ -91,20 +80,32 @@ html
 									p Flugnummer
 								.column.column-1.align-right
 									p Preis
+						| 
+						| <%
+						| 		for (int j=0; j<((JSONArray)resultObj.get("items")).length(); j++) {
+						| 			JSONObject flightObj = ((JSONArray)resultObj.get("items")).getJSONObject(j);
+						| %>
 						.results
 							.result-cell.row
 								.column.column-2
-									p 09:42
+									p <%= ((Time)flightObj.get("departureTime")).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) %>
 								.column.column-2.align-right
-									p 22:52
+									p <%= ((Time)flightObj.get("arrivalTime")).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) %>
 								.column.column-2.column-offset-1
 									p 13h 10min
 								.column.column-1
-									p 1
+									p <%= flightObj.get("stops") %>
 								.column.column-auto
-									p LH420
+									p <%= flightObj.get("flightNumber") %>
 								.column.column-1.align-right
-									p ab 184€
+									p ab <%= flightObj.get("price") %>€
+						| 
+						| <%	} %>
+					| 
+					| <%
+					| 		}
+					| 	} 
+					| %>
 					.fill-background
 					.results-footer
 						
