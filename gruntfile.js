@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'build/index.jsp': 'src/html/index.jade',
-					'build/search.html': 'src/html/search.jade',
+					'build/search.jsp': 'src/html/search.jade',
 					'build/login.jsp': 'src/html/login.jade',
 					'build/register.jsp': 'src/html/register.jade',
 					'build/dashboard.jsp': 'src/html/dashboard.jade',
@@ -35,6 +35,8 @@ module.exports = function(grunt) {
 					'build/css/login.built.css': ["src/less/login.less"],
 					'build/css/dashboard.built.css': ["src/less/dashboard.less"],
 					'build/css/support-center.built.css': ["src/less/support-center.less"],
+					
+					'build/css/components/calendar.css': ["src/less/calendar.less"]
 				}
 			}
         },

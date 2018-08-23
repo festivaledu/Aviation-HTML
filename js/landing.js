@@ -92,34 +92,20 @@ const loadJSON = (file, callback, callbackError) => {
 	})
 };
 
-/*let destTimeout;
-document.querySelector(".hero-search-bar .input-wrapper[data-key=\"departure\"] input#depart").addEventListener("input", (e) => {
-	console.log(e.target.value);
-	
-	if (destTimeout) {
-		clearTimeout(destTimeout);
-	}
-	
-	destTimeout = setTimeout(async () => {
-		const suggestionData = await loadJSON(`airport_lookup.jsp?query=${escape(e.target.value)}`).then(e => { return JSON.parse(e.target.response); });
-
-		const suggestionContainer = document.querySelector(".hero-search-bar .input-wrapper[data-key=\"departure\"] .suggestions");
-		suggestionContainer.classList.add("visible");
-		suggestionContainer.innerHTML = "";
-		
-		suggestionData.forEach(suggestion => {
-			let child = document.createElement("li");
-			child.className = "suggestion-item";
-			child.setAttribute("data-iata", suggestion["iata_code"]);
-			child.innerHTML = `${suggestion["name"]}, ${suggestion["iso_country"]}`;
-			suggestionContainer.appendChild(child);
-		});
-	}, 500);
-});*/
 
 let inputTimeout;
-document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]").forEach(container => {
+document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\"])").forEach(container => {
 	container.querySelector("input:not([name])").addEventListener("input", e => {
+		const suggestionContainer = container.querySelector(".suggestions");
+		
+		if (!e.target.value.length) {
+			suggestionContainer.classList.remove("visible");
+			
+			if (inputTimeout) {
+				clearTimeout(inputTimeout);
+			}
+			return;
+		}
 		if (inputTimeout) {
 			clearTimeout(inputTimeout);
 		}
@@ -127,7 +113,6 @@ document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]").forEach(c
 		inputTimeout = setTimeout(async () => {
 			const suggestionData = await loadJSON(`airport_lookup.jsp?query=${escape(e.target.value)}`).then(e => { return JSON.parse(e.target.response); });
 			
-			const suggestionContainer = container.querySelector(".suggestions");
 			suggestionContainer.classList.add("visible");
 			suggestionContainer.innerHTML = "";
 			
@@ -152,4 +137,21 @@ document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]").forEach(c
 	// container.querySelector("input:not([name])").addEventListener("blur", e => {
 	// 	container.querySelector(".suggestions").classList.remove("visible");
 	// });
+});
+
+document.querySelectorAll(".calendar").forEach(item => {
+	new Calendar(item, {
+		onDateSelected: (date) => {
+			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input:not([name])").value = date.toLocaleDateString("de-DE", {
+				day: "numeric",
+				month: "long",
+				year: "numeric"
+			});
+			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
+		}
+	});
+});
+
+document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input:not([name])").addEventListener("focus", () => {
+	document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] .calendar").classList.add("visible");
 });

@@ -11,8 +11,9 @@ html
 	
 		title FESTIVAL Aviation
 		
-		link(rel="stylesheet",href="css/aviation.css")
-		link(rel="stylesheet",href="css/landing.built.css")
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/landing.built.css")
+		link(rel="stylesheet", href="css/components/calendar.css")
 	
 		script(src="lib/spring-animatable.js")
 		script(src="lib/scroll-retractor.js")
@@ -26,26 +27,28 @@ html
 				h4.hero-subtitle Einfach nur das buchen, was du wirklich brauchst – das ist aviation.
 				
 				.hero-search-bar
-					form(method="post",action="search.html")
+					form(method="post", action="search.jsp")
 						.input-wrapper(data-key="departure")
 							.column-title
 								img(src="img/icon-departure.svg")
 								p Von (Ort oder Flughafen)
-							input(type="text", id="depart", placeholder="Abreiseort eingeben")
+							input(type="text", id="depart", placeholder="Abreiseort eingeben", required)
 							input.hidden(type="text", id="depart_iata", name="depart_iata")
 							ul.suggestions
 						.input-wrapper(data-key="arrival")
 							.column-title
 								img(src="img/icon-arrival.svg")
 								p Nach (Ort oder Flughafen)
-							input(type="text",placeholder="Ankunftsort eingeben")
+							input(type="text", placeholder="Ankunftsort eingeben", required)
 							input.hidden(type="text", id="arrv_iata", name="arrv_iata")
 							ul.suggestions
-						.input-wrapper
+						.input-wrapper(data-key="date")
 							.column-title
-								img.icon(src="img/icon-date.svg")
+								img.icon(src="img/icon-date.svg", required)
 								p Abflugdatum
-							input(type="date",placeholder="Abflugdatum auswählen")
+							input(type="text", placeholder="Abflugdatum auswählen", required)
+							input.hidden(type="date", id="depart_date", name="depart_date")
+							div.calendar
 						button.search-button Suchen
 		section.promo-articles
 			.section-content
@@ -95,9 +98,9 @@ html
 		
 		section.promo-text
 			.section-content.row
-				.column.column-12.medium-5.medium-offset-1
+				.column.column-12.medium-5
 					p.body Test
-				.column.column-12.medium-6
+				.column.column-12.medium-6.medium-offset-1
 					h4.eyebrow Gestalte deine Flugreise
 					h2.headline Ein Platz – viele Möglichkeiten
 					p.body Wenn du eine Flugreise über aviation buchst, bekommst du grundsätzlich die Erlaubnis, das Flugzeug betreten zu dürfen. Im Grundpreis enthalten ist eine Beteiligung an den Flugkosten, wie etwa Treibstoff oder Parkgebühren. Das ist in etwa vergleichbar mit Car Sharing, wo sich die Passagiere auch an den Fahrtkosten beteiligen. Willst du zum Beispiel Gepäck mitnehmen, kostet dies nur eine geringe Gebühr statt einer festen Pauschale, die bereits im Ticketpreis enthalten ist. So können wir Flugreisen um bis zu 50% günstiger anbieten als die etablierte Konkurrenz.
@@ -156,4 +159,5 @@ html
 		
 		.spring-background
 		
+		script(type="text/javascript", src="lib/calendar.js")
 		script(type="text/javascript",src="js/landing.js")
