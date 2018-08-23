@@ -1,0 +1,133 @@
+.calendar {
+	display: block;
+	position: relative;
+	width: 268px;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	
+	&:not(.visible) {
+		display: none;
+	}
+	
+	.calendar-header,
+	.calendar-content,
+	.calendar-footer {
+		position: relative;
+		display: block;
+		background-color: #FFFFFF;
+	}
+	
+	.calendar-header {
+		padding: 16px;
+		background-color: #00B0EE;
+		color: #FFFFFF;
+		
+		.header-year {
+			font-size: 12px;
+		}
+		
+		.header-day {
+			font-size: 22px;
+		}
+	}
+	
+	.calendar-content {
+		width: 100%;
+		padding: 0 8px;
+		
+		.calendar-toolbar {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			padding: 8px 0;
+			
+			.prev-month,
+			.next-month,
+			.prev-year,
+			.next-year {
+				width: 27px;
+				padding: 8px;
+				
+				&:after {
+					font-size: 26px;
+					line-height: 16px;
+				}
+			}
+			
+			.prev-month:after,
+			.prev-year:after {
+				content: '\2039';
+			}
+			
+			.next-month:after,
+			.next-year:after {
+				content: '\203A';
+			}
+			
+			.curr-month,
+			.curr-year {
+				padding: 8px;
+			}
+		}
+		
+		.week-days {
+			display: flex;
+			justify-content: space-between;
+			padding: 8px 0;
+			border-top: 1px solid #F3F3F3;
+			border-bottom: 1px solid #F3F3F3;
+			font-size: 12px;
+			
+			.day {
+				position: relative;
+				width: calc(~"100% / 7");
+				height: 36px;
+				line-height: 36px;
+				text-align: center;
+				font-weight: 500;
+			}
+		}
+		
+		.days {
+			display: flex;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			padding: 8px 0;
+			font-size: 12px;
+			
+			.days-row {
+				display: flex;
+				
+				.day {
+					position: relative;
+					width: calc(~"100% / 7");
+					height: 36px;
+					line-height: 36px;
+					text-align: center;
+					cursor: pointer;
+					
+					&.outside {
+						opacity: 0.4;
+						pointer-events: none;
+					}
+					
+					&.show {
+						box-shadow: inset 0 0 0 2px #00B0EE;
+					}
+					
+					&.today {
+						background-color: #00B0EE;
+						color: #FFFFFF;
+						
+						&.show {
+							box-shadow: inset 0 0 0 2px #000000;
+						}
+					}
+				}
+			}
+		}
+	}
+}
