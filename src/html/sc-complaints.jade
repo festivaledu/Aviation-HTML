@@ -32,6 +32,8 @@ html
 
 					.column.column-8.offset-1
 						h2 Beschwerde einreichen
+						p(class="flow") Etwas lief bei deiner letzten Buchung schief oder du bist mit dem Flug nicht zufrieden gewesen? Was es auch sein mag, wir kümmern uns drum; Denn du verdienst es!
+						p(class="flow") Allerdings benötigen wir dafür ein paar Details von dir. Versuch das wichtigste in deiner Nachricht zu erwähnen, dann müssen wir nicht so viel nachfragen und können uns schneller und besser um dein Problem kümmern!
 						form(action="#")
 							label(for="firstName") Vorname
 							input(type="text", name="firstName", id="firstName")
@@ -40,6 +42,14 @@ html
 							label(for="email") E-Mail-Adresse
 							input(type="email", name="email", id="email")
 							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Warum muss ich eine E-Mail-Adresse angeben?", data-modal-text="Ohne Angabe einer E-Mail-Adresse können wir nicht auf dein Anliegen antworten. Aber keine Sorge, alle deine Daten werden vertraulich behandelt und nur bis zur Aufklärung deiner Anfrage aufbewahrt.") Ist das notwendig?
+							label(for="complaintType") Art der Beschwerde
+							select(name="complaintType" id="complaintType")
+								option(value="general") Allgemeine Beschwerde
+								option(value="search") Suche								
+								option(value="offer") Anegbot
+								option(value="ads-marketing") Werbung + Marceting
+								option(value="flight") Flug
+								option(value="other") Sonstige
 							label(for="message") Ihre Nachricht
 							textarea(name="message", id="message", lines="12")
 							button Absenden
