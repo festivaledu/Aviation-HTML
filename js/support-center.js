@@ -80,9 +80,11 @@ if (document.querySelectorAll(".modal-trigger")) {
             }
 
             if (document.querySelector(".modal")) {
-                if (!el.hasAttribute("data-modal-type") && document.getElementById("modal-text")) {
+                if (document.getElementById("modal-text")) {
                     document.querySelector(".modal").classList.remove("error", "info", "question", "success", "warning");
-                } else if (el.hasAttribute("data-modal-title")) {
+                }
+                
+                if (el.hasAttribute("data-modal-title")) {
                     document.querySelector(".modal").classList.add(el.getAttribute("data-modal-type"));
                 }
 
