@@ -48,7 +48,7 @@ html
 							div(class="content")
 								p Wenn du auf den Account, mit dem das Ticket gekauft wurde, Zugriff hast, storniere dein Ticket bitte im #[a(href="#") Dashboard]. Nur wenn du dein Ticket ohne Account erworben hast oder keinen Zugriff auf den Account hast, solltest du dein Ticket hier stornieren.
 						
-						form(action="#")
+						form(action="#", id="cancellationForm")
 							label(for="holder") Name des Passagiers
 							input(type="text", name="holder", id="holder")
 							label(for="ticketId") Ticket-ID
@@ -62,7 +62,8 @@ html
 							input(type="email", name="accountEmail", id="accountEmail")
 							label(for="message") Grund der Stornierung (optional)
 							textarea(name="message", id="message", lines="12")
-							button Absenden
+							button(class="modal-trigger", data-modal-type="error", data-modal-title="Ticket wirklich stornieren?", data-modal-text="Wenn alle Eingaben korrekt sind, wird das Ticket unwiderruflich storniert und unbrauchbar. Die Stornierung kann nicht rückgängig gemacht werden.", data-modal-primary="Ticket stornieren", data-modal-primary-action="submit") Absenden
 		include _footer
 		
 	script(src="js/support-center.js")
+	script(src="js/modal.js")

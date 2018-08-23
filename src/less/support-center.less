@@ -508,14 +508,22 @@ section.modal {
 
         .buttons {
             bottom: 1em;
+            display: flex;
             position: absolute;
             right: 1em;
            
             button {
                 background-color: var(--modal-color);
                 color: var(--modal-background);
+                display: block;
                 margin: 0;
                 margin-left: .5em;
+
+                &:last-of-type {
+                    background-color: transparent;
+                    border: 1px solid var(--modal-color);
+                    color: var(--modal-color);
+                }
             }
         }
     }

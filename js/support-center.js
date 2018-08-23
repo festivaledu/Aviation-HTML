@@ -70,54 +70,6 @@ if (document.querySelectorAll(".faq-card-header")) {
     });
 }
 
-if (document.querySelectorAll(".modal-trigger")) {
-    document.querySelectorAll(".modal-trigger").forEach(el => {
-        el.addEventListener("click", ev => {
-            ev.preventDefault();
-
-            if (!el.hasAttribute("data-modal-text")) {
-                return;
-            }
-
-            if (document.querySelector(".modal")) {
-                if (document.getElementById("modal-text")) {
-                    document.querySelector(".modal").classList.remove("error", "info", "question", "success", "warning");
-                }
-                
-                if (el.hasAttribute("data-modal-title")) {
-                    document.querySelector(".modal").classList.add(el.getAttribute("data-modal-type"));
-                }
-
-                if (!el.hasAttribute("data-modal-title") && document.getElementById("modal-text")) {
-                    document.getElementById("modal-title").hidden = true;
-                } else if (el.hasAttribute("data-modal-title")) {
-                    document.getElementById("modal-title").hidden = false;
-                    document.getElementById("modal-title").innerText = el.getAttribute("data-modal-title");
-                }
-            
-                document.getElementById("modal-title-bar").hidden = !el.hasAttribute("data-modal-type") && !el.hasAttribute("data-modal-title");
-            }
-
-            const modalText = el.getAttribute("data-modal-text");
-
-            if (!document.getElementById("modal-text")) {
-                alert(modalText);
-                return;
-            }
-
-            document.getElementById("modal-text").innerText = modalText;
-            document.body.classList.add("modal-open");
-        });
-    });
-}
-
-if (document.getElementById("close-modal")) {
-    document.getElementById("close-modal").addEventListener("click", ev => {
-        ev.preventDefault();
-        document.body.classList.remove("modal-open");
-    });
-}
-
 function getURLForQuery(query) {
     if (params.some(p => p.k === "q")) {
         params.find(p => p.k === "q").v = query;
