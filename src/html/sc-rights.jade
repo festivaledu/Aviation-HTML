@@ -1,0 +1,189 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Fluggastrechte – FESTIVAL Aviation Support
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/support-center.built.css")
+	body
+		include _nav
+
+		include _sc-modal
+		
+		.content-wrapper
+			section.support
+				.section-content.row.reversed
+					.column.column-3
+						ul.sc-menu
+							li.menu-item.heading Support
+							a.menu-item(href="sc-index.html")
+								li FAQ
+							a.menu-item(href="sc-contact.html")
+								li Kontakt
+							a.menu-item(href="sc-cancellations.html")
+								li Stornierungen
+							a.menu-item(href="sc-complaints.html")
+								li Beschwerden
+							a.menu-item.selected(href="sc-rights.html")
+								li Fluggastrechte
+						
+						//- article(class="ad")
+						//- 	img(src="https://www.visitfinland.com/app/uploads/Header_Helsinki_aerial-1600x900.jpg")
+						//- 	div(class="content")
+						//- 		h4 Entdecke Helsinki
+						//- 		p Schon ab 159€ pro Person
+						//- 		button Jetzt Buchen
+
+					.column.column-8.offset-1
+						h2 Fluggastrechte
+						article(class="flag info")
+							div(class="header")
+								div(class="icon")
+									span
+										include _icon-info
+								span(class="title") Information
+							div(class="content")
+								p Die Abwicklung von Fluggastrechten und eventuellen Ansprüchen erfolgt immer über die Airline und nicht über FESTIVAL Aviation. Nachfolgend eine Liste mit Hinweisen zu Fluggastrechten der Airlines mit denen wir kooperieren.
+						
+						div.faq-card
+							p.faq-card-header A
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.aeroflot.ru/ru-en/information/legal/liability") Aeroflot
+								p
+									a(href="https://www.airchina.de/DE/DE/conditions/international/") Air China
+								p
+									a(href="https://www.airfrance.de/DE/de/common/guidevoyageur/assistance/assistance-et-indemnisation.htm") Air France
+								p
+									a(href="https://www.alitalia.com/de_de/fly-alitalia/alitalia-world/passenger-rights.html") Alitalia
+								p
+									a(href="https://www.ana.co.jp/de/de/siteinfo/international/conditions-of-carriage/") All Nippon Airways
+								p
+									a(href="https://www.aa.com/i18n/customer-service/support/conditions-of-carriage.jsp") American Airlines
+								p
+									a(href="https://www.austrian.com/Info/LegalRegulations/PassengerRights.aspx?sc_lang=de&cc=AT") Austrian Airlines
+						div.faq-card
+							p.faq-card-header B
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.britishairways.com/de-de/information/delayed-or-cancelled-flights") British Airways
+						div.faq-card
+							p.faq-card-header D
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://de.delta.com/en_US/legal/customer-commitment") Delta Air Lines
+						div.faq-card
+							p.faq-card-header E
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="http://www.easyjet.com/de/hilfe/boarding-und-fliegen/verspatungen-und-annullierung") easyJet
+								p
+									a(href="https://www.emirates.com/de/english/help/") Emirates
+								p
+									a(href="https://www.etihad.com/de/faqs/") Etihad Airways
+								p
+									a(href="https://www.eurowings.com/de/4u/online-service-ausgleichsanspruch.html") Eurowings
+						div.faq-card
+							p.faq-card-header F
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.finnair.com/at/de/flights/flightlist/delayed-or-cancelled-flights") Finnair
+								p
+									a(href="https://www.flybe.com/de/charter/wenn-etwas-schief-geht") flybe
+						div.faq-card
+							p.faq-card-header G
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.eurowings.com/de/4u/online-service-ausgleichsanspruch.html") Germanwings
+						div.faq-card
+							p.faq-card-header I
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.iberia.com/de/rechte-des-passagiers/") Iberia
+						div.faq-card
+							p.faq-card-header K
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.klm.com/travel/ch_de/customer_support/customer_support/refunds_and_compensation/index.htm") KLM
+						div.faq-card
+							p.faq-card-header L
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.flylevel.com/en/about-us/passengers-rights") Level
+								p
+									a(href="https://www.lot.com/be/de/anordnung") LOT
+								p
+									a(href="https://www.lufthansa.com/cmn/de/passagierrechte") Lufthansa
+						div.faq-card
+							p.faq-card-header N
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.norwegian.com/de/reiseinfo/verspatete-und-stornierte-fluge/verspatete-fluge/") Norwegian Air
+						div.faq-card
+							p.faq-card-header Q
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.qantas.com/travel/airlines/conditions-carriage/global/de") Qantas Airways
+						div.faq-card
+							p.faq-card-header R
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.ryanair.com/de/de/nutzliche-infos/service-center/haufige-fragen/verspatungen/EU-verordnung-261-passagierrechte") Ryanair
+						div.faq-card
+							p.faq-card-header S
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.flysas.com/de-de/reiseinformationen/allgemeine-geschaftsbedingungen/#/eu-passenger-rights") SAS
+								p
+									a(href="https://www.southwest.com/html/about-southwest/index.html?clk=GFOOTER-ABOUT-CUSTOMER-COMMITMENTS#_tab_6") Southwest Airlines
+						div.faq-card
+							p.faq-card-header T
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.flytap.com/de-at/hilfe/beschwerde/personliche-details") TAP Air Portugal
+								p
+									a(href="https://www.tuifly.com/de/service/reklamation.html") TUIfly
+								p
+									a(href="https://www.turkishairlines.com/de-int/legal-notice/passenger-rights/") Turkish Airlines
+						div.faq-card
+							p.faq-card-header U
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.united.com/web/en-US/content/customerfirst.aspx") United Airlines
+						div.faq-card
+							p.faq-card-header V
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://www.virginatlantic.com/content/dam/vaa/documents/help-centre/compensation-assistance.pdf") Virgin Atlantic
+								p
+									a(href="https://www.vueling.com/de/serviceleistungen-von-vueling/weitere-serviceleistungen-von-vueling/vorfaelle-bei-der-durchfuehrung-ihres-fluges") Vueling
+						div.faq-card
+							p.faq-card-header W
+								span.expand-button
+							div.faq-card-content
+								p
+									a(href="https://wizzair.com/de-de/informationen-und-serviceleistungen/preise-ermaessigungen/rueckerstattungen-und-entschaedigungen#/") WIZZ
+						p Stand 1.8.2018. Alle Angaben ohne Gewähr.
+		include _footer
+		
+	script(src="js/support-center.js")
+	script(src="js/modal.js")
