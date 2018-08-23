@@ -11,22 +11,18 @@ html
 	body
 		include _nav
 		
+		include _sc-modal
+		
 		.content-wrapper
 			section.support
 				.section-content.row.reversed
 					.column.column-3
 						ul.sc-menu.contents
-							li.menu-item.heading FAQ
-							a.menu-item(data-q-link="astrein")
-								li Geht's euch noch ganz astrein?
-							a.menu-item(data-q-link="frisch")
-								li Seid ihr noch ganz frisch im Kopf?
-							a.menu-item(data-q-link="bloed")
-								li Sagt mal wie blöd seid ihr eigentlich?
-							a.menu-item(data-q-link="tassen")
-								li Habt ihr noch alle Tassen im Schrank?
-							a.menu-item(data-q-link="wat")
-								li WAT?
+							li.menu-item.heading FAQ #[span.expand-button]
+							a.menu-item(data-q-link="how-to-cancel")
+								li Wie kann ich ein Ticket stornieren?
+							a.menu-item(data-q-link="cancellation-tcs")
+								li Welche Bedingungen gelten für Stornierungen?
 
 						ul.sc-menu
 							li.menu-item.heading Support
@@ -43,36 +39,27 @@ html
 
 					.column.column-8.offset-1
 						h2 FAQ
-						div.faq-card(data-q="astrein")
-							p.faq-card-header Geht's euch noch ganz astrein?
+						div.faq-card(data-q="how-to-cancel")
+							p.faq-card-header Wie kann ich ein Ticket stornieren?
 								span.expand-button.rotated
 							div.faq-card-content
-								p Nö.
-                        
-						div.faq-card(data-q="frisch")
-							p.faq-card-header Seid ihr noch ganz frisch im Kopf?
+								p Du kannst dein Ticket jederzeit im Dashboard unter "Tickets" stornieren. Wenn du dein Ticket ohne Account erworben hast, oder auf den Account aktuell keinen Zugriff hast, kannst du unter #[a(href="sc-cancellations.html") Stornierungen] dein Ticket ebenfalls stornieren.
+						
+						div.faq-card(data-q="cancellation-tcs")
+							p.faq-card-header Welche Bedingungen gelten für Stornierungen?
 								span.expand-button							
 							div.faq-card-content
-								p Nope.
-                        
-						div.faq-card(data-q="bloed")
-							p.faq-card-header Sagt mal wie blöd seid ihr eigentlich?
-								span.expand-button
-							div.faq-card-content
-								p *Zeigt 4 Finger* Drei.
-                        
-						div.faq-card(data-q="tassen")
-							p.faq-card-header Habt ihr noch alle Tassen im Schrank?
-								span.expand-button
-							div.faq-card-content
-								p 1.. 2.. 3.. 39.. 40.. 41.. 42. Alle da.
-                        
-						div.faq-card(data-q="wat")
-							p.faq-card-header WAT?
-								span.expand-button
-							div.faq-card-content
-								p WIE VIEL WAAAAAT!
-        
+								p Jedes Ticket kann kostenfrei bis 24h vor dem Abflug storniert werden. Ab 24 Stunden vor Abflug werden 50% des Ticketpreises erstattet, nach dem Abflug werden nicht eingelöste Tickets nur bei Unfällen, Naturkatastrophen, Inneren Unruhen oder offiziellen Reisewarnungen des Auswärtigen Amtes erstattet. Der erstattete Betrag wird als Gutschein einem Aviation-Konto gutgeschrieben und nur in Ausnahmefällen ausbezahlt. Zur Stornierung über den Support ist sowohl die Ticket-, als auch die SVID (Storno-Verifizierungs-ID) notwendig.
+		
+						article(class="flag question")
+							div(class="header")
+								div(class="icon")
+									span
+										include _icon-question
+								span(class="title") Die richtige Antwort war nicht dabei?
+							div(class="content")
+								p Stell uns deine Frage direkt: #[a(href="sc-contact.html") Kontakt]
+						
 		include _footer
-        
+		
 	script(src="js/support-center.js")

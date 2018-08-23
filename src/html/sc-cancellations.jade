@@ -10,6 +10,8 @@ html
 		link(rel="stylesheet", href="css/support-center.built.css")
 	body
 		include _nav
+
+		include _sc-modal
 		
 		.content-wrapper
 			section.support
@@ -27,18 +29,36 @@ html
 								li Beschwerden
 							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
+						
+						//- article(class="ad")
+						//- 	img(src="https://www.visitfinland.com/app/uploads/Header_Helsinki_aerial-1600x900.jpg")
+						//- 	div(class="content")
+						//- 		h4 Entdecke Helsinki
+						//- 		p Schon ab 159€ pro Person
+						//- 		button Jetzt Buchen
 
 					.column.column-8.offset-1
 						h2 Stornierungen
-						p(style="margin-bottom: 1em") Wenn Sie ein Ticket ohne Account erworben haben oder keinen Zugriff auf diesen Account haben, so können Sie dieses hier stornieren. Beachten Sie bitte, dass Sie jedes Ticket einzeln stornieren müssen.
+						article(class="flag warning")
+							div(class="header")
+								div(class="icon")
+									span
+										include _icon-warning
+								span(class="title") Hinweis
+							div(class="content")
+								p Wenn du auf den Account, mit dem das Ticket gekauft wurde, Zugriff hast, storniere dein Ticket bitte im #[a(href="#") Dashboard]. Nur wenn du dein Ticket ohne Account erworben hast oder keinen Zugriff auf den Account hast, solltest du dein Ticket hier stornieren.
+						
 						form(action="#")
 							label(for="holder") Name des Passagiers
 							input(type="text", name="holder", id="holder")
 							label(for="ticketId") Ticket-ID
 							input(type="text", name="ticketId", id="ticketId")
-							label(for="verification") Storno-Verifizierungs-ID
+							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Was ist die Ticket-ID?", data-modal-text="Die Ticket-ID ist eine für jedes Ticket einzigartige Nummer, die es ermöglicht ein Ticket eindeutig zu identifizieren. Sie befindet sich auf der Rechnung und am unteren Rand des Tickets.") Was ist das?
+							label(for="verification") SVID (Storno-Verifizierungs-ID)
 							input(type="text", name="verification", id="verification")
+							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Was ist die SVID?", data-modal-text="Die SVID wird als Sicherheit benötigt, um die Stornierung durchzuführen. Die SVID findest du in deiner Rechnung.") Was ist das?
 							label(for="accountEmail") E-Mail-Adresse
+							p(class="description") Gib hier die E-Mail-Adresse des Accounts an, der die Gutschrift bekommen soll.
 							input(type="email", name="accountEmail", id="accountEmail")
 							label(for="message") Grund der Stornierung (optional)
 							textarea(name="message", id="message", lines="12")
