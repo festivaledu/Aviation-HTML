@@ -29,7 +29,7 @@ if (document.querySelectorAll(".faq-card[data-q]")) {
     document.querySelectorAll(".faq-card[data-q]").forEach(el => {
         const q = el.getAttribute("data-q");
 
-        document.querySelector(`.faq-card[data-q="${q}"] .faq-card-content`).innerHTML += `<a href="${getURLForQuery(el.getAttribute("data-q"))}" class="permalink">Permalink</a>`;
+        document.querySelector(`.faq-card[data-q="${q}"] .faq-card-content`).innerHTML += `<a href="${getURLForQuery(el.getAttribute("data-q"))}" class="permalink">Permalink zu dieser Frage</a>`;
     });
 }
 
@@ -95,7 +95,7 @@ if (document.querySelectorAll(".modal-trigger")) {
             
                 document.getElementById("modal-title-bar").hidden = !el.hasAttribute("data-modal-type") && !el.hasAttribute("data-modal-title");
             }
-            
+
             const modalText = el.getAttribute("data-modal-text");
 
             if (!document.getElementById("modal-text")) {
