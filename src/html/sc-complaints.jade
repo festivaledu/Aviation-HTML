@@ -27,7 +27,7 @@ html
 								li Stornierungen
 							a.menu-item.selected(href="sc-complaints.html")
 								li Beschwerden
-							a.menu-item(href="sc-right.html")
+							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
 
 					.column.column-8.offset-1
@@ -52,8 +52,9 @@ html
 								option(value="other") Sonstige
 							label(for="message") Ihre Nachricht
 							textarea(name="message", id="message", lines="12")
-							button Absenden
+							button(class="modal-trigger", data-modal-type="warning", data-modal-title="Passt das so?", data-modal-text="Du kannst deine Nachricht nach dem Abschicken nicht mehr bearbeiten. Bist du sicher, dass du deine Nachricht so abschicken willst?", data-modal-primary="Das passt so!", data-modal-primary-action="submit", data-modal-secondary="Ne noch nicht") Absenden
 		include _footer
 		
 	script(src="js/support-center.js")
 	script(src="js/modal.js")
+	script(src="js/icons.js")

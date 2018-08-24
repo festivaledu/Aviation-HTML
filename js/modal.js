@@ -40,6 +40,10 @@ if (triggers) {
                     modalPrimary.style.visibility = "hidden";
                 }
 
+                if (el.hasAttribute("data-modal-secondary")) {
+                    modalClose.innerText = el.getAttribute("data-modal-secondary");
+                }
+
                 if (el.hasAttribute("data-modal-text")) {
                     modalText.innerText = el.getAttribute("data-modal-text");
                 }
@@ -63,8 +67,9 @@ if (modalPrimary) {
                 if (!modal.hasAttribute("data-primary-action-target")) {
                     document.querySelector("form").submit();
                 } else {
-                    document.querySelector().submit(modal.getAttribute("data-primary-action-target"));
+                    document.querySelector(modal.getAttribute("data-primary-action-target")).submit();
                 }
+                break;
             }
         }
     });
