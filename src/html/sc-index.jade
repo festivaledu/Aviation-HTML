@@ -1,3 +1,32 @@
+| <%@ page contentType="text/html;charset=UTF-8" %>
+| <%@ page import="java.sql.ResultSet" %>
+| <%@ page import="javax.naming.InitialContext" %>
+| <%@ page import="javax.naming.Context" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.sql.Statement" %>
+| 
+| 
+| <%
+| 	InitialContext initialContext;
+| 	Context environmentContext;
+| 	DataSource dataSource;
+| 	Connection conn = null;
+| 
+| 	ResultSet questions = null;
+| 
+| 	try {
+| 		initialContext = new InitialContext();
+| 		environmentContext = (Context)initialContext.lookup("java:/comp/env");
+| 		dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+| 		conn = dataSource.getConnection();
+| 		Statement statement = conn.createStatement();
+| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY question ASC");
+| 	} catch (Exception e) {
+| 		e.printStackTrace();
+| 	}
+| %>
+
 doctype html
 html
 	head
@@ -17,12 +46,28 @@ html
 			section.support
 				.section-content.row.reversed
 					.column.column-3
+										
+						| <%
+						|   if (questions != null) {
+						| %>
+					
 						ul.sc-menu.contents
 							li.menu-item.heading FAQ #[span.expand-button]
-							a.menu-item(data-q-link="how-to-cancel")
-								li Wie kann ich ein Ticket stornieren?
-							a.menu-item(data-q-link="cancellation-tcs")
-								li Welche Bedingungen gelten für Stornierungen?
+							
+							| <%
+							|	while (questions.next()) {
+							| %>
+							
+							a.menu-item(data-q-link!="<%= questions.getString(\"id\") %>")
+								li <%= questions.getString("question") %>
+							
+							| <%
+							| 	}
+							| 	questions.beforeFirst();
+							| %>
+						| <%
+						|	}
+						| %>
 
 						ul.sc-menu
 							li.menu-item.heading Support
@@ -39,17 +84,34 @@ html
 
 					.column.column-8.offset-1
 						h2 FAQ
-						div.faq-card(data-q="how-to-cancel")
-							p.faq-card-header Wie kann ich ein Ticket stornieren?
-								span.expand-button
-							div.faq-card-content
-								p Du kannst dein Ticket jederzeit im Dashboard unter "Tickets" stornieren. Wenn du dein Ticket ohne Account erworben hast, oder auf den Account aktuell keinen Zugriff hast, kannst du unter #[a(href="sc-cancellations.html") Stornierungen] dein Ticket ebenfalls stornieren.
 						
-						div.faq-card(data-q="cancellation-tcs")
-							p.faq-card-header Welche Bedingungen gelten für Stornierungen?
+						| <%
+						| 	if (questions != null) {
+						|		while (questions.next()) {
+						| %>
+						
+						div.faq-card(data-q!="<%= questions.getString(\"id\") %>")
+							p.faq-card-header <%= questions.getString("question") %>
 								span.expand-button
-							div.faq-card-content
-								p Jedes Ticket kann kostenfrei bis 24h vor dem Abflug storniert werden. Ab 24 Stunden vor Abflug werden 50% des Ticketpreises erstattet, nach dem Abflug werden nicht eingelöste Tickets nur bei Unfällen, Naturkatastrophen, Inneren Unruhen oder offiziellen Reisewarnungen des Auswärtigen Amtes erstattet. Der erstattete Betrag wird als Gutschein einem Aviation-Konto gutgeschrieben und nur in Ausnahmefällen ausbezahlt. Zur Stornierung über den Support ist sowohl die Ticket-, als auch die SVID (Storno-Verifizierungs-ID) notwendig.
+							div.faq-card-content <%= questions.getString("question") %>
+						
+						| <%
+						| 		}
+						| 	} else {
+						| %>
+
+						article(class="flag error")
+							div(class="header")
+								div(class="icon")
+									span
+										span(class="ai ai-error")
+								span(class="title") Es tut uns leid
+							div(class="content")
+								p Es scheint als hätten wir Probleme im Hintergrund sodass aktuell keine Fragen geladen werden können. Probier es bitte später noch einmal.
+
+						| <%
+						| 	}
+						| %>
 		
 						article(class="flag question")
 							div(class="header")
@@ -65,3 +127,8 @@ html
 	script(src="js/support-center.js")
 	script(src="js/modal.js")
 	script(src="js/icons.js")
+
+| <%
+| 	if (conn != null)
+| 	    conn.close();
+| %>
