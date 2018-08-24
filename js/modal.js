@@ -65,6 +65,7 @@ if (modalPrimary) {
                 } else {
                     document.querySelector(modal.getAttribute("data-primary-action-target")).submit();
                 }
+                break;
             }
         }
     });
