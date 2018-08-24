@@ -1,0 +1,55 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="ml.festival.aviation.*" %>
+| <%@ page import="java.sql.ResultSet" %>
+| 
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title FESTIVAL Aviation
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/featured.built.css")
+	body
+		include _nav
+		
+		| 
+		| <%
+		| 	if (request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
+		| 		PromoManager promoManager = new PromoManager();
+		| 		ResultSet location = promoManager.getLocationForId(request.getParameter("id"));
+		| 
+		| 		if (location.next()) {
+		| 			ResultSet category = promoManager.getCategoryForId(location.getString("categoryId"));
+		| 
+		| 			if (category.next()) {
+		| %>
+		
+		section.featured-item
+			.item-header(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
+			.section-content
+				h4.eyebrow <%= category.getString("title") %>
+				h2.headline <%= location.getString("location") %>
+				| 
+				| <%= location.getString("content") %>
+		| 
+		| <%
+		| 			}
+		| 		}
+		| 
+		| 		promoManager.closeConnection();
+		| 	} else {
+		| %>
+		
+		section.featured-item
+			.section-content
+				p.error Der Server kann die angebenenen Parameter nicht interpretieren. Bitte überprüfe, ob du einem gültigen Link gefolgt bist und versuche es erneut.
+		| 
+		| <%
+		| 	}
+		| %>
+		
+		include _footer

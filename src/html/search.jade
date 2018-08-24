@@ -36,18 +36,18 @@ html
 								.column-title
 									img(src="img/icon-departure.svg")
 									p Von
-								input.column-content(value!="<%= demoData.get(\"departureName\") != null ? demoData.get(\"departureName\") : \"\" %>", placeholder="Abreiseort eingeben", required)
+								input.column-content(value!="<%= demoData.has(\"departureName\") ? demoData.get(\"departureName\") : \"\" %>", placeholder="Abreiseort eingeben", required)
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-arrival.svg")
 									p Nach
-								input.column-content(value!="<%= demoData.get(\"arrivalName\") != null ? demoData.get(\"arrivalName\") : \"\" %>", placeholder="Ankunftsort eingeben", required)
+								input.column-content(value!="<%= demoData.has(\"arrivalName\") ? demoData.get(\"arrivalName\") : \"\" %>", placeholder="Ankunftsort eingeben", required)
 						.row
 							.column.column-12.medium-6
 								.column-title
 									img(src="img/icon-date.svg")
 									p Abflugdatum
-								input.column-content(type="date", value!="<%= demoData.get(\"departureDate\") != null ? ((LocalDate)demoData.get(\"departureDate\")).format(DateTimeFormatter.ofPattern(\"EEEE, dd. MMMM yyyy\")) : \"\" %>", placeholder="Abflugdatum auswählen", required)
+								input.column-content(type="date", value!="<%= demoData.has(\"departureDate\") ? ((LocalDate)demoData.get(\"departureDate\")).format(DateTimeFormatter.ofPattern(\"EEEE, dd. MMMM yyyy\")) : \"\" %>", placeholder="Abflugdatum auswählen", required)
 							.column.column-12.medium-2
 								.column-title
 									img(src="img/icon-passenger.svg")
@@ -60,7 +60,7 @@ html
 								p.column-content Alle Klassen
 					| 
 					| <%
-					| 	if (demoData.get("items") != null) {
+					| 	if (demoData.has("items")) {
 					| 	 	for (int i=0; i<((JSONArray)demoData.get("items")).length(); i++) {
 					| 			JSONObject resultObj = ((JSONArray)demoData.get("items")).getJSONObject(i);
 					| %>

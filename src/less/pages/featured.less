@@ -1,0 +1,43 @@
+section.featured-item {
+	min-height: 100vh;
+	padding-top: 0;
+	
+	.item-header {
+		height: 400px;
+		background-size: cover;
+		background-position: center;
+		margin-bottom: 25px;
+	}
+	
+	.section-content {
+		p {
+			color: #838387;
+			font-size: 17px;
+			line-height: 25px;
+			margin-top: 14px;
+			
+			span {
+				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				
+				&.italic {
+					font-style: italic;
+				}
+				
+				&.bold {
+					color: #000;
+					font-weight: 500;
+				}
+			}
+		}
+	}
+}
+
+@media all and (max-width: 767px) {
+	section.featured-item {
+		.item-header {
+			height: 200px;
+		}
+	}
+}

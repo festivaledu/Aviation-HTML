@@ -68,7 +68,7 @@ html
 				| 		index++;
 				| 		ResultSet location = promoManager.getLocationForCategory(categories.getString("id"));
 				| 		
-				| 		while (location.next()) {
+				| 		if (location.next()) {
 				| 			locations[index - 1] = location.getString("id");
 				| %>
 				| 
@@ -123,8 +123,9 @@ html
 		| 		index++;
 		| 
 		| 		ResultSet location = promoManager.getLocationForId(locations[index - 1]);
+		|		ResultSet locationSet = promoManager.getLocationsForCategory(categories.getString("id"));
 		| 
-		| 		while(location.next()) {
+		| 		if (location.next()) {
 		| %>
 		| 
 		.promo-article-details(data-spring-animatable-target!="promo_<%= index %>")
@@ -135,10 +136,25 @@ html
 				p.header-subtitle <%= location.getString("location") %>
 			.content-scroll-wrapper
 				.content
-					| 
 					| <%= location.getString("content") %>
 					| 
-					p Sehen Sie sich auch unsere weiteren Empfehlungen in der Kategorie "<%= categories.getString("title") %>" an.
+					a(href!="featured.jsp?id=<%= location.getString(\"id\") %>") Weiterlesen &#x00BB;
+					p Sehen Sie sich auch unsere weiteren Empfehlungen in der Kategorie "<%= categories.getString("title") %>" an:
+					.promo-article-wrapper
+						| <%
+						| 	while (locationSet.next()) {
+						| 		if (!locationSet.getString("id").equals(location.getString("id"))) {
+						| %>
+						a(href!="featured.jsp?id=<%= locationSet.getString(\"id\") %>")
+							.promo-article
+								.header.dark(style!="background-image: url(<%= locationSet.getString(\"headerImage\") %>)")
+									p.header-heading <%= categories.getString("title") %>
+									p.header-title <%= locationSet.getString("location") %>
+						| 
+						| <%
+						| 		}
+						| 	}
+						| %>
 		| 
 		| <%
 		| 		}
