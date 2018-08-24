@@ -63,7 +63,7 @@ if (modalPrimary) {
                 if (!modal.hasAttribute("data-primary-action-target")) {
                     document.querySelector("form").submit();
                 } else {
-                    document.querySelector().submit(modal.getAttribute("data-primary-action-target"));
+                    document.querySelector(modal.getAttribute("data-primary-action-target")).submit();
                 }
             }
         }
