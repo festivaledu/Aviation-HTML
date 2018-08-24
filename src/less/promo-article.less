@@ -18,6 +18,7 @@
 	background-color: #FFFFFF;
 	border-radius: 8px;
 	overflow: hidden;
+	transform: translate3d(0, 0, 0);
 	
 	.header {
 		position: absolute;
@@ -139,6 +140,21 @@
 				}
 			}
 		}
+		
+		& > p:nth-child(2) {
+			display: none;
+		}
+		
+		a:not(:last-child) {
+			display: inline-block;
+			margin-bottom: 18px;
+		}
+	}
+	
+	.promo-article-wrapper {
+		display: flex;
+		justify-content: space-between;
+		padding: 0 15px;
 	}
 }
 
@@ -187,6 +203,11 @@
 		width: 100vw;
 		height: 100vh;
 		transform: none;
+		
+		.promo-article-wrapper {
+			flex-direction: column;
+			padding: 0;
+		}
 	}
 	
 	.spring-animatable.promo-animatable,
