@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 					
 					
 					'build/sc-index.jsp': 'src/html/sc-index.jade',
-                    'build/sc-contact.html': 'src/html/sc-contact.jade',
+                    'build/sc-contact.jsp': 'src/html/sc-contact.jade',
                     'build/sc-cancellations.html': 'src/html/sc-cancellations.jade',
                     'build/sc-complaints.html': 'src/html/sc-complaints.jade',
                     'build/sc-rights.html': 'src/html/sc-rights.jade'
