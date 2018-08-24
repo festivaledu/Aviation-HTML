@@ -35,7 +35,22 @@
 		background-repeat: no-repeat;
 		background-color: #FFFFFF;
 		z-index: 5;
-		pointer-events: none;
+        pointer-events: none;
+        
+        &::after {
+            background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0,.5));
+            content: "";
+            display: block;
+            left: 0;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        & > * {
+            z-index: 9999;
+        }
 		
 		p.header-heading {
 			font-weight: 500;

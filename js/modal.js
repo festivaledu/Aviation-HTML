@@ -40,6 +40,10 @@ if (triggers) {
                     modalPrimary.style.visibility = "hidden";
                 }
 
+                if (el.hasAttribute("data-modal-secondary")) {
+                    modalClose.innerText = el.getAttribute("data-modal-secondary");
+                }
+
                 if (el.hasAttribute("data-modal-text")) {
                     modalText.innerText = el.getAttribute("data-modal-text");
                 }
