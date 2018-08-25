@@ -1,3 +1,72 @@
+| <%@ page contentType="text/html;charset=UTF-8" %>
+| <%@ page import="javax.naming.InitialContext" %>
+| <%@ page import="javax.naming.Context" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.security.MessageDigest" %>
+| <%@ page import="java.nio.charset.StandardCharsets" %>
+| <%@ page import="java.sql.PreparedStatement" %>
+| 
+| 
+| <%!
+| 	private String bytesToHex(byte[] bytes) {
+| 		StringBuffer result = new StringBuffer();
+| 		for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
+| 		return result.toString();
+| 	}
+| %>
+| 
+| <%
+| 	InitialContext initialContext;
+| 	Context environmentContext;
+| 	DataSource dataSource;
+| 	Connection conn = null;
+| 
+| 	String firstName = "";
+| 	String lastName = "";
+| 	String email = "";
+| 	String message = "";
+| 
+| 	boolean invalid = false;
+| 	boolean send = false;
+| 	boolean error = false;
+| 
+| 	request.setCharacterEncoding("UTF-8");
+| 
+| 	if ("POST".equals(request.getMethod())) {
+| 	    firstName = request.getParameter("firstName");
+| 	    lastName = request.getParameter("lastName");
+| 	    email = request.getParameter("email");
+| 	    message = request.getParameter("message");
+| 
+| 	    if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() && email != null && !email.isEmpty() && message != null && !message.isEmpty()) {
+| 	        try {
+| 	            initialContext = new InitialContext();
+| 	            environmentContext = (Context)initialContext.lookup("java:/comp/env");
+| 	            dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+| 	            conn = dataSource.getConnection();
+| 
+| 	            PreparedStatement statement = conn.prepareStatement("INSERT INTO `contacts` VALUES (?, ?, ?, ?, ?, default, default)");
+| 
+| 	            statement.setString(1, bytesToHex(MessageDigest.getInstance("SHA-256").digest(String.format("%s%s%s%s%d", firstName, lastName, email, message, System.currentTimeMillis() / 1000L).getBytes(StandardCharsets.UTF_8))).substring(0, 32));
+| 	            statement.setString(2, firstName);
+| 	            statement.setString(3, lastName);
+| 	            statement.setString(4, email);
+| 	            statement.setString(5, message);
+| 
+| 	            statement.execute();
+| 
+| 	            send = true;
+| 	        } catch (Exception e) {
+| 	            error = true;
+| 	            e.printStackTrace();
+| 	        }
+| 	    } else {
+| 	        invalid = true;
+| 	    }
+| 	}
+| %>
+
 doctype html
 html
 	head
@@ -32,19 +101,72 @@ html
 
 					.column.column-8.offset-1
 						h2 Kontakt
-						form(action="#")
+
+						| <%
+						| 	if (send) {
+						| %>
+
+						article.flag.success
+							.header
+								.icon
+									span
+										span.ai.ai-success
+								span.title Nachricht abgeschickt
+							.content
+							p Deine Nachricht wurde erfolgreich abgeschickt. Wir kümmern uns jetzt so schnell wie möglich um deine Anfrage.
+
+						| <%
+						| 	}
+						| 
+						| 	if (error) {
+						| %>
+
+						article.flag.error
+							.header
+								.icon
+									span
+										span.ai.ai-error
+								span.title Es tut uns leid
+							.content
+								p Beim Absenden deiner Nachricht ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
+
+						| <%
+						| 	}
+						| 
+						| 	if (invalid) {
+						| %>
+
+						article.flag.error
+							.header
+								.icon
+									span
+										span.ai.ai-error
+								span.title Ungültige Eingabe
+							.content
+								p Du musst alle Felder, die nicht als optional gekennzeichnet sind, ausfüllen.
+
+						|<%
+						|	}
+						| %>
+
+						form(method="POST" action="sc-contact.jsp" novalidate)
 							label(for="firstName") Vorname
-							input(type="text", name="firstName", id="firstName")
+							input(type="text", name="firstName", id="firstName" value!="<%= firstName %>")
 							label(for="lastName") Nachname
-							input(type="text", name="lastName", id="lastName")
+							input(type="text", name="lastName", id="lastName" value!="<%= lastName %>")
 							label(for="email") E-Mail-Adresse
-							input(type="email", name="email", id="email")
+							input(type="email", name="email", id="email" value!="<%= email %>")
 							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Warum muss ich eine E-Mail-Adresse angeben?", data-modal-text="Ohne Angabe einer E-Mail-Adresse können wir nicht auf dein Anliegen antworten. Aber keine Sorge, alle deine Daten werden vertraulich behandelt und nur bis zur Aufklärung deiner Anfrage aufbewahrt.") Ist das notwendig?
 							label(for="message") Ihre Nachricht
-							textarea(name="message", id="message", lines="12")
+							textarea(name="message", id="message", rows="12") <%= message %>
 							button(class="modal-trigger", data-modal-type="warning", data-modal-title="Passt das so?", data-modal-text="Du kannst deine Nachricht nach dem Abschicken nicht mehr bearbeiten. Bist du sicher, dass du deine Nachricht so abschicken willst?", data-modal-primary="Das passt so!", data-modal-primary-action="submit", data-modal-secondary="Ne noch nicht") Absenden
 		include _footer
 		
 	script(src="js/support-center.js")
 	script(src="js/modal.js")
 	script(src="js/icons.js")
+
+| <%
+| 	if (conn != null)
+| 		conn.close();
+| %>
