@@ -10,12 +10,10 @@
 | 	if (request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
 | 		location = promoManager.getLocationForId(request.getParameter("id"));
 | 
-| 		if (location.next()) {
+| 		if (location != null && location.next()) {
 | 			category = promoManager.getCategoryForId(location.getString("categoryId"));
 | 
-| 			if (!category.next()) {
-| 				// TODO
-| 			}
+| 			location.beforeFirst();
 | 		}
 | 	}
 | %>
@@ -27,13 +25,18 @@ html
 		meta(charset="utf-8")
 		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
 	
-		title <%= location != null ? location.getString("location").split(",")[0] : "Fehler" %> – FESTIVAL Aviation
+		title <%= location.next() ? location.getString("location").split(",")[0] : "Fehler" %> – FESTIVAL Aviation
 		
 		link(rel="stylesheet", href="css/aviation.css")
 		link(rel="stylesheet", href="css/featured.built.css")
 	body
 		include _nav
 		
+		| 
+		| <%
+		| 	location.beforeFirst();
+		| 	if (location.next() && category.next()) {
+		| %>
 		section.featured-item
 			.item-header(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
 			.section-content
@@ -41,22 +44,21 @@ html
 				h2.headline <%= location.getString("location") %>
 				| 
 				| <%= location.getString("content") %>
-		//- | 
-		//- | <%
-		//- | 			}
-		//- | 		}
-		//- | 
-		//- | 		promoManager.closeConnection();
-		//- | 	} else {
-		//- | %>
+
+		| 
+		| <%
+		| 	} else {
+		| %>
 		
-		//- section.featured-item
-		//- 	.section-content
-		//- 		p.error Der Server kann die angebenenen Parameter nicht interpretieren. Bitte überprüfe, ob du einem gültigen Link gefolgt bist und versuche es erneut.
-		//- | 
-		//- | <%
-		//- | 	}
-		//- | %>
+		section.featured-item
+			.section-content
+				.item-header
+				h2.headline Hier funktioniert etwas nicht...
+				p.error Der Server kann die angebenenen Parameter nicht interpretieren. Bitte überprüfe, ob du einem gültigen Link gefolgt bist und versuche es erneut.
+		| 
+		| <%
+		| 	}
+		| %>
 		
 		include _footer
 | 
