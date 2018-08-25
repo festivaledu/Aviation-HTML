@@ -21,7 +21,7 @@
 | 		dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
 | 		conn = dataSource.getConnection();
 | 		Statement statement = conn.createStatement();
-| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY question ASC");
+| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY questionText ASC");
 | 	} catch (Exception e) {
 | 		e.printStackTrace();
 | 	}
@@ -53,27 +53,29 @@ html
 					
 						ul.sc-menu.contents
 							li.menu-item.heading FAQ #[span.expand-button]
-							
+							| 
 							| <%
 							|	while (questions.next()) {
 							| %>
+							| 
 							
-							a.menu-item(data-q-link!="<%= questions.getString(\"id\") %>")
-								li <%= questions.getString("question") %>
-							
+							a.menu-item(data-q-link!="<%= questions.getString(\"linkId\") %>")
+								li <%= questions.getString("questionText") %>
+							| 
 							| <%
 							| 	}
 							| 	questions.beforeFirst();
 							| %>
+						| 
 						| <%
 						|	}
 						| %>
 
 						ul.sc-menu
 							li.menu-item.heading Support
-							a.menu-item.selected(href="sc-index.html")
+							a.menu-item.selected(href="sc-index.jsp")
 								li FAQ
-							a.menu-item(href="sc-contact.html")
+							a.menu-item(href="sc-contact.jsp")
 								li Kontakt
 							a.menu-item(href="sc-cancellations.html")
 								li Stornierungen
@@ -85,16 +87,18 @@ html
 					.column.column-8.offset-1
 						h2 FAQ
 						
+						| 
 						| <%
 						| 	if (questions != null) {
 						|		while (questions.next()) {
 						| %>
 						
-						div.faq-card(data-q!="<%= questions.getString(\"id\") %>")
-							p.faq-card-header <%= questions.getString("question") %>
+						div.faq-card(data-q!="<%= questions.getString(\"linkId\") %>")
+							p.faq-card-header <%= questions.getString("questionText") %>
 								span.expand-button
-							div.faq-card-content <%= questions.getString("question") %>
+							div.faq-card-content <%= questions.getString("answerText") %>
 						
+						| 
 						| <%
 						| 		}
 						| 	} else {
@@ -107,8 +111,9 @@ html
 										span(class="ai ai-error")
 								span(class="title") Hier funktioniert etwas nicht
 							div(class="content")
-								p Es scheint als hätten wir Probleme im Hintergrund sodass aktuell keine Fragen geladen werden können. Bitte versuch es später noch einmal.
+								p Es scheint als hätten wir Probleme im Hintergrund, sodass aktuell keine Fragen geladen werden können. Bitte versuch es später noch einmal.
 
+						| 
 						| <%
 						| 	}
 						| %>
@@ -127,7 +132,7 @@ html
 	script(src="js/support-center.js")
 	script(src="js/modal.js")
 	script(src="js/icons.js")
-
+| 
 | <%
 | 	if (conn != null)
 | 	    conn.close();
