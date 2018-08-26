@@ -9,7 +9,8 @@
 | 	JSONObject demoData = new JSONObject();
 | 
 | 	if (request.getParameter("depart_iata") != null && request.getParameter("arrv_iata") != null && request.getParameter("depart_date") != null) {
-| 		demoData = SearchResultsDemo.getDemoData(request.getParameter("depart_iata"), request.getParameter("arrv_iata"), LocalDate.parse(request.getParameter("depart_date"), DateTimeFormatter.ISO_DATE_TIME));
+| 		ZonedDateTime zonedDateTime = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin"));
+| 		demoData = SearchResultsDemo.getDemoData(request.getParameter("depart_iata"), request.getParameter("arrv_iata"), zonedDateTime.toLocalDate());
 | 	}
 | %>
 | 
@@ -92,7 +93,18 @@ html
 								.column.column-2.align-right
 									p <%= ((Time)flightObj.get("arrivalTime")).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) %>
 								.column.column-2.column-offset-1
-									p 13h 10min
+									| <%
+									| 	LocalTime departureTime = ((Time)flightObj.get("departureTime")).toLocalTime();
+									| 	LocalTime arrivalTime = ((Time)flightObj.get("arrivalTime")).toLocalTime();
+									| 
+									| 	Duration duration = null;
+									| 	if (departureTime.toSecondOfDay() > arrivalTime.toSecondOfDay()) {
+									| 		duration = Duration.between(arrivalTime, departureTime);
+									| 	} else {
+									| 		duration = Duration.between(departureTime, arrivalTime);
+									| 	}
+									| %>
+									p <%= String.format("%02dh %02dmin", duration.getSeconds() / 3600, (duration.getSeconds() % 3600) / 60) %>
 								.column.column-1
 									p <%= flightObj.get("stops") %>
 								.column.column-auto
