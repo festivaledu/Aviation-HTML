@@ -163,7 +163,7 @@ html
 					.fill-background
 					.results-footer
 						button.outline.red Abbrechen
-						button.fill.blue.continue-button(disabled) Fortfahren
+						button.fill.blue.continue-button(disabled, onclick="document.forms[0].submit()") Fortfahren
 						
 		form.hidden(action="booking-services.jsp", method="POST", name="selectedItem")
 			input(name="depart_iata")
