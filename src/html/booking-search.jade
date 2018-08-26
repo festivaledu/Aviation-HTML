@@ -21,10 +21,10 @@ html
 		meta(charset="utf-8")
 		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
 	
-		title Suchen – FESTIVAL Aviation
+		title Flugsuche – FESTIVAL Aviation
 		
 		link(rel="stylesheet",href="css/aviation.css")
-		link(rel="stylesheet",href="css/search.built.css")
+		link(rel="stylesheet",href="css/booking.built.css")
 	body
 		include _nav
 		
@@ -63,18 +63,18 @@ html
 				.search-results-container.column.column-12.medium-8
 					.search-results-header
 						.row
-							.column.column-12.medium-6
+							.column.column-12.medium-6(data-key="departure")
 								.column-title
 									img(src="img/icon-departure.svg")
 									p Von
 								input.column-content(value!="<%= demoData.has(\"departureName\") ? demoData.get(\"departureName\") : \"\" %>", placeholder="Abreiseort eingeben", required)
-							.column.column-12.medium-6
+							.column.column-12.medium-6(data-key="arrival")
 								.column-title
 									img(src="img/icon-arrival.svg")
 									p Nach
 								input.column-content(value!="<%= demoData.has(\"arrivalName\") ? demoData.get(\"arrivalName\") : \"\" %>", placeholder="Ankunftsort eingeben", required)
 						.row
-							.column.column-12.medium-6
+							.column.column-12.medium-6(data-key="date")
 								.column-title
 									img(src="img/icon-date.svg")
 									p Abflugdatum
@@ -87,8 +87,13 @@ html
 							.column.column-12.medium-4
 								.column-title
 									img(src="img/icon-class.svg")
-									p Klassen
-								p.column-content Alle Klassen
+									p Klasse
+								p.column-content
+									select(name="flight_class", onchange="classChanged(this)")
+										option(value="economy") Economy
+										option(value="premium_economy") Premium Economy
+										option(value="business") Business
+										option(value="first") First Class
 					.scroll-container
 						| 
 						| <%
@@ -157,14 +162,15 @@ html
 					.fill-background
 					.results-footer
 						button.outline.red Abbrechen
-						button.outline.blue.continue-button(disabled) Weiter
+						button.fill.blue.continue-button(disabled) Fortfahren
 						
-		form.hidden(action="#", method="POST", name="selectedItem")
+		form.hidden(action="booking-services.jsp", method="POST", name="selectedItem")
 			input(name="depart_iata")
 			input(name="arrv_iata")
 			input(name="depart_date")
 			input(name="arrv_date")
 			input(name="flight_number")
+			input(name="flight_class")
 			| 
 			| 
 			<!-- DO NOT USE THIS IN PRODUCTION!!! -->

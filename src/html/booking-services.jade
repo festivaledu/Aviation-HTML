@@ -1,0 +1,124 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
+| <%@ page import="org.json.*" %>
+| <%@ page import="java.time.*" %>
+| <%@ page import="java.time.format.DateTimeFormatter"%>
+| <%@ page import="java.sql.Time" %>
+| 
+| <%
+| 	JSONObject requestData = new JSONObject();
+| 	JSONObject demoData = new JSONObject();
+| 
+| 	try {
+| 		requestData.put("depart_iata", request.getParameter("depart_iata"));
+| 		requestData.put("arrv_iata", request.getParameter("arrv_iata"));
+| 		requestData.put("depart_date", request.getParameter("depart_date"));
+| 		requestData.put("arrv_date", request.getParameter("arrv_date"));
+| 		requestData.put("flight_number", request.getParameter("flight_number"));
+| 		requestData.put("flight_class", request.getParameter("flight_class"));
+| 
+| 		requestData.put("price", request.getParameter("price"));
+| 
+| 		demoData = SearchResultsDemo.getServiceData(requestData);
+| 	} catch (Exception e) {
+| 
+| 	}
+| 	out.println(requestData);
+| %>
+| 
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Dienste – FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/booking.built.css")
+	body
+		include _nav
+		
+		section.search-results
+			.section-content.row
+				.progress-overview.column.medium-3
+					p.progress-title Flug buchen
+					p.progress-section-title Vorbereitung
+					ul
+						li(data-progress-made="true")
+							| 
+							| 
+							span Reiseziel wählen
+							.pipe
+						li(data-progress-made="true")
+							| 
+							| 
+							span Flug wählen
+							.pipe
+						li.current(data-progress-made="true")
+							| 
+							| 
+							span Dienste wählen
+							.pipe
+					p.progress-section-title Bezahlung
+					ul
+						li(data-progress-made="false")
+							| 
+							| 
+							span Rechnungsadresse
+							.pipe
+						li(data-progress-made="false")
+							| 
+							| 
+							span Bestellung abschließen
+				.search-results-container.column.column-12.medium-8
+					.search-results-header
+						.row
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-departure.svg")
+									p Von
+								p.column-content <%= demoData.get("departureName") %>
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-arrival.svg")
+									p Nach
+								p.column-content <%= demoData.get("arrivalName") %>
+						.row
+							.column.column-12.medium-6(data-key="date")
+								.column-title
+									img(src="img/icon-date.svg")
+									p Abflugdatum
+								//- input.column-content(type="date", value!="<%= requestData.has(\"depart_date\") ? ((LocalDate)requestData.get(\"depart_date\")).format(DateTimeFormatter.ofPattern(\"EEEE, dd. MMMM yyyy\")) : \"\" %>", readonly)
+								p.column-content <%= ((LocalDate)demoData.get("departureDate")).format(DateTimeFormatter.ofPattern("EEEE, dd. MMMM yyyy")) %>
+							.column.column-12.medium-2
+								.column-title
+									img(src="img/icon-passenger.svg")
+									p Passagiere
+								input.column-content(type="number",value!="1", readonly)
+							.column.column-12.medium-4
+								.column-title
+									img(src="img/icon-class.svg")
+									p Klasse
+								p.column-content <%= requestData.getString("flight_class") %>
+						.row
+							.column.column-12.row
+								.column.column-2
+									.column-title
+										p <%= !((String)demoData.get("departureMunicipality")).isEmpty() ? demoData.get("departureMunicipality") : demoData.get("departureName") %>
+								.column.column-2.align-right
+									.column-title
+										p <%= !((String)demoData.get("arrivalMunicipality")).isEmpty() ? demoData.get("arrivalMunicipality") : demoData.get("arrivalName") %>
+								.column.column-2.column-offset-1
+									.column-title
+										p Dauer
+								.column.column-1
+									.column-title
+										p Stopps
+								.column.column-auto
+									.column-title
+										p Flugnummer
+								.column.column-2.align-right
+									.column-title
+										p Preis

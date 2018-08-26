@@ -12,7 +12,8 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'build/index.jsp': 'src/html/index.jade',
-					'build/search.jsp': 'src/html/search.jade',
+					'build/booking-search.jsp': 'src/html/booking-search.jade',
+					'build/booking-services.jsp': 'src/html/booking-services.jade',
 					'build/featured.jsp': 'src/html/featured.jade',
 					'build/login.jsp': 'src/html/login.jade',
 					'build/register.jsp': 'src/html/register.jade',
@@ -38,7 +39,7 @@ module.exports = function(grunt) {
 					'build/css/components/calendar.css': ["src/less/calendar.less"],
 					
 					'build/css/landing.built.css': ["src/less/pages/landing.less", "src/less/promo-article.less"],
-					'build/css/search.built.css': "src/less/pages/search-results.less",
+					'build/css/booking.built.css': "src/less/pages/booking.less",
 					'build/css/featured.built.css': "src/less/pages/featured.less",
 					'build/css/login.built.css': ["src/less/pages/login.less"],
 					'build/css/dashboard.built.css': ["src/less/pages/dashboard.less"],
