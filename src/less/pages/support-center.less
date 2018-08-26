@@ -430,8 +430,10 @@ section.modal {
 	}
 
 	&.question {
-		--modal-background: #F3F5F8;
-		--modal-color: #172B4D;
+		// --modal-background: #F3F5F8;
+		// --modal-color: #172B4D;
+		--modal-background: #172B4D;
+		--modal-color: #F3F5F8;
 
 		.icon.question {            
 			display: inline-block !important;
@@ -457,8 +459,10 @@ section.modal {
 	}
 
 	.modal-inner {
-		background-color: var(--modal-background);
-		color: var(--modal-color);
+		// background-color: var(--modal-background);
+		background-color: #FFF;
+		// color: var(--modal-background);
+		color: #172B4D;
 		height: 100%;
 		opacity: 0;
 		padding: 1em;
@@ -495,9 +499,11 @@ section.modal {
 			}
 
 			.icon {
-				color: var(--modal-color);
+				// color: var(--modal-color);
+				color: var(--modal-background);
 				display: none;
-				fill: var(--modal-background);
+				// fill: var(--modal-background);
+				fill: var(--modal-color);
 				margin-right: .75em;
 			}
 
@@ -514,17 +520,21 @@ section.modal {
 			right: 1em;
 		   
 			button {
-				background-color: var(--modal-color);
-				color: var(--modal-background);
+				// background-color: var(--modal-color);
+				background-color: var(--modal-background);
+				// color: var(--modal-background);
+				color: var(--modal-color);
 				display: block;
 				font-size: 13px;
 				margin: 0;
 				margin-left: .5em;
 
 				&:last-of-type {
-					background-color: transparent;
-					border: 1px solid var(--modal-color);
-					color: var(--modal-color);
+					// background-color: transparent;
+					background-color: #EBECF0;
+					// border: 1px solid var(--modal-color);
+					// color: var(--modal-color);
+					color: #172B4D;
 				}
 			}
 		}
