@@ -203,7 +203,7 @@ html
 							p(class="description") Gib hier die E-Mail-Adresse des Accounts an, der die Gutschrift bekommen soll.
 							input(type="email", name="email", id="email", value!="<%= email %>")
 							label(for="message") Grund der Stornierung (optional)
-							textarea(name="message", id="message", lines="12")
+							textarea(name="message", id="message", rows="12")
 							button.fill.blue.modal-trigger(data-modal-type="error", data-modal-title="Ticket wirklich stornieren?", data-modal-text="Wenn alle Eingaben korrekt sind, wird das Ticket unwiderruflich storniert und unbrauchbar. Die Stornierung kann nicht rückgängig gemacht werden.", data-modal-primary="Ticket stornieren", data-modal-primary-action="submit") Absenden
 		include _footer
 		
