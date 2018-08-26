@@ -46,7 +46,7 @@
 | 	            dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
 | 	            conn = dataSource.getConnection();
 | 
-| 	            PreparedStatement statement = conn.prepareStatement("INSERT INTO `contacts` VALUES (?, ?, ?, ?, ?, default, default)");
+| 	            PreparedStatement statement = conn.prepareStatement("INSERT INTO `contacts` VALUES (?, ?, ?, ?, 'contact', ?, default, default)");
 | 
 | 	            statement.setString(1, bytesToHex(MessageDigest.getInstance("SHA-256").digest(String.format("%s%s%s%s%d", firstName, lastName, email, message, System.currentTimeMillis() / 1000L).getBytes(StandardCharsets.UTF_8))).substring(0, 32));
 | 	            statement.setString(2, firstName);
@@ -128,7 +128,7 @@ html
 								.icon
 									span
 										span.ai.ai-error
-								span.title Es tut uns leid
+								span.title Hier funktioniert etwas nicht
 							.content
 								p Beim Absenden deiner Nachricht ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
 
