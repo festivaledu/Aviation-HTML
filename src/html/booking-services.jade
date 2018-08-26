@@ -3,7 +3,7 @@
 | <%@ page import="org.json.*" %>
 | <%@ page import="java.time.*" %>
 | <%@ page import="java.time.format.DateTimeFormatter"%>
-| <%@ page import="java.sql.Time" %>
+| <%@ page import="java.sql.*" %>
 | 
 | <%
 | 	JSONObject requestData = new JSONObject();
@@ -22,7 +22,7 @@
 | 		requestData.put("stops", request.getParameter("stops"));
 | 		requestData.put("price", request.getParameter("price"));
 | 
-| 		demoData = SearchResultsDemo.getServiceData(requestData);
+| 		demoData = SearchResultsDemo.getJSONData(requestData);
 | 	} catch (Exception e) {
 | 
 | 	}
@@ -138,3 +138,23 @@ html
 							h4.date
 								span Dienste
 							p Im Ticketpreis bereits enthalten ist eine Beteiligung an den Betriebskosten des jeweiligen Fluges. Um Tickets so günstig anbieten zu können, werden zusätzliche Dienste, wie etwa die Mitnahme von Gepäck, extra angeboten. So zahlst du wirklich nur für das, was du brauchst. Solltest du unerwartet einen Dienst in Anspruch nehmen müssen, mach dir keine Sorgen. Gebühren können auch nach der Reise bezahlt werden.
+						
+						.results
+							| 
+							| <%
+							| 	ResultSet serviceData = SearchResultsDemo.getServiceData();
+							| 	while (serviceData.next()) {
+							| %>
+							.result-cell.no-arrow.row
+								.column.column-6
+									p <%= serviceData.getString("title") %>
+								.column.column-6.align-right
+									p <%= serviceData.getString("price") %>€
+							| 
+							| <%
+							| 	}
+							| %>
+					.fill-background
+					.results-footer
+						button.outline.red Abbrechen
+						button.fill.blue.continue-button Fortfahren
