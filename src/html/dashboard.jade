@@ -12,15 +12,9 @@
 | 	Boolean validAuth = false;
 | 	AuthManager authManager = new AuthManager();
 | 
-| 	Cookie[] cookies = request.getCookies();
-| 	for (int i=0; i<cookies.length; i++) {
-| 		if (cookies[i].getName().equals("sid")) {
-| 			if (authManager.validate(cookies[i].getValue())) {
-| 				validAuth = true;
-| 				break;
-| 			}
-| 		}
-| 	}
+| 	if (authManager.validate(String.valueOf(session.getAttribute("sid")))) {
+|		validAuth = true;
+|	}
 | 
 | 	if (!validAuth) {
 | 		response.sendRedirect("login.jsp");
