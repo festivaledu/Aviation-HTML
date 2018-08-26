@@ -92,9 +92,9 @@ html
 								li FAQ
 							a.menu-item.selected(href="sc-contact.jsp")
 								li Kontakt
-							a.menu-item(href="sc-cancellations.html")
+							a.menu-item(href="sc-cancellations.jsp")
 								li Stornierungen
-							a.menu-item(href="sc-complaints.html")
+							a.menu-item(href="sc-complaints.jsp")
 								li Beschwerden
 							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
@@ -102,6 +102,7 @@ html
 					.column.column-8.offset-1
 						h2 Kontakt
 
+						| 
 						| <%
 						| 	if (send) {
 						| %>
@@ -113,8 +114,9 @@ html
 										span.ai.ai-success
 								span.title Nachricht abgeschickt
 							.content
-							p Deine Nachricht wurde erfolgreich abgeschickt. Wir kümmern uns jetzt so schnell wie möglich um deine Anfrage.
+								p Deine Nachricht wurde erfolgreich abgeschickt. Wir kümmern uns jetzt so schnell wie möglich um deine Anfrage.
 
+						| 
 						| <%
 						| 	}
 						| 
@@ -130,6 +132,7 @@ html
 							.content
 								p Beim Absenden deiner Nachricht ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
 
+						| 
 						| <%
 						| 	}
 						| 
@@ -145,17 +148,18 @@ html
 							.content
 								p Du musst alle Felder, die nicht als optional gekennzeichnet sind, ausfüllen.
 
-						|<%
+						| 
+						| <%
 						|	}
 						| %>
 
-						form(method="POST" action="sc-contact.jsp" novalidate)
+						form(method="POST", action="sc-contact.jsp", novalidate)
 							label(for="firstName") Vorname
-							input(type="text", name="firstName", id="firstName" value!="<%= firstName %>")
+							input(type="text", name="firstName", id="firstName", value!="<%= firstName %>")
 							label(for="lastName") Nachname
-							input(type="text", name="lastName", id="lastName" value!="<%= lastName %>")
+							input(type="text", name="lastName", id="lastName", value!="<%= lastName %>")
 							label(for="email") E-Mail-Adresse
-							input(type="email", name="email", id="email" value!="<%= email %>")
+							input(type="email", name="email", id="email", value!="<%= email %>")
 							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Warum muss ich eine E-Mail-Adresse angeben?", data-modal-text="Ohne Angabe einer E-Mail-Adresse können wir nicht auf dein Anliegen antworten. Aber keine Sorge, alle deine Daten werden vertraulich behandelt und nur bis zur Aufklärung deiner Anfrage aufbewahrt.") Ist das notwendig?
 							label(for="message") Ihre Nachricht
 							textarea(name="message", id="message", rows="12") <%= message %>
@@ -166,6 +170,7 @@ html
 	script(src="js/modal.js")
 	script(src="js/icons.js")
 
+| 
 | <%
 | 	if (conn != null)
 | 		conn.close();

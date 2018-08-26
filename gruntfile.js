@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		jade: {
 			compile: {
-                options: {
+				options: {
 					pretty: "\t",
 					data: {
 						debug: false,
@@ -20,10 +20,10 @@ module.exports = function(grunt) {
 					
 					
 					'build/sc-index.jsp': 'src/html/sc-index.jade',
-                    'build/sc-contact.jsp': 'src/html/sc-contact.jade',
-                    'build/sc-cancellations.html': 'src/html/sc-cancellations.jade',
-                    'build/sc-complaints.html': 'src/html/sc-complaints.jade',
-                    'build/sc-rights.html': 'src/html/sc-rights.jade'
+					'build/sc-contact.jsp': 'src/html/sc-contact.jade',
+					'build/sc-cancellations.jsp': 'src/html/sc-cancellations.jade',
+					'build/sc-complaints.jsp': 'src/html/sc-complaints.jade',
+					'build/sc-rights.html': 'src/html/sc-rights.jade'
 				}
 			}
 		},
@@ -45,24 +45,24 @@ module.exports = function(grunt) {
 					'build/css/support-center.built.css': ["src/less/pages/support-center.less"],
 				}
 			}
-        },
-        copy: {
-            build: {
-                files: [
-                    {
-                        expand: true,
-                        src: 'img/*',
-                        dest: 'build/'
-                    },
-                    {
-                        expand: true,
-                        src: 'js/*',
-                        dest: 'build/'
-                    },
-                    {
-                        expand: true,
-                        src: 'lib/*',
-                        dest: 'build/'
+		},
+		copy: {
+			build: {
+				files: [
+					{
+						expand: true,
+						src: 'img/*',
+						dest: 'build/'
+					},
+					{
+						expand: true,
+						src: 'js/*',
+						dest: 'build/'
+					},
+					{
+						expand: true,
+						src: 'lib/*',
+						dest: 'build/'
 					},
 					{
 						expand: true,
@@ -70,12 +70,12 @@ module.exports = function(grunt) {
 						src: '*',
 						dest: 'build'
 					}
-                ]
-            }
-        }
+				]
+			}
+		}
 	});
 
-    grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-jade');
 	grunt.registerTask('default', ['jade', 'less', 'copy']);

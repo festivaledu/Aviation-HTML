@@ -23,9 +23,9 @@ html
 								li FAQ
 							a.menu-item(href="sc-contact.jsp")
 								li Kontakt
-							a.menu-item(href="sc-cancellations.html")
+							a.menu-item(href="sc-cancellations.jsp")
 								li Stornierungen
-							a.menu-item.selected(href="sc-complaints.html")
+							a.menu-item.selected(href="sc-complaints.jsp")
 								li Beschwerden
 							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
@@ -51,7 +51,7 @@ html
 								option(value="flight") Flug
 								option(value="other") Sonstige
 							label(for="message") Ihre Nachricht
-							textarea(name="message", id="message", lines="12")
+							textarea(name="message", id="message", rows="12")
 							button(class="modal-trigger", data-modal-type="warning", data-modal-title="Passt das so?", data-modal-text="Du kannst deine Nachricht nach dem Abschicken nicht mehr bearbeiten. Bist du sicher, dass du deine Nachricht so abschicken willst?", data-modal-primary="Das passt so!", data-modal-primary-action="submit", data-modal-secondary="Ne noch nicht") Absenden
 		include _footer
 		

@@ -46,13 +46,15 @@ html
 			section.support
 				.section-content.row.reversed
 					.column.column-3
-										
+
+						| 			
 						| <%
 						|   if (questions != null) {
 						| %>
 					
 						ul.sc-menu.contents
 							li.menu-item.heading FAQ #[span.expand-button]
+							
 							| 
 							| <%
 							|	while (questions.next()) {
@@ -61,11 +63,13 @@ html
 							
 							a.menu-item(data-q-link!="<%= questions.getString(\"linkId\") %>")
 								li <%= questions.getString("questionText") %>
+							
 							| 
 							| <%
 							| 	}
 							| 	questions.beforeFirst();
 							| %>
+
 						| 
 						| <%
 						|	}
@@ -77,9 +81,9 @@ html
 								li FAQ
 							a.menu-item(href="sc-contact.jsp")
 								li Kontakt
-							a.menu-item(href="sc-cancellations.html")
+							a.menu-item(href="sc-cancellations.jsp")
 								li Stornierungen
-							a.menu-item(href="sc-complaints.html")
+							a.menu-item(href="sc-complaints.jsp")
 								li Beschwerden
 							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
@@ -132,6 +136,7 @@ html
 	script(src="js/support-center.js")
 	script(src="js/modal.js")
 	script(src="js/icons.js")
+
 | 
 | <%
 | 	if (conn != null)
