@@ -88,13 +88,13 @@ html
 					.column.column-3
 						ul.sc-menu
 							li.menu-item.heading Support
-							a.menu-item(href="sc-index.html")
+							a.menu-item(href="sc-index.jsp")
 								li FAQ
-							a.menu-item.selected(href="sc-contact.html")
+							a.menu-item.selected(href="sc-contact.jsp")
 								li Kontakt
-							a.menu-item(href="sc-cancellations.html")
+							a.menu-item(href="sc-cancellations.jsp")
 								li Stornierungen
-							a.menu-item(href="sc-complaints.html")
+							a.menu-item(href="sc-complaints.jsp")
 								li Beschwerden
 							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
@@ -102,6 +102,7 @@ html
 					.column.column-8.offset-1
 						h2 Kontakt
 
+                        |
 						| <%
 						| 	if (send) {
 						| %>
@@ -115,6 +116,7 @@ html
 							.content
 							p Deine Nachricht wurde erfolgreich abgeschickt. Wir kümmern uns jetzt so schnell wie möglich um deine Anfrage.
 
+                        |
 						| <%
 						| 	}
 						| 
@@ -130,6 +132,7 @@ html
 							.content
 								p Beim Absenden deiner Nachricht ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
 
+                        |
 						| <%
 						| 	}
 						| 
@@ -145,6 +148,7 @@ html
 							.content
 								p Du musst alle Felder, die nicht als optional gekennzeichnet sind, ausfüllen.
 
+                        |
 						|<%
 						|	}
 						| %>
@@ -166,6 +170,7 @@ html
 	script(src="js/modal.js")
 	script(src="js/icons.js")
 
+|
 | <%
 | 	if (conn != null)
 | 		conn.close();
