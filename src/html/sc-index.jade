@@ -21,7 +21,7 @@
 | 		dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
 | 		conn = dataSource.getConnection();
 | 		Statement statement = conn.createStatement();
-| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY question ASC");
+| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY questionText ASC");
 | 	} catch (Exception e) {
 | 		e.printStackTrace();
 | 	}
@@ -54,11 +54,11 @@ html
 					
 						ul.sc-menu.contents
 							li.menu-item.heading FAQ #[span.expand-button]
-							
 							| 
 							| <%
 							|	while (questions.next()) {
 							| %>
+							| 
 							
 							a.menu-item(data-q-link!="<%= questions.getString(\"linkId\") %>")
 								li <%= questions.getString("questionText") %>
@@ -112,9 +112,9 @@ html
 								div(class="icon")
 									span
 										span(class="ai ai-error")
-								span(class="title") Hier funktioniert etwas nicht
+								span(class="title") Hier funktioniert etwas nicht...
 							div(class="content")
-								p Es scheint als hätten wir Probleme im Hintergrund sodass aktuell keine Fragen geladen werden können. Bitte versuch es später noch einmal.
+								p Es scheint als hätten wir Probleme im Hintergrund, sodass aktuell keine Fragen geladen werden können. Bitte versuch es später noch einmal.
 
 						| 
 						| <%
