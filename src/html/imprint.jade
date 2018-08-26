@@ -1,0 +1,62 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Impressum – FESTIVAL Aviation Support
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/support-center.built.css")
+	body
+		include _nav
+
+		include _sc-modal
+		
+		.content-wrapper
+			section.support
+				.section-content.row
+					.column.column-3
+						ul.sc-menu
+							a.menu-item.selected(href="imprint.html")
+								li Impressum
+							a.menu-item(href="privacy.html")
+								li Datenschutzerklärung
+						
+						//- article(class="ad")
+						//- 	img(src="https://www.visitfinland.com/app/uploads/Header_Helsinki_aerial-1600x900.jpg")
+						//- 	div(class="content")
+						//- 		h4 Entdecke Helsinki
+						//- 		p Schon ab 159€ pro Person
+						//- 		button Jetzt Buchen
+
+					.column.column-8.offset-1
+						h2 Impressum
+
+						img(src="img/logo-dark.svg", width="200", style="margin: 2em 0", alt="Aviation Logo")
+
+						h3 FESTIVΛL Aviation Oy
+						p.flow Postfach 12 34#[br]D-30421 Hannover
+
+						h3 Registereintrag
+						p.flow Landgericht Hannover HRA 1234
+
+						h3 Umsatzsteuer-Ident-Nummer
+						p.flow DE 123 456 789
+
+						h3 Herausgeber
+						p.flow FESTIVΛL Aviation Oy#[br]Konzernkommunikation
+
+						h3 Redaktion
+						p.flow Jonas Z.
+
+						h3 Design & tech. Umsetzung
+						p.flow Fabian K.#[br]Janik S.
+
+						h3 Kontakt
+						p.flow E-Mail: kustomersatisfaktion@festival.aero
+
+		include _footer
+		
+	script(src="js/modal.js")
+	script(src="js/icons.js")

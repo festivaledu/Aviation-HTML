@@ -1,3 +1,75 @@
+| <%@ page contentType="text/html;charset=UTF-8" %>
+| <%@ page import="javax.naming.InitialContext" %>
+| <%@ page import="javax.naming.Context" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.security.MessageDigest" %>
+| <%@ page import="java.nio.charset.StandardCharsets" %>
+| <%@ page import="java.sql.PreparedStatement" %>
+| 
+| 
+| <%!
+| 	private String bytesToHex(byte[] bytes) {
+| 		StringBuffer result = new StringBuffer();
+| 		for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
+| 		return result.toString();
+| 	}
+| %>
+| 
+| <%
+|     InitialContext initialContext;
+|     Context environmentContext;
+|     DataSource dataSource;
+|     Connection conn = null;
+| 
+|     String firstName = "";
+|     String lastName = "";
+|     String email = "";
+|     String type = "";
+|     String message = "";
+| 
+|     boolean invalid = false;
+|     boolean send = false;
+|     boolean error = false;
+| 
+|     request.setCharacterEncoding("UTF-8");
+| 
+|     if ("POST".equals(request.getMethod())) {
+|         firstName = request.getParameter("firstName");
+|         lastName = request.getParameter("lastName");
+|         email = request.getParameter("email");
+|         type = request.getParameter("complaintType");
+|         message = request.getParameter("message");
+| 
+|         if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty() && email != null && !email.isEmpty() && message != null && !message.isEmpty()) {
+|             try {
+|                 initialContext = new InitialContext();
+|                 environmentContext = (Context)initialContext.lookup("java:/comp/env");
+|                 dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+|                 conn = dataSource.getConnection();
+| 
+|                 PreparedStatement statement = conn.prepareStatement("INSERT INTO `contacts` VALUES (?, ?, ?, ?, ?, ?, default, default)");
+| 
+|                 statement.setString(1, bytesToHex(MessageDigest.getInstance("SHA-256").digest(String.format("%s%s%s%s%d", firstName, lastName, email, message, System.currentTimeMillis() / 1000L).getBytes(StandardCharsets.UTF_8))).substring(0, 32));
+|                 statement.setString(2, firstName);
+|                 statement.setString(3, lastName);
+|                 statement.setString(4, email);
+|                 statement.setString(5, type);
+|                 statement.setString(6, message);
+| 
+|                 statement.execute();
+| 
+|                 send = true;
+|             } catch (Exception e) {
+|                 error = true;
+|                 e.printStackTrace();
+|             }
+|         } else {
+|             invalid = true;
+|         }
+|     }
+| %>
+
 doctype html
 html
 	head
@@ -23,9 +95,9 @@ html
 								li FAQ
 							a.menu-item(href="sc-contact.jsp")
 								li Kontakt
-							a.menu-item(href="sc-cancellations.html")
+							a.menu-item(href="sc-cancellations.jsp")
 								li Stornierungen
-							a.menu-item.selected(href="sc-complaints.html")
+							a.menu-item.selected(href="sc-complaints.jsp")
 								li Beschwerden
 							a.menu-item(href="sc-rights.html")
 								li Fluggastrechte
@@ -34,6 +106,58 @@ html
 						h2 Beschwerde einreichen
 						p(class="flow") Etwas lief bei deiner letzten Buchung schief oder du bist mit dem Flug nicht zufrieden gewesen? Was es auch sein mag, wir kümmern uns drum; Denn du verdienst es!
 						p(class="flow") Allerdings benötigen wir dafür ein paar Details von dir. Versuch das wichtigste in deiner Nachricht zu erwähnen, dann müssen wir nicht so viel nachfragen und können uns schneller und besser um dein Problem kümmern!
+						
+						| 
+						| <%
+						| 	if (send) {
+						| %>
+
+						article.flag.success
+							.header
+								.icon
+									span
+										span.ai.ai-success
+								span.title Beschwerde abgeschickt
+							.content
+								p Deine Beschwerde wurde erfolgreich abgeschickt. Wir kümmern uns jetzt so schnell wie möglich um dein Anliegen.
+
+						| 
+						| <%
+						| 	}
+						| 
+						| 	if (error) {
+						| %>
+
+						article.flag.error
+							.header
+								.icon
+									span
+										span.ai.ai-error
+								span.title Hier funktioniert etwas nicht
+							.content
+								p Beim Absenden deiner Beschwerde ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
+
+						| 
+						| <%
+						| 	}
+						| 
+						| 	if (invalid) {
+						| %>
+
+						article.flag.error
+							.header
+								.icon
+									span
+										span.ai.ai-error
+								span.title Ungültige Eingabe
+							.content
+								p Du musst alle Felder, die nicht als optional gekennzeichnet sind, ausfüllen.
+
+						| 
+						| <%
+						|	}
+						| %>
+
 						form(action="#")
 							label(for="firstName") Vorname
 							input(type="text", name="firstName", id="firstName")
@@ -45,7 +169,7 @@ html
 							label(for="complaintType") Art der Beschwerde
 							select(name="complaintType" id="complaintType")
 								option(value="general") Allgemeine Beschwerde
-								option(value="search") Suche								
+								option(value="search") Suche
 								option(value="offer") Anegbot
 								option(value="ads-marketing") Werbung + Marceting
 								option(value="flight") Flug
@@ -58,3 +182,9 @@ html
 	script(src="js/support-center.js")
 	script(src="js/modal.js")
 	script(src="js/icons.js")
+
+| 
+| <%
+| 	if (conn != null)
+| 		conn.close();
+| %>
