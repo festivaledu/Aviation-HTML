@@ -47,7 +47,7 @@ html
 				.section-content.row.reversed
 					.column.column-3
 
-                        |			
+						| 			
 						| <%
 						|   if (questions != null) {
 						| %>
@@ -55,7 +55,7 @@ html
 						ul.sc-menu.contents
 							li.menu-item.heading FAQ #[span.expand-button]
 							
-                            |
+							| 
 							| <%
 							|	while (questions.next()) {
 							| %>
@@ -63,13 +63,13 @@ html
 							a.menu-item(data-q-link!="<%= questions.getString(\"linkId\") %>")
 								li <%= questions.getString("questionText") %>
 							
-                            |
+							| 
 							| <%
 							| 	}
 							| 	questions.beforeFirst();
 							| %>
 
-                        |
+						| 
 						| <%
 						|	}
 						| %>
@@ -90,7 +90,7 @@ html
 					.column.column-8.offset-1
 						h2 FAQ
 						
-                        |
+						| 
 						| <%
 						| 	if (questions != null) {
 						|		while (questions.next()) {
@@ -101,7 +101,7 @@ html
 								span.expand-button
 							div.faq-card-content <%= questions.getString("answerText") %>
 						
-                        |
+						| 
 						| <%
 						| 		}
 						| 	} else {
@@ -116,7 +116,7 @@ html
 							div(class="content")
 								p Es scheint als hätten wir Probleme im Hintergrund sodass aktuell keine Fragen geladen werden können. Bitte versuch es später noch einmal.
 
-                        |
+						| 
 						| <%
 						| 	}
 						| %>
@@ -136,7 +136,7 @@ html
 	script(src="js/modal.js")
 	script(src="js/icons.js")
 
-|
+| 
 | <%
 | 	if (conn != null)
 | 	    conn.close();
