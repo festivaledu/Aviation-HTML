@@ -18,6 +18,8 @@ module.exports = function(grunt) {
 					'build/register.jsp': 'src/html/register.jade',
 					'build/dashboard.jsp': 'src/html/dashboard.jade',
 					
+					'build/imprint.html': 'src/html/imprint.jade',
+					'build/privacy.html': 'src/html/privacy.jade',					
 					
 					'build/sc-index.jsp': 'src/html/sc-index.jade',
 					'build/sc-contact.jsp': 'src/html/sc-contact.jade',
