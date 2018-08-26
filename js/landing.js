@@ -120,10 +120,10 @@ document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\
 				let child = document.createElement("li");
 				child.className = "suggestion-item";
 				child.setAttribute("data-iata", suggestion["iata_code"]);
-				child.innerHTML = suggestion["name"];
+				child.innerHTML = suggestion["municipality"] || suggestion["name"];
 				
 				child.addEventListener("click", () => {
-					container.querySelector("input:not([name])").value = suggestion["name"];
+					container.querySelector("input:not([name])").value = suggestion["municipality"] || suggestion["name"];
 					container.querySelector("input[name]").value = suggestion["iata_code"];
 					
 					suggestionContainer.classList.remove("visible");
@@ -148,7 +148,8 @@ document.querySelectorAll(".calendar").forEach(item => {
 				year: "numeric"
 			});
 			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
-		}
+		},
+		hidePast: true
 	});
 });
 

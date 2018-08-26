@@ -29,8 +29,38 @@ html
 		include _nav
 		
 		section.search-results
-			.section-content
-				.search-results-container
+			.section-content.row
+				.progress-overview.column.medium-3
+					p.progress-title Flug buchen
+					p.progress-section-title Vorbereitung
+					ul
+						li(data-progress-made="true")
+							| 
+							| 
+							span Reiseziel wählen
+							.pipe
+						li.current(data-progress-made="true")
+							| 
+							| 
+							span Flug wählen
+							.pipe
+						li(data-progress-made="false")
+							| 
+							| 
+							span Dienste wählen
+							.pipe
+					p.progress-section-title Bezahlung
+					ul
+						li(data-progress-made="false")
+							| 
+							| 
+							span Rechnungsadresse
+							.pipe
+						li(data-progress-made="false")
+							| 
+							| 
+							span Bestellung abschließen
+				.search-results-container.column.column-12.medium-8
 					.search-results-header
 						.row
 							.column.column-12.medium-6
@@ -59,65 +89,85 @@ html
 									img(src="img/icon-class.svg")
 									p Klassen
 								p.column-content Alle Klassen
-					| 
-					| <%
-					| 	if (demoData.has("items")) {
-					| 	 	for (int i=0; i<((JSONArray)demoData.get("items")).length(); i++) {
-					| 			JSONObject resultObj = ((JSONArray)demoData.get("items")).getJSONObject(i);
-					| %>
-					.scroll-container 
+					.scroll-container
+						| 
+						| <%
+						| 	if (demoData.has("items")) {
+						| 	 	for (int i=0; i<((JSONArray)demoData.get("items")).length(); i++) {
+						| 			JSONObject resultObj = ((JSONArray)demoData.get("items")).getJSONObject(i);
+						| 			LocalDate departureDate = (LocalDate)resultObj.get("departureDate");
+						| %> 
 						.result-header
-							h4.date #[span Abflug] – <%= ((LocalDate)resultObj.get("departureDate")).format(DateTimeFormatter.ofPattern("dd MMM")) %>
+							h4.date #[span Abflug] – <%= departureDate.format(DateTimeFormatter.ofPattern("dd MMM")) %>
 							.table-header.row
 								.column.column-2
-									p <%= demoData.get("departureMunicipality") %>
+									p <%= !((String)demoData.get("departureMunicipality")).isEmpty() ? demoData.get("departureMunicipality") : demoData.get("departureName") %>
 								.column.column-2.align-right
-									p <%= demoData.get("arrivalMunicipality") %>
+									p <%= !((String)demoData.get("arrivalMunicipality")).isEmpty() ? demoData.get("arrivalMunicipality") : demoData.get("arrivalName") %>
 								.column.column-2.column-offset-1
 									p Dauer
 								.column.column-1
 									p Stopps
 								.column.column-auto
 									p Flugnummer
-								.column.column-1.align-right
-									p Preis
-						| 
-						| <%
-						| 		for (int j=0; j<((JSONArray)resultObj.get("items")).length(); j++) {
-						| 			JSONObject flightObj = ((JSONArray)resultObj.get("items")).getJSONObject(j);
-						| %>
-						.results
-							.result-cell.row
-								.column.column-2
-									p <%= ((Time)flightObj.get("departureTime")).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) %>
 								.column.column-2.align-right
-									p <%= ((Time)flightObj.get("arrivalTime")).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) %>
+									p Preis
+						.results
+							| 
+							| <%
+							| 		for (int j=0; j<((JSONArray)resultObj.get("items")).length(); j++) {
+							| 			JSONObject flightObj = ((JSONArray)resultObj.get("items")).getJSONObject(j);
+							| 			
+							| 			LocalTime departureTime = ((Time)flightObj.get("departureTime")).toLocalTime().withSecond(0);
+							| 			LocalTime arrivalTime = ((Time)flightObj.get("arrivalTime")).toLocalTime().withSecond(0);
+							| 
+							| 			Duration duration = Duration.between(departureTime, arrivalTime);
+							| 			if (duration.isNegative()) {
+							| 				duration = duration.plusDays(1);
+							| 			}
+							| %>
+							.result-cell.row(data-departure!="<%= demoData.get(\"departureIATA\") %>",
+											data-arrival!="<%= demoData.get(\"arrivalIATA\") %>",
+											data-departure-date!="<%= departureDate.format(DateTimeFormatter.ISO_DATE) %>",
+											data-departure-time!="<%= departureTime.format(DateTimeFormatter.ISO_TIME) %>",
+											data-arrival-time!="<%= arrivalTime.format(DateTimeFormatter.ISO_TIME) %>",
+											data-flight-number!="<%= flightObj.get(\"flightNumber\") %>",
+											data-price!="<%= flightObj.get(\"price\") %>",)
+								.column.column-2
+									p <%= departureTime.format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								.column.column-2.align-right
+									p <%= arrivalTime.format(DateTimeFormatter.ofPattern("HH:mm")) %>
 								.column.column-2.column-offset-1
-									| <%
-									| 	LocalTime departureTime = ((Time)flightObj.get("departureTime")).toLocalTime();
-									| 	LocalTime arrivalTime = ((Time)flightObj.get("arrivalTime")).toLocalTime();
-									| 
-									| 	Duration duration = null;
-									| 	if (departureTime.toSecondOfDay() > arrivalTime.toSecondOfDay()) {
-									| 		duration = Duration.between(arrivalTime, departureTime);
-									| 	} else {
-									| 		duration = Duration.between(departureTime, arrivalTime);
-									| 	}
-									| %>
 									p <%= String.format("%02dh %02dmin", duration.getSeconds() / 3600, (duration.getSeconds() % 3600) / 60) %>
 								.column.column-1
 									p <%= flightObj.get("stops") %>
 								.column.column-auto
 									p <%= flightObj.get("flightNumber") %>
-								.column.column-1.align-right
+								.column.column-2.align-right
 									p ab <%= flightObj.get("price") %>€
+							| 
+							| <%
+							| 		}
+							| %>
 						| 
-						| <%	} %>
-					| 
-					| <%
-					| 		}
-					| 	} 
-					| %>
+						| <%
+						| 		}
+						| 	} 
+						| %>
 					.fill-background
 					.results-footer
+						button.outline.red Abbrechen
+						button.outline.blue.continue-button(disabled) Weiter
 						
+		form.hidden(action="#", method="POST", name="selectedItem")
+			input(name="depart_iata")
+			input(name="arrv_iata")
+			input(name="depart_date")
+			input(name="arrv_date")
+			input(name="flight_number")
+			| 
+			| 
+			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
+			<!-- This is for demonstration purposes only! -->
+			input(name="price")
+		script(type="text/javascript",src="js/flight-search.js")
