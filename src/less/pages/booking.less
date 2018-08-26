@@ -123,18 +123,18 @@ section.search-results {
 			-webkit-backdrop-filter: blur(10px);
 			z-index: 5;
 			
-			& > .row {
+			.row {
 				min-height: 56px;
 				padding: 0 18px;
-				
-				& > .row {
-					padding: 0;
-				}
 				
 				.column {
 					height: 56px;
 					display: flex;
 					flex-direction: column;
+					
+					& + .column {
+						padding-left: 14px;
+					}
 					
 					&:not(:last-child) {
 						box-shadow: inset -1px 0 0 0 rgba(0, 0, 0, 0.16);
@@ -172,12 +172,20 @@ section.search-results {
 					}
 				}
 				
-				& > .column + .column {
-					padding-left: 14px;
-				}
-				
 				&:not(:last-child) {
 					box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.16);
+				}
+				
+				&.selected-flight {
+					.column {
+						box-shadow: none !important;
+						
+						.column-title {
+							p {
+								width: 100%;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -189,7 +197,7 @@ section.search-results {
 			.result-header {
 				position: relative;
 				width: 100%;
-				height: 128px;
+				min-height: 128px;
 				color: #FFFFFF;
 				background-color: rgba(255, 255, 255, 0.02);
 				-webkit-backdrop-filter: blur(50px);
@@ -205,6 +213,10 @@ section.search-results {
 						font-size: inherit;
 						font-weight: 600;
 					}
+				}
+				
+				& > p {
+					padding: 20px;
 				}
 				
 				.table-header {
@@ -274,24 +286,24 @@ section.search-results {
 						&:after {
 							.encoded-svg-background("<svg width='18px' height='17px' viewBox='0 0 18 17' version='1.1' xmlns='http://www.w3.org/2000/svg'><polygon fill='#FFFFFF' points='0 7.19824219 14.5546875 7.19824219 8.63085938 1.27441406 9.89648438 0 18 8.09472656 9.89648438 16.1982422 8.63085938 14.9238281 14.5546875 9 0 9'/></svg>");
 						}
-					}
 				}
 			}
-			
-			// & > div:last-child {
-			// 	position: relative;
-				
-			// 	&:after {
-			// 		content: '';
-			// 		position: absolute;
-			// 		top: 100%;
-			// 		left: 0;
-			// 		right: 0;
-			// 		height: 1000px;
-			// 		background-color: #FFFFFF;
-			// 	}
-			// }
 		}
+			
+		// & > div:last-child {
+		// 	position: relative;
+			
+		// 	&:after {
+		// 		content: '';
+		// 		position: absolute;
+		// 		top: 100%;
+		// 		left: 0;
+		// 		right: 0;
+		// 		height: 1000px;
+		// 		background-color: #FFFFFF;
+		// 	}
+		// }
+	}
 		
 		.fill-background {
 			flex: 1;

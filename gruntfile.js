@@ -79,5 +79,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-jade');
-	grunt.registerTask('default', ['jade', 'less', 'copy']);
+	grunt.loadNpmTasks('grunt-newer');
+	grunt.registerTask('default', ['newer:jade', 'newer:less', 'newer:copy']);
 };

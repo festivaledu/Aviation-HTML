@@ -83,7 +83,7 @@ html
 								.column-title
 									img(src="img/icon-passenger.svg")
 									p Passagiere
-								input.column-content(type="number",value="1",min="1",max="10")
+								input.column-content(type="number", name="passengers", value="1", min="1", max="10", oninput="passengerCountChanged(this)")
 							.column.column-12.medium-4
 								.column-title
 									img(src="img/icon-class.svg")
@@ -136,6 +136,7 @@ html
 											data-departure-date!="<%= departureDate.format(DateTimeFormatter.ISO_DATE) %>",
 											data-departure-time!="<%= departureTime.format(DateTimeFormatter.ISO_TIME) %>",
 											data-arrival-time!="<%= arrivalTime.format(DateTimeFormatter.ISO_TIME) %>",
+											data-stops!="<%= flightObj.get(\"stops\") %>",
 											data-flight-number!="<%= flightObj.get(\"flightNumber\") %>",
 											data-price!="<%= flightObj.get(\"price\") %>",)
 								.column.column-2
@@ -170,10 +171,13 @@ html
 			input(name="depart_date")
 			input(name="arrv_date")
 			input(name="flight_number")
+			input(name="passengers")
 			input(name="flight_class")
 			| 
 			| 
 			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
 			<!-- This is for demonstration purposes only! -->
+			input(name="duration")
+			input(name="stops")
 			input(name="price")
 		script(type="text/javascript",src="js/flight-search.js")

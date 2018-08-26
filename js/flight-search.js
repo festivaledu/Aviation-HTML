@@ -44,6 +44,10 @@
 // 	// });
 // });
 
+const passengerCountChanged = (e) => {
+	document.forms[0]["passengers"].value = e.value;
+}
+
 const classChanged = (e) => {
 	document.forms[0]["flight_class"].value = e.value;
 }
@@ -54,9 +58,6 @@ document.querySelectorAll(".search-results-container .results .result-cell").for
 		
 		let departureTime = new Date(`${item.getAttribute("data-departure-date")}T${item.getAttribute("data-departure-time")}Z`);
 		let arrivalTime = new Date(`${item.getAttribute("data-departure-date")}T${item.getAttribute("data-arrival-time")}Z`);
-		
-		console.log(departureTime);
-		console.log(arrivalTime);
 		
 		let departureDate = new Date(item.getAttribute("data-departure-date"));
 		departureDate.setHours(departureTime.getUTCHours());
@@ -69,18 +70,18 @@ document.querySelectorAll(".search-results-container .results .result-cell").for
 			arrivalDate.setDate(arrivalDate.getDate() + 1);
 		}
 		
-		console.log(departureDate);
-		console.log(arrivalDate);
-		
 		selectedItemForm["depart_iata"].value = item.getAttribute("data-departure");
 		selectedItemForm["arrv_iata"].value = item.getAttribute("data-arrival");
 		selectedItemForm["depart_date"].value = departureDate.toISOString();
 		selectedItemForm["arrv_date"].value = arrivalDate.toISOString();
 		selectedItemForm["flight_number"].value = item.getAttribute("data-flight-number");
+		selectedItemForm["passengers"].value = document.querySelector("input[name=\"passengers\"]").value;
 		selectedItemForm["flight_class"].value = document.querySelector("select[name=\"flight_class\"]").value;
 		
 		// DO NOT USE THIS IN PRODUCTION!!!
 		// This is for demonstration purposes only!
+		selectedItemForm["duration"].value = arrivalDate.getTime() - departureDate.getTime();
+		selectedItemForm["stops"].value = item.getAttribute("data-stops");
 		selectedItemForm["price"].value = item.getAttribute("data-price");
 		
 		document.querySelectorAll(".search-results-container .results .result-cell.selected").forEach(item => {
