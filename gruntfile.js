@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 					
 					'build/css/landing.built.css': ["src/less/pages/landing.less", "src/less/promo-article.less"],
 					'build/css/booking.built.css': "src/less/pages/booking.less",
-					'build/css/featured.built.css': "src/less/pages/featured.less",
+					'build/css/featured.built.css': ["src/less/pages/featured.less", "src/less/promo-article.less"],
 					'build/css/login.built.css': ["src/less/pages/login.less"],
 					'build/css/dashboard.built.css': ["src/less/pages/dashboard.less"],
 					'build/css/support-center.built.css': ["src/less/pages/support-center.less"],
