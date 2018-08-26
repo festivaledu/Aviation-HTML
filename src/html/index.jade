@@ -27,7 +27,7 @@ html
 				h4.hero-subtitle Einfach nur das buchen, was du wirklich brauchst – das ist aviation.
 				
 				.hero-search-bar
-					form(method="post", action="search.jsp")
+					form(method="post", action="booking-search.jsp")
 						.input-wrapper(data-key="departure")
 							.column-title
 								img(src="img/icon-departure.svg")
@@ -49,7 +49,7 @@ html
 							input(type="text", placeholder="Abflugdatum auswählen", required)
 							input.hidden(type="date", id="depart_date", name="depart_date")
 							div.calendar
-						button.search-button Suchen
+						button.fill.blue.search-button Suchen
 		section.promo-articles
 			.section-content
 				//- .promo-article(data-spring-animatable="promo_1")

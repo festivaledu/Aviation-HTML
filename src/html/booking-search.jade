@@ -1,0 +1,183 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
+| <%@ page import="org.json.*" %>
+| <%@ page import="java.time.*" %>
+| <%@ page import="java.time.format.DateTimeFormatter"%>
+| <%@ page import="java.sql.Time" %>
+| 
+| <%
+| 	JSONObject demoData = new JSONObject();
+| 
+| 	if (request.getParameter("depart_iata") != null && request.getParameter("arrv_iata") != null && request.getParameter("depart_date") != null) {
+| 		ZonedDateTime zonedDateTime = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin"));
+| 		demoData = SearchResultsDemo.getDemoData(request.getParameter("depart_iata"), request.getParameter("arrv_iata"), zonedDateTime.toLocalDate());
+| 	}
+| %>
+| 
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Flugsuche – FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/booking.built.css")
+	body
+		include _nav
+		
+		section.search-results
+			.section-content.row
+				.progress-overview.column.medium-3
+					p.progress-title Flug buchen
+					p.progress-section-title Vorbereitung
+					ul
+						li(data-progress-made="true")
+							| 
+							| 
+							span Reiseziel wählen
+							.pipe
+						li.current(data-progress-made="true")
+							| 
+							| 
+							span Flug wählen
+							.pipe
+						li(data-progress-made="false")
+							| 
+							| 
+							span Dienste wählen
+							.pipe
+					p.progress-section-title Bezahlung
+					ul
+						li(data-progress-made="false")
+							| 
+							| 
+							span Rechnungsadresse
+							.pipe
+						li(data-progress-made="false")
+							| 
+							| 
+							span Bestellung abschließen
+				.search-results-container.column.column-12.medium-8
+					.search-results-header
+						.row
+							.column.column-12.medium-6(data-key="departure")
+								.column-title
+									img(src="img/icon-departure.svg")
+									p Von
+								input.column-content(value!="<%= demoData.has(\"departureName\") ? demoData.get(\"departureName\") : \"\" %>", placeholder="Abreiseort eingeben", required)
+							.column.column-12.medium-6(data-key="arrival")
+								.column-title
+									img(src="img/icon-arrival.svg")
+									p Nach
+								input.column-content(value!="<%= demoData.has(\"arrivalName\") ? demoData.get(\"arrivalName\") : \"\" %>", placeholder="Ankunftsort eingeben", required)
+						.row
+							.column.column-12.medium-6(data-key="date")
+								.column-title
+									img(src="img/icon-date.svg")
+									p Abflugdatum
+								input.column-content(type="date", value!="<%= demoData.has(\"departureDate\") ? ((LocalDate)demoData.get(\"departureDate\")).format(DateTimeFormatter.ofPattern(\"EEEE, dd. MMMM yyyy\")) : \"\" %>", placeholder="Abflugdatum auswählen", required)
+							.column.column-12.medium-2
+								.column-title
+									img(src="img/icon-passenger.svg")
+									p Passagiere
+								input.column-content(type="number", name="passengers", value="1", min="1", max="10", oninput="passengerCountChanged(this)")
+							.column.column-12.medium-4
+								.column-title
+									img(src="img/icon-class.svg")
+									p Klasse
+								p.column-content
+									select(name="flight_class", onchange="classChanged(this)")
+										option(value="economy") Economy
+										option(value="premium_economy") Premium Economy
+										option(value="business") Business
+										option(value="first") First Class
+					.scroll-container
+						| 
+						| <%
+						| 	if (demoData.has("items")) {
+						| 	 	for (int i=0; i<((JSONArray)demoData.get("items")).length(); i++) {
+						| 			JSONObject resultObj = ((JSONArray)demoData.get("items")).getJSONObject(i);
+						| 			LocalDate departureDate = (LocalDate)resultObj.get("departureDate");
+						| %> 
+						.result-header
+							h4.date #[span Abflug] – <%= departureDate.format(DateTimeFormatter.ofPattern("dd MMM")) %>
+							.table-header.row
+								.column.column-2
+									p <%= !((String)demoData.get("departureMunicipality")).isEmpty() ? demoData.get("departureMunicipality") : demoData.get("departureName") %>
+								.column.column-2.align-right
+									p <%= !((String)demoData.get("arrivalMunicipality")).isEmpty() ? demoData.get("arrivalMunicipality") : demoData.get("arrivalName") %>
+								.column.column-2.column-offset-1
+									p Dauer
+								.column.column-1
+									p Stopps
+								.column.column-auto
+									p Flugnummer
+								.column.column-2.align-right
+									p Preis
+						.results
+							| 
+							| <%
+							| 		for (int j=0; j<((JSONArray)resultObj.get("items")).length(); j++) {
+							| 			JSONObject flightObj = ((JSONArray)resultObj.get("items")).getJSONObject(j);
+							| 			
+							| 			LocalTime departureTime = ((Time)flightObj.get("departureTime")).toLocalTime().withSecond(0);
+							| 			LocalTime arrivalTime = ((Time)flightObj.get("arrivalTime")).toLocalTime().withSecond(0);
+							| 
+							| 			Duration duration = Duration.between(departureTime, arrivalTime);
+							| 			if (duration.isNegative()) {
+							| 				duration = duration.plusDays(1);
+							| 			}
+							| %>
+							.result-cell.row(data-departure!="<%= demoData.get(\"departureIATA\") %>",
+											data-arrival!="<%= demoData.get(\"arrivalIATA\") %>",
+											data-departure-date!="<%= departureDate.format(DateTimeFormatter.ISO_DATE) %>",
+											data-departure-time!="<%= departureTime.format(DateTimeFormatter.ISO_TIME) %>",
+											data-arrival-time!="<%= arrivalTime.format(DateTimeFormatter.ISO_TIME) %>",
+											data-stops!="<%= flightObj.get(\"stops\") %>",
+											data-flight-number!="<%= flightObj.get(\"flightNumber\") %>",
+											data-price!="<%= flightObj.get(\"price\") %>",)
+								.column.column-2
+									p <%= departureTime.format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								.column.column-2.align-right
+									p <%= arrivalTime.format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								.column.column-2.column-offset-1
+									p <%= String.format("%02dh %02dmin", duration.getSeconds() / 3600, (duration.getSeconds() % 3600) / 60) %>
+								.column.column-1
+									p <%= flightObj.get("stops") %>
+								.column.column-auto
+									p <%= flightObj.get("flightNumber") %>
+								.column.column-2.align-right
+									p ab <%= flightObj.get("price") %>€
+							| 
+							| <%
+							| 		}
+							| %>
+						| 
+						| <%
+						| 		}
+						| 	} 
+						| %>
+					.fill-background
+					.results-footer
+						button.outline.red Abbrechen
+						button.fill.blue.continue-button(disabled, onclick="document.forms[0].submit()") Fortfahren
+						
+		form.hidden(action="booking-services.jsp", method="POST", name="selectedItem")
+			input(name="depart_iata")
+			input(name="arrv_iata")
+			input(name="depart_date")
+			input(name="arrv_date")
+			input(name="flight_number")
+			input(name="passengers")
+			input(name="flight_class")
+			| 
+			| 
+			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
+			<!-- This is for demonstration purposes only! -->
+			input(name="duration")
+			input(name="stops")
+			input(name="price")
+		script(type="text/javascript",src="js/flight-search.js")
