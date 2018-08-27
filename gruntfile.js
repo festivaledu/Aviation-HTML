@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 					'build/imprint.html': 'src/html/imprint.jade',
 					'build/privacy.html': 'src/html/privacy.jade',					
 					
-					'build/sc-admin.html': 'src/html/sc-admin.jade',
+					'build/sc-admin.jsp': 'src/html/sc-admin.jade',
 					'build/sc-index.jsp': 'src/html/sc-index.jade',
 					'build/sc-contact.jsp': 'src/html/sc-contact.jade',
 					'build/sc-cancellations.jsp': 'src/html/sc-cancellations.jade',

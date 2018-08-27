@@ -1,30 +1,91 @@
 | <%@ page contentType="text/html;charset=UTF-8" %>
-| <%@ page import="java.sql.ResultSet" %>
+| <%@ page import="ml.festival.aviation.AuthManager" %>
 | <%@ page import="javax.naming.InitialContext" %>
 | <%@ page import="javax.naming.Context" %>
 | <%@ page import="javax.sql.DataSource" %>
 | <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.sql.PreparedStatement" %>
+| <%@ page import="java.sql.ResultSet" %>
 | <%@ page import="java.sql.Statement" %>
 | 
-| 
 | <%
-| 	InitialContext initialContext;
-| 	Context environmentContext;
-| 	DataSource dataSource;
-| 	Connection conn = null;
+|     AuthManager authManager = new AuthManager();
 | 
-| 	ResultSet questions = null;
+|     if (!authManager.validate(String.valueOf(session.getAttribute("sid")))) {
+|         response.sendRedirect("login.jsp");
+|     } else {
+|         ResultSet profile = authManager.getProfileDetails(String.valueOf(session.getAttribute("sid")));
 | 
-| 	try {
-| 		initialContext = new InitialContext();
-| 		environmentContext = (Context)initialContext.lookup("java:/comp/env");
-| 		dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
-| 		conn = dataSource.getConnection();
-| 		Statement statement = conn.createStatement();
-| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY questionText ASC");
-| 	} catch (Exception e) {
-| 		e.printStackTrace();
-| 	}
+|         if (!profile.next() || !profile.getBoolean("isAdmin")) {
+|             response.sendRedirect("login.jsp");
+|             return;
+|         }
+|     }
+| 
+|     authManager.closeConnection();
+| 
+|     InitialContext initialContext;
+|     Context environmentContext;
+|     DataSource dataSource;
+|     Connection conn = null;
+| 
+|     ResultSet questions = null;
+| 
+|     boolean success = false;
+|     boolean dataError = false;
+|     boolean error = false;
+| 
+|     try {
+|         initialContext = new InitialContext();
+|         environmentContext = (Context)initialContext.lookup("java:/comp/env");
+|         dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+|         conn = dataSource.getConnection();
+| 
+|         request.setCharacterEncoding("UTF-8");
+| 
+|         if ("POST".equals(request.getMethod())) {
+|             String method = request.getParameter("method");
+|             String id = request.getParameter("id");
+| 
+|             if ("update".equals(method)) {
+|                 PreparedStatement p = conn.prepareStatement("UPDATE questions SET questionText = ?, answerText = ? WHERE linkId = ?");
+| 
+|                 p.setString(1, request.getParameter("question"));
+|                 p.setString(2, request.getParameter("answer"));
+|                 p.setString(3, id);
+| 
+|                 p.execute();
+|             } else if ("delete".equals(method)) {
+|                 PreparedStatement p = conn.prepareStatement("DELETE FROM questions WHERE linkId = ?");
+| 
+|                 p.setString(1, id);
+| 
+|                 p.execute();
+|             } else if ("insert".equals(method)) {
+|                 PreparedStatement p = conn.prepareStatement("INSERT INTO questions VALUES (?, ?, ?)");
+| 
+|                 p.setString(1, id);
+|                 p.setString(2, request.getParameter("question"));
+|                 p.setString(3, request.getParameter("answer"));
+| 
+|                 p.execute();
+|             }
+| 
+|             success = true;
+|         }
+| 
+|     } catch (Exception e) {
+|         dataError = true;
+|         e.printStackTrace();
+|     }
+| 
+|     try {
+|         Statement statement = conn.createStatement();
+|         questions = statement.executeQuery("SELECT * FROM questions ORDER BY questionText ASC");
+|     } catch (Exception e) {
+|         error = true;
+|         e.printStackTrace();
+|     }
 | %>
 
 doctype html
@@ -47,6 +108,59 @@ html
 				.section-content
 					h2 Fragen
 
+					| 
+					| <%
+					|     if (success) {
+					| %>
+
+					article(class="flag success")
+						div(class="header")
+							div(class="icon")
+								span
+									span(class="ai ai-success")
+							span(class="title") Aktion erfolgreich
+						div(class="content")
+							p Die Aktion wurde erfolgreich durchgeführt.
+
+					| 
+					| <%
+					|     }
+					| 
+					|     if (dataError) {
+					| %>
+
+					article(class="flag error")
+						div(class="header")
+							div(class="icon")
+								span
+									span(class="ai ai-error")
+							span(class="title") Hier funktioniert etwas nicht
+						div(class="content")
+							p Beim Durchführen der Aktion ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
+
+					| 
+					| <%
+					|     }
+					| 
+					|     if (error) {
+					| %>
+
+					article(class="flag error")
+						div(class="header")
+							div(class="icon")
+								span
+									span(class="ai ai-error")
+							span(class="title") Hier funktioniert etwas nicht
+						div(class="content")
+							p Es scheint als hätten wir Probleme im Hintergrund, sodass aktuell keine Fragen geladen werden können. Bitte versuch es später noch einmal.
+
+					| 
+					| <%
+					|     }
+					| 
+					|     if (!error) {
+					| %>
+
 					article(class="flag info")
 						div(class="header")
 							div(class="icon")
@@ -65,18 +179,30 @@ html
 							th
 								kbd answerText
 							th Aktionen
+
+						| 
+						| <%
+						|      while (questions.next()) {
+						| %>
+
 						tr
 							td
-								kbd how-to-cancel
+								kbd <%= questions.getString("linkId") %>
 							td
-								input(type="text", data-q-question="how-to-cancel", value="Wie funktionieren Stornierungen?")
+								input(type="text", data-q-question!='<%= questions.getString(\"linkId\") %>', value!='<%= questions.getString(\"questionText\") %>')
 							td
-								input(type="text", data-q-answer="how-to-cancel", value="Gar nicht, bitch.")
+								input(type="text", data-q-answer!='<%= questions.getString(\"linkId\") %>', value!='<%= questions.getString(\"answerText\") %>')
 							td
-								button.icon.success.update(data-q-id="how-to-cancel").modal-trigger(data-modal-type="question", data-modal-title="Frage aktualisieren?", data-modal-text="Möchtest du die Frage aktualisieren?", data-modal-primary="Frage aktualisieren", data-modal-primary-action="submit")
+								button.icon.success.update(data-q-id!="<%= questions.getString(\"linkId\") %>").modal-trigger(data-modal-type="question", data-modal-title="Frage aktualisieren?", data-modal-text="Möchtest du die Frage aktualisieren?", data-modal-primary="Frage aktualisieren", data-modal-primary-action="submit")
 									span.ai.ai-check
-								button.icon.error.delete(data-q-id="how-to-cancel").modal-trigger(data-modal-type="error", data-modal-title="Frage löschen?", data-modal-text="Möchtest du die Frage löschen?", data-modal-primary="Frage löschen", data-modal-primary-action="submit")
+								button.icon.error.delete(data-q-id!="<%= questions.getString(\"linkId\") %>").modal-trigger(data-modal-type="error", data-modal-title="Frage löschen?", data-modal-text="Möchtest du die Frage löschen?", data-modal-primary="Frage löschen", data-modal-primary-action="submit")
 									span.ai.ai-delete
+
+						| 
+						| <%
+						|     }
+						| %>
+						
 						tr
 							td
 								input(type="text", id="new-question-id")
@@ -87,6 +213,11 @@ html
 							td
 								button.icon.info.insert.modal-trigger(data-modal-type="question", data-modal-title="Frage hinzufügen?", data-modal-text="Möchtest du die Frage hinzufügen?", data-modal-primary="Frage hinzufügen", data-modal-primary-action="submit")
 									span.ai.ai-plus
+
+					| 
+					| <%
+					|     }
+					| %>
 		include _footer
 		
 	script(src="js/support-center.js")
