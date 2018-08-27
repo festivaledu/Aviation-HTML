@@ -70,6 +70,40 @@ if (document.querySelectorAll(".faq-card-header")) {
     });
 }
 
+if (document.querySelectorAll(".editor .update")) {
+    document.querySelectorAll(".editor .update").forEach(el => {
+        el.addEventListener("click", ev => {
+            const id = el.getAttribute("data-q-id");
+            const question = document.querySelector(`[data-q-question="${id}"]`).value;
+            const answer = document.querySelector(`[data-q-answer="${id}"]`).value;
+
+            preparePost("sc-admin.jsp", { method: "update", id: id, question: question, answer: answer });
+        });
+    });
+}
+
+if (document.querySelectorAll(".editor .delete")) {
+    document.querySelectorAll(".editor .delete").forEach(el => {
+        el.addEventListener("click", ev => {
+            const id = el.getAttribute("data-q-id");
+
+            preparePost("sc-admin.jsp", { method: "delete", id: id });
+        });
+    });
+}
+
+if (document.querySelectorAll(".editor .insert")) {
+    document.querySelectorAll(".editor .insert").forEach(el => {
+        el.addEventListener("click", ev => {
+            const id = document.getElementById("new-question-id").value;
+            const question = document.getElementById("new-question-question").value;
+            const answer = document.getElementById("new-question-answer").value;
+
+            preparePost("sc-admin.jsp", { method: "insert", id: id, question: question, answer: answer });
+        });
+    });
+}
+
 function getURLForQuery(query) {
     if (params.some(p => p.k === "q")) {
         params.find(p => p.k === "q").v = query;
@@ -88,5 +122,32 @@ function getURLForQuery(query) {
         return window.location.href + paramString;
     } else {
         return window.location.href.replace(window.location.search, paramString);
+    }
+}
+
+function preparePost(path, params) {
+    let form;
+
+    if (document.getElementById("hidden-form")) {
+        form = document.getElementById("hidden-form");
+        form.innerHTML = "";
+    } else {
+        form = document.createElement("form");
+        form.setAttribute("id", "hidden-form");
+        document.body.appendChild(form);
+    }
+
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
     }
 }

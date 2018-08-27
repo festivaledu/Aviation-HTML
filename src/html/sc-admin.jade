@@ -1,0 +1,100 @@
+| <%@ page contentType="text/html;charset=UTF-8" %>
+| <%@ page import="java.sql.ResultSet" %>
+| <%@ page import="javax.naming.InitialContext" %>
+| <%@ page import="javax.naming.Context" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.sql.Statement" %>
+| 
+| 
+| <%
+| 	InitialContext initialContext;
+| 	Context environmentContext;
+| 	DataSource dataSource;
+| 	Connection conn = null;
+| 
+| 	ResultSet questions = null;
+| 
+| 	try {
+| 		initialContext = new InitialContext();
+| 		environmentContext = (Context)initialContext.lookup("java:/comp/env");
+| 		dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+| 		conn = dataSource.getConnection();
+| 		Statement statement = conn.createStatement();
+| 		questions = statement.executeQuery("SELECT * FROM questions ORDER BY questionText ASC");
+| 	} catch (Exception e) {
+| 		e.printStackTrace();
+| 	}
+| %>
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Support Center Admin Panel – FESTIVAL Aviation Support
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/support-center.built.css")
+	body
+		include _nav
+		
+		include _sc-modal
+		
+		.content-wrapper
+			section.support
+				.section-content
+					h2 Fragen
+
+					article(class="flag info")
+						div(class="header")
+							div(class="icon")
+								span
+									span(class="ai ai-info")
+							span(class="title") Information zu Fragen
+						div(class="content")
+							p Jede Frage hat eine eindeutige Id. Diese darf nicht für andere Fragen verwendet werden und kann später nicht geändert werden. Die Id darf nur aus Kleinbuchstaben, Zahlen und Bindestrichen bestehen.
+						
+					table.editor
+						tr
+							th
+								kbd linkId
+							th
+								kbd questionText
+							th
+								kbd answerText
+							th Aktionen
+						tr
+							td
+								kbd how-to-cancel
+							td
+								input(type="text", data-q-question="how-to-cancel", value="Wie funktionieren Stornierungen?")
+							td
+								input(type="text", data-q-answer="how-to-cancel", value="Gar nicht, bitch.")
+							td
+								button.icon.success.update(data-q-id="how-to-cancel").modal-trigger(data-modal-type="question", data-modal-title="Frage aktualisieren?", data-modal-text="Möchtest du die Frage aktualisieren?", data-modal-primary="Frage aktualisieren", data-modal-primary-action="submit")
+									span.ai.ai-check
+								button.icon.error.delete(data-q-id="how-to-cancel").modal-trigger(data-modal-type="error", data-modal-title="Frage löschen?", data-modal-text="Möchtest du die Frage löschen?", data-modal-primary="Frage löschen", data-modal-primary-action="submit")
+									span.ai.ai-delete
+						tr
+							td
+								input(type="text", id="new-question-id")
+							td
+								input(type="text", id="new-question-question")
+							td
+								input(type="text", id="new-question-answer")
+							td
+								button.icon.info.insert.modal-trigger(data-modal-type="question", data-modal-title="Frage hinzufügen?", data-modal-text="Möchtest du die Frage hinzufügen?", data-modal-primary="Frage hinzufügen", data-modal-primary-action="submit")
+									span.ai.ai-plus
+		include _footer
+		
+	script(src="js/support-center.js")
+	script(src="js/modal.js")
+	script(src="js/icons.js")
+
+| 
+| <%
+| 	if (conn != null)
+| 	    conn.close();
+| %>
