@@ -28,9 +28,7 @@
 | 
 | 			if (authManager.login(email, hashedPassword) == AuthManager.ErrorCode.OK) {
 | 				if (authManager.generateSession(email) == AuthManager.ErrorCode.OK) {
-| 					Cookie sessionCookie = new Cookie("sid", authManager.getCurrentSessionId(email));
-| 					sessionCookie.setMaxAge(7200);
-| 					response.addCookie(sessionCookie);
+| 					session.setAttribute("sid", authManager.getCurrentSessionId(email)); 
 | 
 | 					response.sendRedirect("dashboard.jsp");
 | 				}
