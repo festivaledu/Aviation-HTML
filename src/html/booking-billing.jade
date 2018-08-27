@@ -5,6 +5,7 @@
 | <%@ page import="java.time.*" %>
 | <%@ page import="java.time.format.DateTimeFormatter"%>
 | <%@ page import="java.sql.*" %>
+| <%@ page import="java.util.Map" %>
 | 
 | <%
 | 	AuthManager authManager = new AuthManager();
@@ -12,18 +13,10 @@
 | 	JSONObject demoData = new JSONObject();
 | 
 | 	try {
-| 		requestData.put("depart_iata", request.getParameter("depart_iata"));
-| 		requestData.put("arrv_iata", request.getParameter("arrv_iata"));
-| 		requestData.put("depart_date", request.getParameter("depart_date"));
-| 		requestData.put("arrv_date", request.getParameter("arrv_date"));
-| 		requestData.put("flight_number", request.getParameter("flight_number"));
-| 		requestData.put("passengers", request.getParameter("passengers"));
-| 		requestData.put("flight_class", request.getParameter("flight_class"));
-| 		requestData.put("services", request.getParameter("services"));
-| 
-| 		requestData.put("duration", request.getParameter("duration"));
-| 		requestData.put("stops", request.getParameter("stops"));
-| 		requestData.put("price", request.getParameter("price"));
+| 		Map<String, String[]> parameters = request.getParameterMap();
+| 		for(String parameter : parameters.keySet()) {
+| 			requestData.put(parameter, request.getParameter(parameter));
+| 		}
 | 
 | 		demoData = SearchResultsDemo.getJSONData(requestData);
 | 	} catch (Exception e) {
@@ -82,12 +75,13 @@ html
 							| 
 							| 
 							span Buchung abschließen
+							.pipe
 				.search-results-container.column.column-12.medium-8
 					.scroll-container.billing-address
 						.result-header
 							h4.date
 								span Rechnungsadresse
-							p Hier Text.
+							p Um die Buchung abzuschließen, benötigen wir eine gültige Rechnungsadresse. Solltest du gerade angemeldet sein, wird das Formular für dich automatisch ausgefüllt. Wenn nicht, kannst du hier deine Rechnungsadresse eintragen. Bitte stelle sicher, dass alle Daten korrekt eingetragen sind, da es sonst später zu Problemen bei der Rückerstattung kommen kann.
 
 						.row.no-justify
 							.column.column-3
@@ -148,9 +142,39 @@ html
 								label(for="country") Land
 							.column.column-6
 								select(name="country",id="country")
+									| 
+									| <%
+									| 	if (billingAddress != null) {
+									| 		if (billingAddress.getString("country").equals("de")) {
+									| %>
+									option(value="de", selected) Deutschland
+									option(value="at") Österreich
+									option(value="ch") Schweiz
+									| 
+									| <%
+									|	 	} else if (billingAddress.getString("country").equals("at")) {
+									| %>
+									option(value="de") Deutschland
+									option(value="at", selected) Österreich
+									option(value="ch") Schweiz
+									| <%
+									|	 	} else if (billingAddress.getString("country").equals("ch")) {
+									| %>
+									option(value="de") Deutschland
+									option(value="at") Österreich
+									option(value="ch", selected) Schweiz
+									| 
+									| <%
+									| 		}
+									| 	} else {
+									| %>
 									option(value="de") Deutschland
 									option(value="at") Österreich
 									option(value="ch") Schweiz
+									| 
+									| <%
+									| 	}
+									| %>
 						.row.no-justify
 							.column.column-3
 								label(for="email") E-Mail
@@ -165,5 +189,15 @@ html
 					.results-footer
 						button.outline.blue(onclick="window.history.back()") Zurück
 						button.fill.blue.continue-button(onclick="document.forms[0].submit()") Buchung abschließen
+		form.hidden(action="booking-complete.jsp", method="POST", name="selectedItem")
+			| <%
+			| 	Map<String, String[]> parameters = request.getParameterMap();
+			| 	for(String parameter : parameters.keySet()) {
+			| %>
+			input(name!="<%= parameter %>", value!="<%= request.getParameter(parameter) %>")
+			| 
+			| <%
+			| 	}
+			| %>
 | 
 | <% authManager.closeConnection(); %>

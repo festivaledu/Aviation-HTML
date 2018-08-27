@@ -15,6 +15,7 @@ module.exports = function(grunt) {
 					'build/booking-search.jsp': 'src/html/booking-search.jade',
 					'build/booking-services.jsp': 'src/html/booking-services.jade',
 					'build/booking-billing.jsp': 'src/html/booking-billing.jade',
+					'build/booking-complete.jsp': 'src/html/booking-complete.jade',
 					'build/featured.jsp': 'src/html/featured.jade',
 					'build/login.jsp': 'src/html/login.jade',
 					'build/register.jsp': 'src/html/register.jade',
