@@ -33,21 +33,29 @@ html
 								img(src="img/icon-departure.svg")
 								p Von (Ort oder Flughafen)
 							input(type="text", id="depart", placeholder="Abreiseort eingeben", required)
-							input.hidden(type="text", id="depart_iata", name="depart_iata")
-							ul.suggestions
+							input.hidden(type="text", id="depart_iata", name="depart_iata", required)
+							.suggestions
+								.suggestions-header
+									.header-eyebrow Startflughafen
+									.header-title Ergebnisse
+								ul.suggestions-list
 						.input-wrapper(data-key="arrival")
 							.column-title
 								img(src="img/icon-arrival.svg")
 								p Nach (Ort oder Flughafen)
 							input(type="text", placeholder="Ankunftsort eingeben", required)
-							input.hidden(type="text", id="arrv_iata", name="arrv_iata")
-							ul.suggestions
+							input.hidden(type="text", id="arrv_iata", name="arrv_iata", required)
+							.suggestions
+								.suggestions-header
+									.header-eyebrow Zielflughafen
+									.header-title Ergebnisse
+								ul.suggestions-list
 						.input-wrapper(data-key="date")
 							.column-title
 								img.icon(src="img/icon-date.svg", required)
 								p Abflugdatum
 							input(type="text", placeholder="Abflugdatum auswählen", required)
-							input.hidden(type="date", id="depart_date", name="depart_date")
+							input.hidden(type="date", id="depart_date", name="depart_date", required)
 							div.calendar
 						button.fill.blue.search-button Suchen
 		section.promo-articles
