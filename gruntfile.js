@@ -21,6 +21,8 @@ module.exports = function(grunt) {
 					'build/register.jsp': 'src/html/register.jade',
 					'build/dashboard.jsp': 'src/html/dashboard.jade',
 					
+					'build/checkout.html': 'src/html/checkout.jade',
+
 					'build/imprint.html': 'src/html/imprint.jade',
 					'build/privacy.html': 'src/html/privacy.jade',					
 					
@@ -49,6 +51,8 @@ module.exports = function(grunt) {
 					'build/css/login.built.css': ["src/less/pages/login.less"],
 					'build/css/dashboard.built.css': ["src/less/pages/dashboard.less"],
 					'build/css/support-center.built.css': ["src/less/pages/support-center.less"],
+					'build/css/checkout.built.css': ["src/less/pages/checkout.less"],
+					'build/css/modal.built.css': ["src/less/modal.less"],
 				}
 			}
 		},

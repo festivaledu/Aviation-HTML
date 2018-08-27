@@ -1,0 +1,101 @@
+| <%@ page contentType="text/html;charset=UTF-8" %>
+| <%@ page import="ml.festival.aviation.AuthManager" %>
+| <%@ page import="javax.naming.InitialContext" %>
+| <%@ page import="javax.naming.Context" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.sql.PreparedStatement" %>
+| <%@ page import="java.sql.ResultSet" %>
+| <%@ page import="java.sql.Statement" %>
+| 
+| <% 
+|     InitialContext initialContext;
+|     Context environmentContext;
+|     DataSource dataSource;
+|     Connection conn = null;
+| 
+|     ResultSet payment = null;
+| 
+|     try {
+|         initialContext = new InitialContext();
+|         environmentContext = (Context)initialContext.lookup("java:/comp/env");
+|         dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+|         conn = dataSource.getConnection();
+| 
+|         request.setCharacterEncoding("UTF-8");
+|     } catch (Exception e) {
+|         e.printStackTrace();
+|     }
+| %>
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Checkout – FESTIVAL Aviation Support
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/modal.built.css")
+		link(rel="stylesheet", href="css/checkout.built.css")
+	body
+		include _nav
+		
+		include _sc-modal
+		
+		.content-wrapper
+			section.checkout
+				.section-content
+					article.card-input
+						form
+							h2 Bezahldetails
+
+							.card
+								img(src="img/visa-logo-black-and-white.png")
+								.number(id="card-number")
+									span 0000
+									span 0000
+									span 0000
+									span 0000
+								span.holder(id="card-holder")
+								span.expiration(id="card-expiration")
+
+							.input-wrapper
+								input(type="text", data-corresponds="holder", placeholder=" ")
+								span Karteninhaber
+
+							.input-wrapper
+								input(type="text", data-corresponds="number", maxlength="19", placeholder=" ")
+								span Kartennummer
+
+							.input-wrapper
+								input(type="text", data-corresponds="expiration", maxlength="5", placeholder=" ")
+								span Gültig bis
+
+							.input-wrapper
+								input(type="password", maxlength="3", placeholder=" ")
+								span CVV
+
+							.button-wrapper
+								button.modal-trigger(data-modal-type="warning", data-modal-title="Kauf bestätigen", data-modal-text="Bitte bestätige, dass du den Kauf wirklich tätigen willst.", data-modal-primary="Kostenpflichtig kaufen", data-modal-primary-action="submit", data-modal-primary-action-timeout="3000", data-modal-secondary="Kauf abbrechen") Bezahlen
+
+								.sk-folding-cube
+									.sk-cube1.sk-cube
+									.sk-cube2.sk-cube
+									.sk-cube4.sk-cube
+									.sk-cube3.sk-cube
+								
+							p Powered by #[span VirtuaMonetenPay]
+
+		include _footer
+		
+	script(src="js/checkout.js")
+	script(src="js/modal.js")
+	script(src="js/icons.js")
+
+| 
+| <%
+| 	if (conn != null)
+| 	    conn.close();
+| %>
