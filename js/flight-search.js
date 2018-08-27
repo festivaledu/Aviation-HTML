@@ -52,44 +52,61 @@ const classChanged = (e) => {
 	document.forms[0]["flight_class"].value = e.value;
 }
 
-document.querySelectorAll(".search-results-container .results .result-cell").forEach(item => {
-	item.addEventListener("click", () => {
-		const selectedItemForm = document.forms[0];
-		
-		let departureTime = new Date(`${item.getAttribute("data-departure-date")}T${item.getAttribute("data-departure-time")}Z`);
-		let arrivalTime = new Date(`${item.getAttribute("data-departure-date")}T${item.getAttribute("data-arrival-time")}Z`);
-		
-		let departureDate = new Date(item.getAttribute("data-departure-date"));
-		departureDate.setHours(departureTime.getUTCHours());
-		departureDate.setMinutes(departureTime.getUTCMinutes());
-		
-		let arrivalDate = new Date(item.getAttribute("data-departure-date"));
-		arrivalDate.setHours(arrivalTime.getUTCHours());
-		arrivalDate.setMinutes(arrivalTime.getUTCMinutes());
-		if (arrivalTime.getTime() < departureTime.getTime()) {
-			arrivalDate.setDate(arrivalDate.getDate() + 1);
-		}
-		
-		selectedItemForm["depart_iata"].value = item.getAttribute("data-departure");
-		selectedItemForm["arrv_iata"].value = item.getAttribute("data-arrival");
-		selectedItemForm["depart_date"].value = departureDate.toISOString();
-		selectedItemForm["arrv_date"].value = arrivalDate.toISOString();
-		selectedItemForm["flight_number"].value = item.getAttribute("data-flight-number");
-		selectedItemForm["passengers"].value = document.querySelector("input[name=\"passengers\"]").value;
-		selectedItemForm["flight_class"].value = document.querySelector("select[name=\"flight_class\"]").value;
-		
-		// DO NOT USE THIS IN PRODUCTION!!!
-		// This is for demonstration purposes only!
-		selectedItemForm["duration"].value = arrivalDate.getTime() - departureDate.getTime();
-		selectedItemForm["stops"].value = item.getAttribute("data-stops");
-		selectedItemForm["price"].value = item.getAttribute("data-price");
-		
-		document.querySelectorAll(".search-results-container .results .result-cell.selected").forEach(item => {
-			item.classList.remove("selected");
+if (location.pathname.match(/booking-search/)) {
+	document.querySelectorAll(".search-results-container .results .result-cell").forEach(item => {
+		item.addEventListener("click", () => {
+			const selectedItemForm = document.forms[0];
+			
+			let departureTime = new Date(`${item.getAttribute("data-departure-date")}T${item.getAttribute("data-departure-time")}Z`);
+			let arrivalTime = new Date(`${item.getAttribute("data-departure-date")}T${item.getAttribute("data-arrival-time")}Z`);
+			
+			let departureDate = new Date(item.getAttribute("data-departure-date"));
+			departureDate.setHours(departureTime.getUTCHours());
+			departureDate.setMinutes(departureTime.getUTCMinutes());
+			
+			let arrivalDate = new Date(item.getAttribute("data-departure-date"));
+			arrivalDate.setHours(arrivalTime.getUTCHours());
+			arrivalDate.setMinutes(arrivalTime.getUTCMinutes());
+			if (arrivalTime.getTime() < departureTime.getTime()) {
+				arrivalDate.setDate(arrivalDate.getDate() + 1);
+			}
+			
+			selectedItemForm["depart_date"].value = departureDate.toISOString();
+			selectedItemForm["arrv_date"].value = arrivalDate.toISOString();
+			selectedItemForm["flight_number"].value = item.getAttribute("data-flight-number");
+			selectedItemForm["passengers"].value = document.querySelector("input[name=\"passengers\"]").value;
+			selectedItemForm["flight_class"].value = document.querySelector("select[name=\"flight_class\"]").value;
+			
+			// DO NOT USE THIS IN PRODUCTION!!!
+			// This is for demonstration purposes only!
+			selectedItemForm["duration"].value = arrivalDate.getTime() - departureDate.getTime();
+			selectedItemForm["stops"].value = item.getAttribute("data-stops");
+			selectedItemForm["price"].value = item.getAttribute("data-price");
+			
+			document.querySelectorAll(".search-results-container .results .result-cell.selected").forEach(item => {
+				item.classList.remove("selected");
+			});
+			
+			item.classList.add("selected");
+			
+			document.querySelector("button.continue-button").removeAttribute("disabled");
 		});
-		
-		item.classList.add("selected");
-		
-		document.querySelector("button.continue-button").removeAttribute("disabled");
 	});
-});
+}
+
+if (location.pathname.match(/booking-services/)) {
+	document.querySelectorAll(".search-results-container .results .result-cell").forEach(item => {
+		item.addEventListener("click", () => {
+			const selectedItemForm = document.forms[0];
+			const services = selectedItemForm["services"].value.split(",");
+			
+			if (services.indexOf(item.getAttribute("data-service-id")) >= 0) {
+				item.classList.remove("selected");
+				selectedItemForm["services"].value = selectedItemForm["services"].value.replace(`${item.getAttribute("data-service-id")},`, "");
+			} else {
+				item.classList.add("selected");
+				selectedItemForm["services"].value += `${item.getAttribute("data-service-id")},`;
+			}
+		});
+	});
+}

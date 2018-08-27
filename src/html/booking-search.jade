@@ -59,7 +59,8 @@ html
 						li(data-progress-made="false")
 							| 
 							| 
-							span Bestellung abschließen
+							span Buchung abschließen
+							.pipe
 				.search-results-container.column.column-12.medium-8
 					.search-results-header
 						.row
@@ -166,8 +167,8 @@ html
 						button.fill.blue.continue-button(disabled, onclick="document.forms[0].submit()") Fortfahren
 						
 		form.hidden(action="booking-services.jsp", method="POST", name="selectedItem")
-			input(name="depart_iata")
-			input(name="arrv_iata")
+			input(name="depart_iata", value!="<%= demoData.get(\"departureIATA\") %>")
+			input(name="arrv_iata", , value!="<%= demoData.get(\"arrivalIATA\") %>")
 			input(name="depart_date")
 			input(name="arrv_date")
 			input(name="flight_number")

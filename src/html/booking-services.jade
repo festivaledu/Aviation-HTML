@@ -24,9 +24,9 @@
 | 
 | 		demoData = SearchResultsDemo.getJSONData(requestData);
 | 	} catch (Exception e) {
-| 
+| 		e.printStackTrace();
 | 	}
-| 	out.println(requestData);
+| 	// out.println(requestData);
 | %>
 | 
 
@@ -74,7 +74,7 @@ html
 						li(data-progress-made="false")
 							| 
 							| 
-							span Bestellung abschließen
+							span Buchung abschließen
 				.search-results-container.column.column-12.medium-8
 					.search-results-header
 						.row
@@ -142,19 +142,36 @@ html
 						.results
 							| 
 							| <%
-							| 	ResultSet serviceData = SearchResultsDemo.getServiceData();
-							| 	while (serviceData.next()) {
+							| 	JSONArray serviceData = SearchResultsDemo.getServiceData();
+							| 	for (int i=0; i<serviceData.length(); i++) {
 							| %>
-							.result-cell.no-arrow.row
+							.result-cell.no-arrow.row(data-service-id!="<%= serviceData.getJSONObject(i).getString(\"serviceId\") %>")
 								.column.column-6
-									p <%= serviceData.getString("title") %>
+									p <%= serviceData.getJSONObject(i).getString("title") %>
 								.column.column-6.align-right
-									p <%= serviceData.getString("price") %>€
+									p <%= serviceData.getJSONObject(i).getString("price") %>€
 							| 
 							| <%
 							| 	}
 							| %>
 					.fill-background
 					.results-footer
-						button.outline.red Abbrechen
-						button.fill.blue.continue-button Fortfahren
+						button.outline.blue(onclick="window.history.back()") Zurück
+						button.fill.blue.continue-button(onclick="document.forms[0].submit()") Fortfahren
+		form.hidden(action="booking-billing.jsp", method="POST", name="selectedItem")
+			input(name="depart_iata", value!="<%= requestData.get(\"depart_iata\") %>")
+			input(name="arrv_iata", value!="<%= requestData.get(\"arrv_iata\") %>")
+			input(name="depart_date", value!="<%= requestData.get(\"depart_date\") %>")
+			input(name="arrv_date", value!="<%= requestData.get(\"arrv_date\") %>")
+			input(name="flight_number", value!="<%= requestData.get(\"flight_number\") %>")
+			input(name="passengers", value!="<%= requestData.get(\"passengers\") %>")
+			input(name="flight_class", value!="<%= requestData.get(\"flight_class\") %>")
+			input(name="services")
+			| 
+			| 
+			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
+			<!-- This is for demonstration purposes only! -->
+			input(name="duration", value!="<%= requestData.get(\"duration\") %>")
+			input(name="stops", value!="<%= requestData.get(\"stops\") %>")
+			input(name="price", value!="<%= requestData.get(\"price\") %>")
+		script(type="text/javascript",src="js/flight-search.js")
