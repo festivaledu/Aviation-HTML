@@ -96,11 +96,12 @@ const loadJSON = (file, callback, callbackError) => {
 let inputTimeout;
 document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\"])").forEach(container => {
 	container.querySelector("input:not([name])").addEventListener("input", e => {
-		const suggestionContainer = container.querySelector(".suggestions");
-		
+		const suggestionWrapper = container.querySelector(".suggestions");
+		const suggestionContainer = container.querySelector(".suggestions .suggestions-list");
+
 		if (!e.target.value.length) {
 			suggestionContainer.classList.remove("visible");
-			
+
 			if (inputTimeout) {
 				clearTimeout(inputTimeout);
 			}
@@ -109,31 +110,38 @@ document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\
 		if (inputTimeout) {
 			clearTimeout(inputTimeout);
 		}
-		
+
 		inputTimeout = setTimeout(async () => {
 			const suggestionData = await loadJSON(`airport_lookup.jsp?query=${escape(e.target.value)}`).then(e => { return JSON.parse(e.target.response); });
-			
-			suggestionContainer.classList.add("visible");
+
+			suggestionWrapper.classList.add("visible");
 			suggestionContainer.innerHTML = "";
-			
-			suggestionData.forEach(suggestion => {
-				let child = document.createElement("li");
-				child.className = "suggestion-item";
-				child.setAttribute("data-iata", suggestion["iata_code"]);
-				child.innerHTML = suggestion["name"];
-				
-				child.addEventListener("click", () => {
-					container.querySelector("input:not([name])").value = suggestion["name"];
-					container.querySelector("input[name]").value = suggestion["iata_code"];
-					
-					suggestionContainer.classList.remove("visible");
+
+			if (suggestionData.length) {
+				suggestionData.forEach(suggestion => {
+					let child = document.createElement("li");
+					child.className = "suggestion-item";
+					child.setAttribute("data-iata", suggestion["iata_code"]);
+					child.innerHTML = suggestion["name"];
+
+					child.addEventListener("click", () => {
+						container.querySelector("input:not([name])").value = suggestion["name"];
+						container.querySelector("input[name]").value = suggestion["iata_code"];
+
+						suggestionWrapper.classList.remove("visible");
+					});
+
+					suggestionContainer.appendChild(child);
 				});
-				
+			} else {
+				let child = document.createElement("li");
+				child.className = "suggestion-item no-results";
+				child.innerHTML = "Keine Ergebnisse";
 				suggestionContainer.appendChild(child);
-			});
+			}
 		}, 500);
 	});
-	
+
 	// container.querySelector("input:not([name])").addEventListener("blur", e => {
 	// 	container.querySelector(".suggestions").classList.remove("visible");
 	// });
@@ -148,7 +156,8 @@ document.querySelectorAll(".calendar").forEach(item => {
 				year: "numeric"
 			});
 			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
-		}
+		},
+		hidePast: true
 	});
 });
 

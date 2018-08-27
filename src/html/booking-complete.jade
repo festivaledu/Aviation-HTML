@@ -1,0 +1,85 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
+| <%@ page import="ml.festival.aviation.AuthManager" %>
+| <%@ page import="org.json.*" %>
+| <%@ page import="java.time.*" %>
+| <%@ page import="java.time.format.DateTimeFormatter"%>
+| <%@ page import="java.sql.*" %>
+| <%@ page import="java.util.Map" %>
+| 
+| <%
+| 	AuthManager authManager = new AuthManager();
+| 	JSONObject requestData = new JSONObject();
+| 	JSONObject demoData = new JSONObject();
+| 
+| 	try {
+| 		Map<String, String[]> parameters = request.getParameterMap();
+| 		for(String parameter : parameters.keySet()) {
+| 			requestData.put(parameter, request.getParameter(parameter));
+| 		}
+| 
+| 		SearchResultsDemo.completeBooking(requestData);
+| 	} catch (Exception e) {
+| 		e.printStackTrace();
+| 	}
+| %>
+| 
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Übersicht – FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/booking.built.css")
+	body
+		include _nav
+		
+		section.search-results
+			.section-content.row
+				.progress-overview.column.medium-3
+					p.progress-title Flug buchen
+					p.progress-section-title Vorbereitung
+					ul
+						li(data-progress-made="true")
+							| 
+							| 
+							span Reiseziel wählen
+							.pipe
+						li(data-progress-made="true")
+							| 
+							| 
+							span Flug wählen
+							.pipe
+						li(data-progress-made="true")
+							| 
+							| 
+							span Dienste wählen
+							.pipe
+					p.progress-section-title Bezahlung
+					ul
+						li(data-progress-made="true")
+							| 
+							| 
+							span Rechnungsadresse
+							.pipe
+						li.current(data-progress-made="true")
+							| 
+							| 
+							span Buchung abschließen
+							.pipe
+				.search-results-container.column.column-12.medium-8
+					.scroll-container.billing-address
+						.result-header
+							h4.date
+								span Buchung abschließen
+							p Deine Buchung ist jetzt getätigt! Da wäre nur noch eine Sache: das Finanzielle. Bitte zahle innerhalb der nächsten 24 Stunden über unseren Bezahldienst VirtuaMonetenPay, damit du dich ganz ohne Sorgen auf deinen Urlaub freuen kannst!
+							
+							<!-- HIER WIDGET EINFÜGEN -->
+					.fill-background
+					.results-footer
+						button.outline.blue(onclick="window.history.back()") Zur Startseite
+						button.fill.blue.continue-button(onclick="document.forms[0].submit()") Zum Dashboard

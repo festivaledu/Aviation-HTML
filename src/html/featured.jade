@@ -25,17 +25,25 @@ html
 		meta(charset="utf-8")
 		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
 	
+		| 
+		| <% if (location != null) { %>
 		title <%= location.next() ? location.getString("location").split(",")[0] : "Fehler" %> – FESTIVAL Aviation
+		| 
+		| <% } else { %>
+		title Unsere Empfehlungen – FESTIVAL Aviation
+		| 
+		| <% } %>
 		
 		link(rel="stylesheet", href="css/aviation.css")
 		link(rel="stylesheet", href="css/featured.built.css")
 	body
 		include _nav
-		
+
 		| 
 		| <%
-		| 	location.beforeFirst();
-		| 	if (location.next() && category.next()) {
+		| 	if (location != null) {
+		| 		location.beforeFirst();
+		| 		if (location.next() && category.next()) {
 		| %>
 		section.featured-item
 			.item-header(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
@@ -47,7 +55,7 @@ html
 
 		| 
 		| <%
-		| 	} else {
+		| 		} else if (request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
 		| %>
 		
 		section.featured-item
@@ -57,6 +65,45 @@ html
 				p.error Der Server kann die angebenenen Parameter nicht interpretieren. Bitte überprüfe, ob du einem gültigen Link gefolgt bist und versuche es erneut.
 		| 
 		| <%
+		| 		}
+		| 	} else {
+		| %>
+		section
+			.section-content
+				h2.headline Unsere Empfehlungen
+				p.body Brauchst du eine Inspiration, wo du deinen nächsten Urlaub verbringen willst? Jede Woche stellen wir neue Reiseziele in den Kategorien "Sonne &amp; Strand", "Stadt &amp; Leben" und "Topen &amp; Abenteuer" vor, inklusive besondere Highlights und was man dort unternehmen kann. Sieh dir einfach unsere Empfehlungen an und entscheide dich, was du in deinem nächsten Urlaub machen möchtest.
+
+		| 
+		| <%
+		| 		ResultSet categories = promoManager.getPromoCategories();
+		| 		while (categories.next()) {
+		| %>
+		
+		section.no-padding
+			.section-content
+				h4.eyebrow <%= categories.getString("title") %>
+		
+		section.promo-articles
+			.section-content
+				| 
+				| <%
+				| 	ResultSet locations = promoManager.getLocationsForCategory(categories.getString("id"));
+				| 	while (locations.next()) {
+				| %>
+				| 
+				| 
+				a(href!="featured.jsp?id=<%= locations.getString(\"id\") %>")
+					.promo-article
+						.header.dark(style!="background-image: url(<%= locations.getString(\"headerImage\") %>)")
+							p.header-heading <%= categories.getString("title") %>
+							p.header-title <%= locations.getString("location") %>
+				| 
+				| <%
+				| 	}
+				| %>
+		| 
+		| <%
+		| 		}
 		| 	}
 		| %>
 		

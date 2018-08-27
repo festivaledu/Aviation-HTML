@@ -102,24 +102,53 @@ section.landing-hero {
 						top: 56px;
 						left: -16px;
 						right: 0;
-						background-color: #F3F3F3;
+						background-color: #FFFFFF;
 						list-style: none;
-						border-radius: 0 0 8px 8px;
-						box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
-						overflow: hidden;
+						// box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
 						
 						&:not(.visible) {
 							display: none;
 						}
 						
-						.suggestion-item {
-							height: 32px;
-							padding: 6px 16px;
-							overflow: hidden ;
-							text-overflow: ellipsis;
+						.suggestions-header {
+							padding: 16px;
+							background-color: #00B0EE;
+							color: #FFFFFF;
 							
-							&:hover:not(:active) {
-								background-color: #FFFFFF;
+							.header-eyebrow {
+								font-size: 12px;
+								text-transform: uppercase;
+							}
+							
+							.header-title {
+								font-size: 22px;
+							}
+						}
+						
+						ul.suggestions-list {
+							list-style: none;
+						
+							.suggestion-item {
+								height: 44px;
+								padding: 13px 16px;
+								overflow: hidden ;
+								text-overflow: ellipsis;
+								cursor: pointer;
+								
+								&:hover:not(:active) {
+									background-color: #F3F3F3;
+								}
+								
+								&:not(:last-child) {
+									border-bottom: 1px solid #F3F3F3;
+								}
+								
+								&.no-results {
+									font-style: italic;
+									opacity: 0.75;
+									pointer-events: none;
+									cursor: default;
+								}
 							}
 						}
 					}

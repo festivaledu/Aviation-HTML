@@ -1,0 +1,178 @@
+| <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+| <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
+| <%@ page import="org.json.*" %>
+| <%@ page import="java.time.*" %>
+| <%@ page import="java.time.format.DateTimeFormatter"%>
+| <%@ page import="java.sql.*" %>
+| 
+| <%
+| 	JSONObject requestData = new JSONObject();
+| 	JSONObject demoData = new JSONObject();
+| 
+| 	try {
+| 		requestData.put("depart_iata", request.getParameter("depart_iata"));
+| 		requestData.put("arrv_iata", request.getParameter("arrv_iata"));
+| 		requestData.put("depart_date", request.getParameter("depart_date"));
+| 		requestData.put("arrv_date", request.getParameter("arrv_date"));
+| 		requestData.put("flight_number", request.getParameter("flight_number"));
+| 		requestData.put("passengers", request.getParameter("passengers"));
+| 		requestData.put("flight_class", request.getParameter("flight_class"));
+| 
+| 		requestData.put("duration", request.getParameter("duration"));
+| 		requestData.put("stops", request.getParameter("stops"));
+| 		requestData.put("price", request.getParameter("price"));
+| 
+| 		demoData = SearchResultsDemo.getJSONData(requestData);
+| 	} catch (Exception e) {
+| 		e.printStackTrace();
+| 	}
+| 	// out.println(requestData);
+| %>
+| 
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Dienste – FESTIVAL Aviation
+		
+		link(rel="stylesheet",href="css/aviation.css")
+		link(rel="stylesheet",href="css/booking.built.css")
+	body
+		include _nav
+		
+		section.search-results
+			.section-content.row
+				.progress-overview.column.medium-3
+					p.progress-title Flug buchen
+					p.progress-section-title Vorbereitung
+					ul
+						li(data-progress-made="true")
+							| 
+							| 
+							span Reiseziel wählen
+							.pipe
+						li(data-progress-made="true")
+							| 
+							| 
+							span Flug wählen
+							.pipe
+						li.current(data-progress-made="true")
+							| 
+							| 
+							span Dienste wählen
+							.pipe
+					p.progress-section-title Bezahlung
+					ul
+						li(data-progress-made="false")
+							| 
+							| 
+							span Rechnungsadresse
+							.pipe
+						li(data-progress-made="false")
+							| 
+							| 
+							span Buchung abschließen
+							.pipe
+				.search-results-container.column.column-12.medium-8
+					.search-results-header
+						.row
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-departure.svg")
+									p Von
+								p.column-content <%= demoData.getString("departureName") %>
+							.column.column-12.medium-6
+								.column-title
+									img(src="img/icon-arrival.svg")
+									p Nach
+								p.column-content <%= demoData.getString("arrivalName") %>
+						.row
+							.column.column-12.medium-6(data-key="date")
+								.column-title
+									img(src="img/icon-date.svg")
+									p Abflugdatum
+								p.column-content <%= ((LocalDate)demoData.get("departureDate")).format(DateTimeFormatter.ofPattern("EEEE, dd. MMMM yyyy")) %>
+							.column.column-12.medium-2
+								.column-title
+									img(src="img/icon-passenger.svg")
+									p Passagiere
+								p.column-content <%= requestData.getString("passengers") %>
+							.column.column-12.medium-4
+								.column-title
+									img(src="img/icon-class.svg")
+									p Klasse
+								p.column-content <%= requestData.getString("flight_class") %>
+						.row.selected-flight
+							.column.column-2
+								.column-title
+									p <%= demoData.getString("departureName") %>
+								p.column-content <%= LocalDateTime.parse(requestData.getString("depart_date"), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("HH:mm")) %>
+							.column.column-2.align-right
+								.column-title 
+									p <%= demoData.getString("arrivalName") %>
+								p.column-content <%= LocalDateTime.parse(requestData.getString("arrv_date"), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("HH:mm")) %>
+							.column.column-2.column-offset-1
+								.column-title
+									p Dauer
+								| 
+								| <%
+								| 	Duration duration = Duration.ofMillis(requestData.getInt("duration"));
+								| %>
+								p.column-content <%= String.format("%02dh %02dmin", duration.getSeconds() / 3600, (duration.getSeconds() % 3600) / 60) %>
+							.column.column-1
+								.column-title
+									p Stopps
+								p.column-content <%= requestData.getString("stops") %>
+							.column.column-auto
+								.column-title
+									p Flugnummer
+								p.column-content <%= requestData.getString("flight_number") %>
+							.column.column-2.align-right
+								.column-title
+									p Preis
+								p.column-content ab <%= requestData.getString("price") %>€
+					.scroll-container
+						.result-header
+							h4.date
+								span Dienste
+							p Im Ticketpreis bereits enthalten ist eine Beteiligung an den Betriebskosten des jeweiligen Fluges. Um Tickets so günstig anbieten zu können, werden zusätzliche Dienste, wie etwa die Mitnahme von Gepäck, extra angeboten. So zahlst du wirklich nur für das, was du brauchst. Solltest du unerwartet einen Dienst in Anspruch nehmen müssen, mach dir keine Sorgen. Gebühren können auch nach der Reise bezahlt werden.
+						
+						.results
+							| 
+							| <%
+							| 	JSONArray serviceData = SearchResultsDemo.getServiceData();
+							| 	for (int i=0; i<serviceData.length(); i++) {
+							| %>
+							.result-cell.no-arrow.row(data-service-id!="<%= serviceData.getJSONObject(i).getString(\"serviceId\") %>")
+								.column.column-6
+									p <%= serviceData.getJSONObject(i).getString("title") %>
+								.column.column-6.align-right
+									p <%= serviceData.getJSONObject(i).getString("price") %>€
+							| 
+							| <%
+							| 	}
+							| %>
+					.fill-background
+					.results-footer
+						button.outline.blue(onclick="window.history.back()") Zurück
+						button.fill.blue.continue-button(onclick="document.forms[0].submit()") Fortfahren
+		form.hidden(action="booking-billing.jsp", method="POST", name="selectedItem")
+			input(name="depart_iata", value!="<%= requestData.get(\"depart_iata\") %>")
+			input(name="arrv_iata", value!="<%= requestData.get(\"arrv_iata\") %>")
+			input(name="depart_date", value!="<%= requestData.get(\"depart_date\") %>")
+			input(name="arrv_date", value!="<%= requestData.get(\"arrv_date\") %>")
+			input(name="flight_number", value!="<%= requestData.get(\"flight_number\") %>")
+			input(name="passengers", value!="<%= requestData.get(\"passengers\") %>")
+			input(name="flight_class", value!="<%= requestData.get(\"flight_class\") %>")
+			input(name="services")
+			| 
+			| 
+			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
+			<!-- This is for demonstration purposes only! -->
+			input(name="duration", value!="<%= requestData.get(\"duration\") %>")
+			input(name="stops", value!="<%= requestData.get(\"stops\") %>")
+			input(name="price", value!="<%= requestData.get(\"price\") %>")
+		script(type="text/javascript",src="js/flight-search.js")

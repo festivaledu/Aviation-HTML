@@ -27,29 +27,37 @@ html
 				h4.hero-subtitle Einfach nur das buchen, was du wirklich brauchst – das ist aviation.
 				
 				.hero-search-bar
-					form(method="post", action="search.jsp")
+					form(method="post", action="booking-search.jsp")
 						.input-wrapper(data-key="departure")
 							.column-title
 								img(src="img/icon-departure.svg")
 								p Von (Ort oder Flughafen)
 							input(type="text", id="depart", placeholder="Abreiseort eingeben", required)
-							input.hidden(type="text", id="depart_iata", name="depart_iata")
-							ul.suggestions
+							input.hidden(type="text", id="depart_iata", name="depart_iata", required)
+							.suggestions
+								.suggestions-header
+									.header-eyebrow Startflughafen
+									.header-title Ergebnisse
+								ul.suggestions-list
 						.input-wrapper(data-key="arrival")
 							.column-title
 								img(src="img/icon-arrival.svg")
 								p Nach (Ort oder Flughafen)
 							input(type="text", placeholder="Ankunftsort eingeben", required)
-							input.hidden(type="text", id="arrv_iata", name="arrv_iata")
-							ul.suggestions
+							input.hidden(type="text", id="arrv_iata", name="arrv_iata", required)
+							.suggestions
+								.suggestions-header
+									.header-eyebrow Zielflughafen
+									.header-title Ergebnisse
+								ul.suggestions-list
 						.input-wrapper(data-key="date")
 							.column-title
 								img.icon(src="img/icon-date.svg", required)
 								p Abflugdatum
 							input(type="text", placeholder="Abflugdatum auswählen", required)
-							input.hidden(type="date", id="depart_date", name="depart_date")
+							input.hidden(type="date", id="depart_date", name="depart_date", required)
 							div.calendar
-						button.search-button Suchen
+						button.fill.blue.search-button Suchen
 		section.promo-articles
 			.section-content
 				//- .promo-article(data-spring-animatable="promo_1")
