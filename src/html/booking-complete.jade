@@ -9,15 +9,15 @@
 | <%
 | 	JSONObject requestData = new JSONObject();
 | 	JSONObject demoData = new JSONObject();
+| 	String bookingResultId = null;
 | 
-| 	Boolean didCompleteBooking = false;
 | 	try {
 | 		Map<String, String[]> parameters = request.getParameterMap();
 | 		for(String parameter : parameters.keySet()) {
 | 			requestData.put(parameter, request.getParameter(parameter));
 | 		}
 | 
-| 		didCompleteBooking = SearchResultsDemo.completeBooking(requestData);
+| 		bookingResultId = SearchResultsDemo.completeBooking(requestData);
 | 	} catch (Exception e) {
 | 		e.printStackTrace();
 | 	}
@@ -75,7 +75,7 @@ html
 						.result-header
 							| 
 							| <%
-							| 	if (didCompleteBooking) {
+							| 	if (bookingResultId != null && !bookingResultId.isEmpty()) {
 							| %>
 							h4.date
 								span Buchung abschließen
@@ -94,6 +94,10 @@ html
 							| 	}
 							| %>
 					.fill-background
+						p.placeholder-text Hier klicken, um zu bezahlen
+						.placeholder-text
+							a(href!="checkout.jsp?invoice=<%= bookingResultId %>")
+								button.call.fill.red Jetzt bezahlen
 					.results-footer
 						button.outline.blue(onclick="location.href = \"index.jsp\"") Zur Startseite
 						button.fill.blue.continue-button(onclick="location.href = \"dashboard.jsp\"") Zum Dashboard
