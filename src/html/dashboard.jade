@@ -36,6 +36,7 @@ html
 		
 		link(rel="stylesheet",href="css/aviation.css")
 		link(rel="stylesheet",href="css/dashboard.built.css")
+		link(rel="stylesheet",href="css/components/tables.css")
 	body
 		include _nav
 		
@@ -61,12 +62,12 @@ html
 							li.menu-item.heading Buchungen
 							| 
 							| 
-							a(href="?p=bookings", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"bookings\") ? \"selected\" : \"\" %>")
-								li Alle Buchungen
+							a(href="?p=openBookings", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"openBookings\") ? \"selected\" : \"\" %>")
+								li Offene Buchungen
 							| 
 							| 
-							a(href="?p=tickets", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"tickets\") ? \"selected\" : \"\" %>")
-								li Tickets
+							a(href="?p=completedBookings", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"completedBookings\") ? \"selected\" : \"\" %>")
+								li Abgeschlossene Buchungen
 						ul.user-cp-menu
 							a.menu-item(href="?p=logout")
 								li Abmelden
@@ -152,6 +153,66 @@ html
 									label(for="phone") Telefon
 								.column.column-6
 									input(type="phone",name="phone",id="phone")
+					| 
+					| <% } %>
+					
+					| 
+					| <% if (isCurrentPage(request.getParameter("p"), "complaints")) { %>
+					.column.column-8.offset-1
+						h2 Beschwerden
+						p Hier siehst du eine Liste all deiner Beschwerden und ob diese bereits gelöst wurden.
+						
+						table
+							thead
+								tr
+									th Beschwerde-ID
+									th Art
+									th Eingereicht
+							tbody
+								tr
+									td #0123456789abcdef
+									td Werbung + Marceting
+									td 01.01.1970 01:00
+					| 
+					| <% } %>
+					
+					| 
+					| <% if (isCurrentPage(request.getParameter("p"), "openBookings")) { %>
+					.column.column-8.offset-1
+						h2 Offene Buchungen
+						p Hier siehst du eine Liste all deiner noch offenen Buchungen, die bezahlt werden müssen. Sonst darfst du nicht fliegen, yo!
+						
+						table
+							thead
+								tr
+									th Beschwerde-ID
+									th Art
+									th Eingereicht
+							tbody
+								tr
+									td #0123456789abcdef
+									td Werbung + Marceting
+									td 01.01.1970 01:00
+					| 
+					| <% } %>
+					
+					| 
+					| <% if (isCurrentPage(request.getParameter("p"), "completedBookings")) { %>
+					.column.column-8.offset-1
+						h2 Abgeschlossene Buchungen
+						p Hier siehst du eine Liste all deiner abgeschlossenen Buchungen, die die bereits bezahlt wurden.
+						
+						table
+							thead
+								tr
+									th Beschwerde-ID
+									th Art
+									th Eingereicht
+							tbody
+								tr
+									td #0123456789abcdef
+									td Werbung + Marceting
+									td 01.01.1970 01:00
 					| 
 					| <% } %>
 					
