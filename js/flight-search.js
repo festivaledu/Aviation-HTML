@@ -181,7 +181,17 @@ if (location.pathname.match(/booking-billing/)) {
 			let item = document.forms["billingAddress"].elements[i];
 			
 			if (!item.value.length) {
-				alert("Bitte fülle alle Felder aus, damit deine Rechnungsadresse gespeichert werden kann.");
+                // alert("Bitte fülle alle Felder aus, damit deine Rechnungsadresse gespeichert werden kann.");
+                
+                modal.classList.remove("error", "info", "question", "success", "warning");
+                modal.classList.add("error");
+                modalTitle.style.visibility = "visible";
+                modalTitle.innerText = "Ungültige Eingabe";
+                modalTitleBar.hidden = false;
+                modalPrimary.style.visibility = "hidden";
+                modalText.innerText = "Bitte fülle alle Felder aus, damit deine Rechnungsadresse gespeichert werden kann.";
+                document.body.classList.add("modal-open");
+
 				return;
 			}
 			billingAddressData.push(`${item.name}=${item.value}`);
@@ -193,8 +203,17 @@ if (location.pathname.match(/booking-billing/)) {
 				document.forms["selectedItem"]["billingId"].value = data["billingId"];
 				document.forms["selectedItem"].submit();
 			} else {
-				alert(`Da hat etwas nicht geklappt. Der Server hat mit folgender Nachricht geantwortet:\n\n${data.message}`);
-			}
+				// alert(`Da hat etwas nicht geklappt. Der Server hat mit folgender Nachricht geantwortet:\n\n${data.message}`);
+            
+                modal.classList.remove("error", "info", "question", "success", "warning");
+                modal.classList.add("error");
+                modalTitle.style.visibility = "visible";
+                modalTitle.innerText = "Da hat etwas nicht geklappt";
+                modalTitleBar.hidden = false;
+                modalPrimary.style.visibility = "hidden";
+                modalText.innerText = `Es tut uns Leid, aber auf unserer Seite ist ein Fehler aufgetreten. Der Server hat mit folgender Nachricht geantwortet:\n\n${data.message}\n\nBitte versuch es später noch einmal.`;
+                document.body.classList.add("modal-open");
+            }
 		});
 	});
 }
