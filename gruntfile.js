@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 					'build/register.jsp': 'src/html/register.jade',
 					'build/dashboard.jsp': 'src/html/dashboard.jade',
 					
-					'build/checkout.html': 'src/html/checkout.jade',
+					'build/checkout.jsp': 'src/html/checkout.jade',
 
 					'build/imprint.html': 'src/html/imprint.jade',
 					'build/privacy.html': 'src/html/privacy.jade',					

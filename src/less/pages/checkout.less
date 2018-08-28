@@ -2,63 +2,63 @@
 
 section.checkout {
 
-    h2 {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 2em;
-    }
+	h2 {
+		font-size: 18px;
+		font-weight: 600;
+		margin-bottom: 2em;
+	}
 
 	.container {
 		display: flex;
-        justify-content: space-between;
-        
-        @media all and (max-width: 768px) {
-            flex-wrap: wrap;
+		justify-content: space-between;
+		
+		@media all and (max-width: 992px) {
+			flex-wrap: wrap;
 
-            article {
-                width: 100%;
-            }
+			article {
+				width: 100%;
+			}
 
-            article.invoice {
-                margin-bottom: 4em;
-                margin-right: 0;
-            }
-        }
-    }
-    
-    article.invoice {
-        margin-right: 2em;
-        padding: 2em;
+			article.invoice {
+				margin-bottom: 4em;
+				margin-right: 0;
+			}
+		}
+	}
+	
+	article.invoice {
+		margin-right: 2em;
+		padding: 2em;
 
-        @media all and (max-width: 768px) {
-            padding: 0;
-        }
+		@media all and (max-width: 768px) {
+			padding: 0;
+		}
 
-        table {
-            table-layout: fixed;
-            width: 100%;
-        }
+		table {
+			table-layout: fixed;
+			width: 100%;
+		}
 
-        td {
-            padding: .5em 1em .5em 0;
+		td {
+			padding: .5em 1em .5em 0;
 
-            &:last-child {
-                font-weight: 600;                
-                padding: .5em 0 .5em 1em;
-                text-align: right;
-            }
-        }
+			&:last-child {
+				font-weight: 600;                
+				padding: .5em 0 .5em 1em;
+				text-align: right;
+			}
+		}
 
-        h3 {
-            border-top: 2px solid #EEE;
-            color: #0747A6;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 1em;
-            padding-top: 1em;
-            text-align: right;
-        }
-    }
+		h3 {
+			border-top: 2px solid #EEE;
+			color: #0747A6;
+			font-size: 16px;
+			font-weight: 600;
+			margin-top: 1em;
+			padding-top: 1em;
+			text-align: right;
+		}
+	}
 
 	article.card-input {
 		border-radius: 12px;
@@ -82,21 +82,21 @@ section.checkout {
 			background-color: #333;
 			border-radius: 12px;
 			height: 225px;
-            // margin: 10px 0 33px 0;
-            margin: 0 auto;
+			// margin: 10px 0 33px 0;
+			margin: 0 auto;
 			margin-bottom: 4em;
 			position: relative;
-            width: 430px;
-            
-            &.error {                
-                background-color: #DE350B;
-                margin-bottom: 0;
-            }
+			width: 430px;
+			
+			&.error {                
+				background-color: #DE350B;
+				margin-bottom: 0;
+			}
 
-            &.success {
-                background-color: #33B025;
-                margin-bottom: 0;
-            }
+			&.success {
+				background-color: #33B025;
+				margin-bottom: 0;
+			}
 
 			@media all and (max-width: 530px) {
 				display: none;
@@ -107,17 +107,17 @@ section.checkout {
 				position: absolute;
 				top: -3px;
 				width: 64px;
-            }
-            
-            .chip {
-                background-image: linear-gradient(95deg, #C0C0C0, #FAFAFA);
-                border-radius: 5px;
-                height: 42px;
-                left: 22px;
-                position: absolute;
-                top: 80px;
-                width: 60px;
-            }
+			}
+			
+			.chip {
+				background-image: linear-gradient(95deg, #C0C0C0, #FAFAFA);
+				border-radius: 5px;
+				height: 42px;
+				left: 22px;
+				position: absolute;
+				top: 80px;
+				width: 60px;
+			}
 
 			.number {
 				color: #FFF;
@@ -212,10 +212,10 @@ section.checkout {
 		}
 
 		button {
-            align-items: center;
-            display: flex;
+			align-items: center;
+			display: flex;
 			height: auto;
-            justify-content: center;
+			justify-content: center;
 			margin: 0;
 			padding: 20px;
 			transition: opacity @transition;
@@ -223,65 +223,75 @@ section.checkout {
 
 			&.hidden {
 				opacity: 0;
-            }
+				pointer-events: none;
+			}
 
-            &:disabled {
-                opacity: 1 !important;
-            }
+			&:disabled {
+				opacity: 1 !important;
+			}
 
-            svg {
-                margin-right: .5em;
-            }
-                  
-            &.error {
-                background-color: #DE350B;
-                color: #FFF;
-    
-                svg {
-                    color: #FFF;
-                    fill: #DE350B;
-                }
-            }
-    
-            &.info {
-                background-color: #0747A6;
-                color: #FFF;
-    
-                svg {
-                    color: #FFF;
-                    fill: #0747A6;
-                }
-            }
-    
-            &.question {
-                background-color: #F3F5F8;
-                color: #172B4D;
-    
-                svg {
-                    color: #172B4D;
-                    fill: #F3F5F8;
-                }
-            }
-    
-            &.success {
-                background-color: #33B025;
-                color: #FFF;
-    
-                svg {
-                    color: #FFF;
-                    fill: #33B025;
-                }
-            }
-    
-            &.warning {
-                background-color: #FFC400;
-                color: #253858;
-    
-                svg {
-                    color: #253858;                
-                    fill: #FFAB00;
-                }
-            }
+			svg {
+				margin-right: .5em;
+			}
+				  
+			&.error {
+				background-color: #DE350B;
+				color: #FFF;
+	
+				svg {
+					color: #FFF;
+					fill: #DE350B;
+				}
+			}
+	
+			&.info {
+				background-color: #0747A6;
+				color: #FFF;
+	
+				svg {
+					color: #FFF;
+					fill: #0747A6;
+				}
+			}
+	
+			&.question {
+				background-color: #F3F5F8;
+				color: #172B4D;
+	
+				svg {
+					color: #172B4D;
+					fill: #F3F5F8;
+				}
+			}
+	
+			&.success {
+				background-color: #33B025;
+				color: #FFF;
+	
+				svg {
+					color: #FFF;
+					fill: #33B025;
+				}
+			}
+	
+			&.warning {
+				background-color: #FFC400;
+				color: #253858;
+	
+				svg {
+					color: #253858;                
+					fill: #FFAB00;
+				}
+			}
+		}
+		
+		a {
+			color: #0747A6;
+			display: block;
+			font-size: 14px;
+			font-weight: 500;
+			margin-top: 2em;   
+			text-align: center;         
 		}
 
 		p {
