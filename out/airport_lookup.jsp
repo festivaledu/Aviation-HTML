@@ -22,23 +22,38 @@
 %>
 
 <%
-	InitialContext initialContext = new InitialContext();
-	Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
-	DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
-	Connection conn = dataSource.getConnection();
-	
-	if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) {
-		PreparedStatement statement = conn.prepareStatement("SELECT * FROM `airports` WHERE `name` LIKE ? OR `municipality` LIKE ? ORDER BY `name` ASC LIMIT 5");
-		statement.setString(1, "%" + request.getParameter("query") + "%");
-		statement.setString(2, "%" + request.getParameter("query") + "%");
-
-		ResultSet results = statement.executeQuery();
+	try {
+		InitialContext initialContext = new InitialContext();
+		Context environmentContext = (Context)initialContext.lookup("java:/comp/env");
+		DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+		Connection conn = dataSource.getConnection();
 		
-		out.println(convertToJSON(results));
-	} else {
-		out.println("[]");
-	}
-	
-	conn.close();
-%>
+		JSONObject returnObj = new JSONObject();
+		
+		if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) {
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM `airports` WHERE `name` LIKE ? OR `municipality` LIKE ? ORDER BY `name` ASC LIMIT 5");
+			statement.setString(1, "%" + request.getParameter("query") + "%");
+			statement.setString(2, "%" + request.getParameter("query") + "%");
+			ResultSet results = statement.executeQuery();
 
+			if (results.next()) {
+				results.beforeFirst();
+				returnObj.put("code", 200);
+				returnObj.put("items", convertToJSON(results));
+			} else {
+				returnObj.put("code", 404);
+				returnObj.put("items", new JSONArray());
+			}
+		}
+		
+		out.println(returnObj);
+		conn.close();
+	} catch (Exception e) {
+		JSONObject returnObj = new JSONObject();
+		
+		returnObj.put("code", 500);
+		returnObj.put("message", e.getMessage());
+		
+		out.println(returnObj);
+	}
+%>

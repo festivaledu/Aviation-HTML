@@ -4,12 +4,20 @@
 | <%@ page import="java.time.*" %>
 | <%@ page import="java.time.format.DateTimeFormatter"%>
 | <%@ page import="java.sql.*" %>
+| <%@ page import="java.util.Map" %>
 | 
 | <%
 | 	JSONObject requestData = new JSONObject();
 | 	JSONObject demoData = new JSONObject();
 | 
+| 	// FIX JAVA'S FUCKING TIMEZONE HANDLING!!!
+| 	LocalDateTime depart_time = null;
+| 	LocalDateTime arrv_time = null;
+| 
 | 	try {
+| 		depart_time = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime();
+| 		arrv_time = Instant.parse(request.getParameter("arrv_date")).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime();
+| 
 | 		requestData.put("depart_iata", request.getParameter("depart_iata"));
 | 		requestData.put("arrv_iata", request.getParameter("arrv_iata"));
 | 		requestData.put("depart_date", request.getParameter("depart_date"));
@@ -26,7 +34,6 @@
 | 	} catch (Exception e) {
 | 		e.printStackTrace();
 | 	}
-| 	// out.println(requestData);
 | %>
 | 
 
@@ -109,11 +116,11 @@ html
 							.column.column-2
 								.column-title
 									p <%= demoData.getString("departureName") %>
-								p.column-content <%= LocalDateTime.parse(requestData.getString("depart_date"), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								p.column-content <%= depart_time.format(DateTimeFormatter.ofPattern("HH:mm")) %>
 							.column.column-2.align-right
 								.column-title 
 									p <%= demoData.getString("arrivalName") %>
-								p.column-content <%= LocalDateTime.parse(requestData.getString("arrv_date"), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								p.column-content <%= arrv_time.format(DateTimeFormatter.ofPattern("HH:mm")) %>
 							.column.column-2.column-offset-1
 								.column-title
 									p Dauer
@@ -158,21 +165,32 @@ html
 					.fill-background
 					.results-footer
 						button.outline.blue(onclick="window.history.back()") Zurück
-						button.fill.blue.continue-button(onclick="document.forms[0].submit()") Fortfahren
+						button.fill.blue.continue-button(onclick="document.forms[\"selectedItem\"].submit()") Fortfahren
 		form.hidden(action="booking-billing.jsp", method="POST", name="selectedItem")
-			input(name="depart_iata", value!="<%= requestData.get(\"depart_iata\") %>")
-			input(name="arrv_iata", value!="<%= requestData.get(\"arrv_iata\") %>")
-			input(name="depart_date", value!="<%= requestData.get(\"depart_date\") %>")
-			input(name="arrv_date", value!="<%= requestData.get(\"arrv_date\") %>")
-			input(name="flight_number", value!="<%= requestData.get(\"flight_number\") %>")
-			input(name="passengers", value!="<%= requestData.get(\"passengers\") %>")
-			input(name="flight_class", value!="<%= requestData.get(\"flight_class\") %>")
+			//- input(name="depart_iata", value!="<%= requestData.get(\"depart_iata\") %>")
+			//- input(name="arrv_iata", value!="<%= requestData.get(\"arrv_iata\") %>")
+			//- input(name="depart_date", value!="<%= requestData.get(\"depart_date\") %>")
+			//- input(name="arrv_date", value!="<%= requestData.get(\"arrv_date\") %>")
+			//- input(name="flight_number", value!="<%= requestData.get(\"flight_number\") %>")
+			//- input(name="passengers", value!="<%= requestData.get(\"passengers\") %>")
+			//- input(name="flight_class", value!="<%= requestData.get(\"flight_class\") %>")
+			//- input(name="services")
+			//- | 
+			//- | 
+			//- <!-- DO NOT USE THIS IN PRODUCTION!!! -->
+			//- <!-- This is for demonstration purposes only! -->
+			//- input(name="duration", value!="<%= requestData.get(\"duration\") %>")
+			//- input(name="stops", value!="<%= requestData.get(\"stops\") %>")
+			//- input(name="price", value!="<%= requestData.get(\"price\") %>")
+			| <%
+			| 	Map<String, String[]> parameters = request.getParameterMap();
+			| 	for(String parameter : parameters.keySet()) {
+			| %>
+			input(name!="<%= parameter %>", value!="<%= request.getParameter(parameter) %>")
+			| 
+			| <%
+			| 	}
+			| %>
+			
 			input(name="services")
-			| 
-			| 
-			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
-			<!-- This is for demonstration purposes only! -->
-			input(name="duration", value!="<%= requestData.get(\"duration\") %>")
-			input(name="stops", value!="<%= requestData.get(\"stops\") %>")
-			input(name="price", value!="<%= requestData.get(\"price\") %>")
 		script(type="text/javascript",src="js/flight-search.js")

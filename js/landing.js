@@ -94,13 +94,13 @@ const loadJSON = (file, callback, callbackError) => {
 
 
 let inputTimeout;
-document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\"])").forEach(container => {
+document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]:not([data-key=\"date\"])").forEach(container => {
 	container.querySelector("input:not([name])").addEventListener("input", e => {
 		const suggestionWrapper = container.querySelector(".suggestions");
 		const suggestionContainer = container.querySelector(".suggestions .suggestions-list");
 
 		if (!e.target.value.length) {
-			suggestionContainer.classList.remove("visible");
+			suggestionWrapper.classList.remove("visible");
 
 			if (inputTimeout) {
 				clearTimeout(inputTimeout);
@@ -117,8 +117,8 @@ document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\
 			suggestionWrapper.classList.add("visible");
 			suggestionContainer.innerHTML = "";
 
-			if (suggestionData.length) {
-				suggestionData.forEach(suggestion => {
+			if (suggestionData["code"] == 200) {
+				suggestionData["items"].forEach(suggestion => {
 					let child = document.createElement("li");
 					child.className = "suggestion-item";
 					child.setAttribute("data-iata", suggestion["iata_code"]);
@@ -133,6 +133,11 @@ document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\
 
 					suggestionContainer.appendChild(child);
 				});
+			} else if (suggestionData["code"] == 500) {
+				let child = document.createElement("li");
+				child.className = "suggestion-item no-results";
+				child.innerHTML = "Internal Server Error";
+				suggestionContainer.appendChild(child);
 			} else {
 				let child = document.createElement("li");
 				child.className = "suggestion-item no-results";
@@ -156,6 +161,7 @@ document.querySelectorAll(".calendar").forEach(item => {
 				year: "numeric"
 			});
 			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
+			item.classList.remove("visible");
 		},
 		hidePast: true
 	});

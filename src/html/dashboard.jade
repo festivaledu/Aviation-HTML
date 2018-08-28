@@ -47,26 +47,29 @@ html
 							li.menu-item.heading Allgemein
 							| 
 							| 
-							a(href="?p=profile",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"profile\") ? \"selected\" : \"\" %>")
+							a(href="?p=profile", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"profile\") ? \"selected\" : \"\" %>")
 								li Profil
 							| 
 							| 
-							a(href="?p=billing",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"billing\") ? \"selected\" : \"\" %>")
+							a(href="?p=billing", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"billing\") ? \"selected\" : \"\" %>")
 								li Rechnungsadresse
 							| 
 							| 
-							a(href="?p=complaints",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"complaints\") ? \"selected\" : \"\" %>")
+							a(href="?p=complaints", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"complaints\") ? \"selected\" : \"\" %>")
 								li Beschwerden
 						ul.user-cp-menu
 							li.menu-item.heading Buchungen
 							| 
 							| 
-							a(href="?p=bookings",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"bookings\") ? \"selected\" : \"\" %>")
+							a(href="?p=bookings", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"bookings\") ? \"selected\" : \"\" %>")
 								li Alle Buchungen
 							| 
 							| 
-							a(href="?p=tickets",class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"tickets\") ? \"selected\" : \"\" %>")
+							a(href="?p=tickets", class!="menu-item <%= isCurrentPage(request.getParameter(\"p\"), \"tickets\") ? \"selected\" : \"\" %>")
 								li Tickets
+						ul.user-cp-menu
+							a.menu-item(href="?p=logout")
+								li Abmelden
 					| 
 					| <% if (isCurrentPage(request.getParameter("p"), "profile")) { %>
 					.column.column-8.offset-1
@@ -105,7 +108,7 @@ html
 									label(for="title") Anrede
 								.column.column-6
 									select(name="title",id="title")
-										option(value="none",selected)
+										option(value="",selected)
 										option(value="male") Herr
 										option(value="female") Frau
 							.row.no-justify
@@ -149,5 +152,22 @@ html
 									label(for="phone") Telefon
 								.column.column-6
 									input(type="phone",name="phone",id="phone")
+					| 
+					| <% } %>
+					
+					| 
+					| <% if (isCurrentPage(request.getParameter("p"), "logout")) { %>
+					.column.column-8.offset-1
+						h2 Abmeldung erfolgt...
+						p Du wirst in kürze abgemeldet und zur Startseite umgeleitet
+						
+						| 
+						| <%
+						| 	authManager.openConnection();
+						| 	if (authManager.destroySession(String.valueOf(session.getAttribute("sid"))) == AuthManager.ErrorCode.OK) {
+						| 		response.sendRedirect("index.jsp");
+						| 	}
+						| 	authManager.closeConnection();
+						| %>
 					| 
 					| <% } %>
