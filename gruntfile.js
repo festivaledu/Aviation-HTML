@@ -53,6 +53,7 @@ module.exports = function(grunt) {
 					'build/css/support-center.built.css': ["src/less/pages/support-center.less"],
 					'build/css/checkout.built.css': ["src/less/pages/checkout.less"],
 					'build/css/modal.built.css': ["src/less/modal.less"],
+					'build/css/flag.built.css': ["src/less/flag.less"],
 				}
 			}
 		},

@@ -47,34 +47,58 @@ html
 		.content-wrapper
 			section.checkout
 				.section-content
+					article.invoice
+						h2 Rechnung #4561
+
+						table
+							tr
+								td Flugticket für AY420#[br]HAJ &rarr; HEL#[br](ECONOMY)
+								td 129,00
+							tr
+								td FIRST CLASS
+								td 29,00
+							tr
+								td Frühstück an Bord
+								td 9,50
+							tr
+								td Gepäckstück bis 20kg
+								td 12,20
+						
+						h3 Total: 170,70€
+
 					article.card-input
 						form
-							h2 Bezahldetails
-
 							.card
 								img(src="img/visa-logo-black-and-white.png")
+
+								.chip
+
 								.number(id="card-number")
-									span 0000
-									span 0000
-									span 0000
-									span 0000
+									span ••••
+									span ••••
+									span ••••
+									span ••••
+
 								span.holder(id="card-holder")
+
 								span.expiration(id="card-expiration")
 
+							input(type="hidden", id="invoice", name="invoice")
+
 							.input-wrapper
-								input(type="text", data-corresponds="holder", placeholder=" ")
+								input(type="text", data-corresponds="holder", id="holder", name="holder", placeholder=" ")
 								span Karteninhaber
 
 							.input-wrapper
-								input(type="text", data-corresponds="number", maxlength="19", placeholder=" ")
+								input(type="text", data-corresponds="number", id="number", name="number", maxlength="19", placeholder=" ")
 								span Kartennummer
 
 							.input-wrapper
-								input(type="text", data-corresponds="expiration", maxlength="5", placeholder=" ")
+								input(type="text", data-corresponds="expiration", id="expiration", name="expiration", maxlength="5", placeholder=" ")
 								span Gültig bis
 
 							.input-wrapper
-								input(type="password", maxlength="3", placeholder=" ")
+								input(type="password", maxlength="3", id="cvv", name="cvv", placeholder=" ")
 								span CVV
 
 							.button-wrapper

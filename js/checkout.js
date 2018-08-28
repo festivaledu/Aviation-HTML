@@ -15,9 +15,9 @@ document.querySelectorAll("form input").forEach(el => {
                     const numbers = el.value.split(" ");
                     for (let i = 0; i < 4; i++) {
                         if (numbers[i]) {
-                            document.querySelectorAll(".card .number span")[i].innerText = numbers[i].substr(0, 4) + "0".repeat(4 - numbers[i].substr(0, 4).length);
+                            document.querySelectorAll(".card .number span")[i].innerText = numbers[i].substr(0, 4) + "•".repeat(4 - numbers[i].substr(0, 4).length);
                         } else {
-                            document.querySelectorAll(".card .number span")[i].innerText = "0000";
+                            document.querySelectorAll(".card .number span")[i].innerText = "••••";
                         }
                     }
                     

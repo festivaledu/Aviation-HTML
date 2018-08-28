@@ -2,25 +2,72 @@
 
 section.checkout {
 
-	.section-content {
+    h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 2em;
+    }
+
+	.container {
 		display: flex;
-		justify-content: center;
-	}
+        justify-content: space-between;
+        
+        @media all and (max-width: 768px) {
+            flex-wrap: wrap;
+
+            article {
+                width: 100%;
+            }
+
+            article.invoice {
+                margin-bottom: 4em;
+                margin-right: 0;
+            }
+        }
+    }
+    
+    article.invoice {
+        margin-right: 2em;
+        padding: 2em;
+
+        @media all and (max-width: 768px) {
+            padding: 0;
+        }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        td {
+            padding: .5em 1em .5em 0;
+
+            &:last-child {
+                font-weight: 600;                
+                padding: .5em 0 .5em 1em;
+                text-align: right;
+            }
+        }
+
+        h3 {
+            border-top: 2px solid #EEE;
+            color: #0747A6;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 1em;
+            padding-top: 1em;
+            text-align: right;
+        }
+    }
 
 	article.card-input {
 		border-radius: 12px;
 		box-shadow: 0 0 10px 1px rgba(0, 0, 0, .1);
 		padding: 2em;
-		width: 50%;
+		width: 490px;
 
 		@media all and (max-width: 768px) {
 			width: 100%;
-		}
-
-		h2 {
-			font-size: 18px;
-			font-weight: 600;
-			margin-bottom: 2em;
 		}
 
 		.fake-placeholder {
@@ -34,13 +81,24 @@ section.checkout {
 		.card {
 			background-color: #333;
 			border-radius: 12px;
-			height: 205px;
-			// margin: 10px 0 33px 0;
+			height: 225px;
+            // margin: 10px 0 33px 0;
+            margin: 0 auto;
 			margin-bottom: 4em;
 			position: relative;
-			width: 430px;
+            width: 430px;
+            
+            &.error {                
+                background-color: #DE350B;
+                margin-bottom: 0;
+            }
 
-			@media all and (max-width: 1000px) {
+            &.success {
+                background-color: #33B025;
+                margin-bottom: 0;
+            }
+
+			@media all and (max-width: 530px) {
 				display: none;
 			}
 
@@ -49,7 +107,17 @@ section.checkout {
 				position: absolute;
 				top: -3px;
 				width: 64px;
-			}
+            }
+            
+            .chip {
+                background-image: linear-gradient(95deg, #C0C0C0, #FAFAFA);
+                border-radius: 5px;
+                height: 42px;
+                left: 22px;
+                position: absolute;
+                top: 80px;
+                width: 60px;
+            }
 
 			.number {
 				color: #FFF;
@@ -58,12 +126,12 @@ section.checkout {
 				justify-content: space-between;
 				padding: 0 15px 0 24px;
 				position: absolute;
-				top: 110px;
+				top: 140px;
 				width: 100%;
 
 				span {
 					font-size: 18px !important;
-					font-weight: 700;
+					font-weight: 600;
 					letter-spacing: .5em;
 				}
 			}
@@ -144,7 +212,10 @@ section.checkout {
 		}
 
 		button {
+            align-items: center;
+            display: flex;
 			height: auto;
+            justify-content: center;
 			margin: 0;
 			padding: 20px;
 			transition: opacity @transition;
@@ -152,7 +223,65 @@ section.checkout {
 
 			&.hidden {
 				opacity: 0;
-			}
+            }
+
+            &:disabled {
+                opacity: 1 !important;
+            }
+
+            svg {
+                margin-right: .5em;
+            }
+                  
+            &.error {
+                background-color: #DE350B;
+                color: #FFF;
+    
+                svg {
+                    color: #FFF;
+                    fill: #DE350B;
+                }
+            }
+    
+            &.info {
+                background-color: #0747A6;
+                color: #FFF;
+    
+                svg {
+                    color: #FFF;
+                    fill: #0747A6;
+                }
+            }
+    
+            &.question {
+                background-color: #F3F5F8;
+                color: #172B4D;
+    
+                svg {
+                    color: #172B4D;
+                    fill: #F3F5F8;
+                }
+            }
+    
+            &.success {
+                background-color: #33B025;
+                color: #FFF;
+    
+                svg {
+                    color: #FFF;
+                    fill: #33B025;
+                }
+            }
+    
+            &.warning {
+                background-color: #FFC400;
+                color: #253858;
+    
+                svg {
+                    color: #253858;                
+                    fill: #FFAB00;
+                }
+            }
 		}
 
 		p {
