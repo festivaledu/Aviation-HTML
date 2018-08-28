@@ -36,11 +36,14 @@
 			statement.setString(2, "%" + request.getParameter("query") + "%");
 			ResultSet results = statement.executeQuery();
 
-			returnObj.put("code", 200);
-			returnObj.put("items", convertToJSON(results));
-		} else {
-			returnObj.put("code", 404);
-			returnObj.put("items", new JSONArray());
+			if (results.next()) {
+				results.beforeFirst();
+				returnObj.put("code", 200);
+				returnObj.put("items", convertToJSON(results));
+			} else {
+				returnObj.put("code", 404);
+				returnObj.put("items", new JSONArray());
+			}
 		}
 		
 		out.println(returnObj);
