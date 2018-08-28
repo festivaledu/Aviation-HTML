@@ -10,7 +10,14 @@
 | 	JSONObject requestData = new JSONObject();
 | 	JSONObject demoData = new JSONObject();
 | 
+| 	// FIX JAVA'S FUCKING TIMEZONE HANDLING!!!
+| 	LocalDateTime depart_time = null;
+| 	LocalDateTime arrv_time = null;
+| 
 | 	try {
+| 		depart_time = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime();
+| 		arrv_time = Instant.parse(request.getParameter("arrv_date")).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime();
+| 
 | 		requestData.put("depart_iata", request.getParameter("depart_iata"));
 | 		requestData.put("arrv_iata", request.getParameter("arrv_iata"));
 | 		requestData.put("depart_date", request.getParameter("depart_date"));
@@ -27,7 +34,6 @@
 | 	} catch (Exception e) {
 | 		e.printStackTrace();
 | 	}
-| 	// out.println(requestData);
 | %>
 | 
 
@@ -110,11 +116,11 @@ html
 							.column.column-2
 								.column-title
 									p <%= demoData.getString("departureName") %>
-								p.column-content <%= LocalDateTime.parse(requestData.getString("depart_date"), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								p.column-content <%= depart_time.format(DateTimeFormatter.ofPattern("HH:mm")) %>
 							.column.column-2.align-right
 								.column-title 
 									p <%= demoData.getString("arrivalName") %>
-								p.column-content <%= LocalDateTime.parse(requestData.getString("arrv_date"), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("HH:mm")) %>
+								p.column-content <%= arrv_time.format(DateTimeFormatter.ofPattern("HH:mm")) %>
 							.column.column-2.column-offset-1
 								.column-title
 									p Dauer
