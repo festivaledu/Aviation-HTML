@@ -36,6 +36,7 @@ html
 		
 		link(rel="stylesheet",href="css/aviation.css")
 		link(rel="stylesheet",href="css/dashboard.built.css")
+		link(rel="stylesheet",href="css/components/tables.css")
 	body
 		include _nav
 		
@@ -159,7 +160,19 @@ html
 					| <% if (isCurrentPage(request.getParameter("p"), "complaints")) { %>
 					.column.column-8.offset-1
 						h2 Beschwerden
-						p Hier siehst du eine Liste all deiner Beschwerden und ob diese bereits gelöst wurden
+						p Hier siehst du eine Liste all deiner Beschwerden und ob diese bereits gelöst wurden.
+						
+						table
+							thead
+								tr
+									th Beschwerde-ID
+									th Art
+									th Eingereicht
+							tbody
+								tr
+									td #0123456789abcdef
+									td Werbung + Marceting
+									td 01.01.1970 01:00
 					| 
 					| <% } %>
 					
@@ -168,6 +181,18 @@ html
 					.column.column-8.offset-1
 						h2 Offene Buchungen
 						p Hier siehst du eine Liste all deiner noch offenen Buchungen, die bezahlt werden müssen. Sonst darfst du nicht fliegen, yo!
+						
+						table
+							thead
+								tr
+									th Beschwerde-ID
+									th Art
+									th Eingereicht
+							tbody
+								tr
+									td #0123456789abcdef
+									td Werbung + Marceting
+									td 01.01.1970 01:00
 					| 
 					| <% } %>
 					
@@ -176,6 +201,18 @@ html
 					.column.column-8.offset-1
 						h2 Abgeschlossene Buchungen
 						p Hier siehst du eine Liste all deiner abgeschlossenen Buchungen, die die bereits bezahlt wurden.
+						
+						table
+							thead
+								tr
+									th Beschwerde-ID
+									th Art
+									th Eingereicht
+							tbody
+								tr
+									td #0123456789abcdef
+									td Werbung + Marceting
+									td 01.01.1970 01:00
 					| 
 					| <% } %>
 					

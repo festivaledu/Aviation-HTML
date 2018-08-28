@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 					'build/css/aviation.css': ["src/less/style.less", "src/less/grid.less", "src/less/nav.less", "src/less/section.less", "src/less/button.less", "src/less/footer.less"],
 					
 					'build/css/components/calendar.css': ["src/less/calendar.less"],
+					'build/css/components/tables.css': ["src/less/tables.less"],
 					
 					'build/css/landing.built.css': ["src/less/pages/landing.less", "src/less/promo-article.less"],
 					'build/css/booking.built.css': "src/less/pages/booking.less",
