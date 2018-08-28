@@ -46,6 +46,8 @@ if (triggers) {
 
                 if (el.hasAttribute("data-modal-secondary")) {
                     modalClose.innerText = el.getAttribute("data-modal-secondary");
+                } else {
+                    modalClose.innerText = "Schließen";
                 }
 
                 if (el.hasAttribute("data-modal-text")) {

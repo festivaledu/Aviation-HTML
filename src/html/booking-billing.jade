@@ -40,8 +40,11 @@ html
 		
 		link(rel="stylesheet",href="css/aviation.css")
 		link(rel="stylesheet",href="css/booking.built.css")
+		link(rel="stylesheet", href="css/modal.built.css")
 	body
 		include _nav
+
+		include _sc-modal
 		
 		section.search-results
 			.section-content.row
@@ -202,6 +205,8 @@ html
 			| %>
 			input(name="billingId")
 			
+		script(src="js/icons.js")
+		script(src="js/modal.js")
 		script(type="text/javascript",src="js/flight-search.js")
 | 
 | <% authManager.closeConnection(); %>
