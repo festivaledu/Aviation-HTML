@@ -73,11 +73,26 @@ html
 				.search-results-container.column.column-12.medium-8
 					.scroll-container.billing-address
 						.result-header
+							| 
+							| <%
+							| 	if (didCompleteBooking) {
+							| %>
 							h4.date
 								span Buchung abschließen
 							p Deine Buchung ist jetzt getätigt! Da wäre nur noch eine Sache: das Finanzielle. Bitte zahle innerhalb der nächsten 24 Stunden über unseren Bezahldienst VirtuaMonetenPay, damit du dich ganz ohne Sorgen auf deinen Urlaub freuen kannst!
 							
 							<!-- HIER WIDGET EINFÜGEN -->
+							| 
+							| <%
+							| 	} else {
+							| %>
+							h4.date
+								span Da hat etwas nicht geklappt.
+							p Bei der Buchung ist leider etwas schief gelaufen. Das Problem liegt entweder auf unserer Seite ('tschuldigung) oder auf deiner Seite. Probiere es doch in wenigen Minuten erneut. Auf keinen Fall solltest du die Seite konstant neu laden, das kann unsere Katze nicht so gut ab.
+							| 
+							| <%
+							| 	}
+							| %>
 					.fill-background
 					.results-footer
 						button.outline.blue(onclick="location.href = \"index.jsp\"") Zur Startseite
