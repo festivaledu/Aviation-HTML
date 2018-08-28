@@ -17,6 +17,8 @@
 
 <%
 	try {
+		request.setCharacterEncoding("UTF-8");
+		
 		JSONObject requestObj = new JSONObject();
 		Map<String, String[]> parameters = request.getParameterMap();
 		for (String parameter : parameters.keySet()) {
