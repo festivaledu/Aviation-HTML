@@ -155,9 +155,6 @@ section.search-results {
 							font-weight: 600;
 							line-height: 16px;
 							color: #555555;
-							white-space: nowrap ;
-							overflow: hidden ;
-							text-overflow: ellipsis ;
 							text-transform: uppercase;
 						}
 					}
@@ -171,6 +168,12 @@ section.search-results {
 						text-transform: uppercase;
 						background: transparent;
 					}
+					p.column-content {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+					
 					::placeholder {
 						color: rgba(0, 0, 0, 0.4);
 					}
@@ -438,10 +441,10 @@ section.search-results {
 			flex: 1;
 			display: flex;
 			flex-direction: column;
-			justify-content: space-around;
+			justify-content: center;
 			background-color: #F3F3F3;
 			
-			p.placeholder-text {
+			.placeholder-text {
 				text-align: center;
 				color: rgba(0, 0, 0, 0.4);
 				font-size: 18px;
