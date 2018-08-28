@@ -201,14 +201,30 @@ html
 
 							table
 								tr
-									td Flugticket für <%= flightId %>#[br]<%= fromIATA %> &rarr; <%= toIATA %>
-									td
+									td Flugticket für <%= flightId %>#[br]<%= fromIATA %> &rarr; <%= toIATA %>#[br]<%= flightClass.toUpperCase() %>
+									td <%= String.format("%.2f", price) %>€
+								
+								| 
+								| <%
+								| 	for (int i = 0; i < extras.split(",").length; i++) {
+								| 	    PreparedStatement stm = conn.prepareStatement("SELECT * FROM services WHERE serviceId = ?");
+								| 	    stm.setString(1, extras.split(",")[i]);
+								| 
+								| 	    ResultSet extra = stm.executeQuery();
+								| 
+								| 	    if (extra.next()) {
+								| 	        price += extra.getFloat("price");
+								| %>
+
 								tr
-									td <%= flightClass %>
-									td
-								tr
-									td <%= extras %>
-									td
+									td <%= extra.getString("title") %>
+									td <%= String.format("%.2f", extra.getFloat("price")) %>€
+
+								|
+								| <%
+								| 		}
+								| 	}
+								| %>
 							
 							h3 Total: <%= price %>€
 
@@ -282,7 +298,7 @@ html
 									| 	} else {
 									| %>
 
-									button.modal-trigger(data-modal-type="warning", data-modal-title="Kauf bestätigen", data-modal-text="Bitte bestätige, dass du den Kauf wirklich tätigen willst.", data-modal-primary="Kostenpflichtig kaufen", data-modal-primary-action="submit", data-modal-primary-action-timeout="3000", data-modal-secondary="Kauf abbrechen") <%= price %>€ Bezahlen
+									button.modal-trigger(data-modal-type="warning", data-modal-title="Kauf bestätigen", data-modal-text="Bitte bestätige, dass du den Kauf wirklich tätigen willst.", data-modal-primary="Kostenpflichtig kaufen", data-modal-primary-action="submit", data-modal-primary-action-timeout="3000", data-modal-secondary="Kauf abbrechen") <%= String.format("%.2f", price) %>€ Bezahlen
 
 									| 
 									| <%
