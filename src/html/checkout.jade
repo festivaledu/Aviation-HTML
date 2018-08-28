@@ -234,18 +234,18 @@ html
 								| 	if (!paymentError && !paymentOk) {
 								| %>
 
-								input(type="hidden", id="invoice", name="invoice", value="<%= invoice %>")
+								input(type="hidden", id="invoice", name="invoice", value!="<%= invoice %>")
 
 								.input-wrapper
-									input(type="text", data-corresponds="holder", id="holder", name="holder", placeholder=" ", value="<%= holder %>")
+									input(type="text", data-corresponds="holder", id="holder", name="holder", placeholder=" ", value!="<%= holder %>")
 									span Karteninhaber
 
 								.input-wrapper
-									input(type="text", data-corresponds="number", id="number", name="number", maxlength="19", placeholder=" ", value="<%= number %>")
+									input(type="text", data-corresponds="number", id="number", name="number", maxlength="19", placeholder=" ", value!="<%= number %>")
 									span Kartennummer
 
 								.input-wrapper
-									input(type="text", data-corresponds="expiration", id="expiration", name="expiration", maxlength="5", placeholder=" ", value="<%= expiration %>")
+									input(type="text", data-corresponds="expiration", id="expiration", name="expiration", maxlength="5", placeholder=" ", value!="<%= expiration %>")
 									span Gültig bis
 
 								.input-wrapper
