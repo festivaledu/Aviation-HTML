@@ -1,0 +1,111 @@
+.flag {
+	border-radius: 3px;
+	box-sizing: border-box;
+	box-shadow: #091E424D 0px 20px 32px -8px;
+	margin: 1em 0;
+	padding: 16px;
+	transition: background-color .2s ease;
+	width: 100%;
+	z-index: 600;
+
+	&.error {
+		background-color: #DE350B;
+		color: #FFF;
+
+		.icon span {
+			color: #FFF;
+			fill: #DE350B;
+		}
+	}
+
+	&.info {
+		background-color: #0747A6;
+		color: #FFF;
+
+		.icon span {
+			color: #FFF;
+			fill: #0747A6;
+		}
+	}
+
+	&.question {
+		background-color: #F3F5F8;
+		color: #172B4D;
+
+		.icon span {
+			color: #172B4D;
+			fill: #F3F5F8;
+		}
+	}
+
+	&.success {
+		background-color: #33B025;
+		color: #FFF;
+
+		.icon span {
+			color: #FFF;
+			fill: #33B025;
+		}
+	}
+
+	&.warning {
+		background-color: #FFC400;
+		color: #253858;
+
+		.icon span {
+			color: #253858;                
+			fill: #FFAB00;
+		}
+	}
+
+	.header {
+		align-items: center;
+		display: flex;
+		height: 32px;
+		-moz-box-align: center;
+	}
+
+	.icon {
+		flex: 0 0 auto;
+		width: 40px;
+
+		span {
+			display: inline-block;
+			flex-shrink: 0;
+			line-height: 1;
+		}
+	}
+
+	.title {
+		font-size: 14px !important;
+		font-weight: 600;
+		flex: 1 1 0%;
+		margin-bottom: 5px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.content {
+		display: flex;
+		flex: 1 1 100%;
+		flex-direction: column;
+		justify-content: center;
+		min-width: 0px;
+		padding-left: 40px;
+		-moz-box-pack: center;
+
+		&, * {                
+			font-size: 14px !important;
+		}
+	}
+
+	a {
+		color: inherit;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}

@@ -9,15 +9,10 @@
 | 	Boolean incorrectPassword = false;
 | 	AuthManager authManager = new AuthManager();
 | 
-| 	Cookie[] cookies = request.getCookies();
-| 	for (int i=0; i<cookies.length; i++) {
-| 		if (cookies[i].getName().equals("sid")) {
-| 			if (authManager.validate(cookies[i].getValue())) {
-| 				response.sendRedirect("dashboard.jsp");
-| 				return;
-| 			}
-| 		}
-| 	}
+| 	if (authManager.validate(String.valueOf(session.getAttribute("sid")))) {
+|	    response.sendRedirect("dashboard.jsp");
+|	    return;
+|	}
 | 
 | 	if (request.getParameter("email") != null &&
 | 		request.getParameter("password") != null) {

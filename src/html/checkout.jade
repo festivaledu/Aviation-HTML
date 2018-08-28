@@ -1,0 +1,329 @@
+| <%@ page contentType="text/html;charset=UTF-8" %>
+| <%@ page import="javax.naming.InitialContext" %>
+| <%@ page import="javax.naming.Context" %>
+| <%@ page import="javax.sql.DataSource" %>
+| <%@ page import="java.sql.Connection" %>
+| <%@ page import="java.sql.PreparedStatement" %>
+| <%@ page import="java.sql.ResultSet" %>
+|  
+| <% 
+|     InitialContext initialContext;
+|     Context environmentContext;
+|     DataSource dataSource;
+|     Connection conn = null;
+|  
+|     ResultSet payment = null;
+| 
+|     String invoice = "";
+|     String flightId = "";
+|     String fromIATA = "";
+|     String toIATA = "";
+|     String flightClass = "";
+|     String extras = "";
+|     float price = 0F;
+| 
+|     String holder = "";
+|     String number = "";
+|     String expiration = "";
+|     String cvv = "";
+| 
+|     boolean invalidInvoice = false;
+|     boolean alreadyPaid = false;
+|     boolean invalidData = false;
+|     boolean paymentError = false;
+|     boolean paymentOk = false;
+|     boolean error = false;
+|  
+|     try {
+|         initialContext = new InitialContext();
+|         environmentContext = (Context)initialContext.lookup("java:/comp/env");
+|         dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
+|         conn = dataSource.getConnection();
+|  
+|         request.setCharacterEncoding("UTF-8");
+| 
+|         try {
+|             invoice = request.getParameter("invoice");
+| 		} catch (Exception e) {
+|             e.printStackTrace();
+| 		}
+| 
+| 		if (invoice == null || invoice.isEmpty()) {
+|             // Keine RechungsId angegeben
+| 			invalidInvoice = true;
+| 		}
+| 
+| 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM bookings WHERE id = ?");
+|         statement.setString(1, invoice);
+| 
+| 		ResultSet invoiceData = statement.executeQuery();
+| 
+| 		if (invoiceData.next()) {
+| 		    if (invoiceData.getBoolean("paid")) {
+| 		        // Schon bezahlt
+| 				alreadyPaid = true;
+| 			} else {
+| 
+| 		        flightId = invoiceData.getString("flightId");
+| 		        fromIATA = invoiceData.getString("fromIATA");
+| 		        toIATA = invoiceData.getString("toIATA");
+| 		        flightClass = invoiceData.getString("class");
+| 		        extras = invoiceData.getString("extras");
+| 		        price = invoiceData.getFloat("price");
+| 
+| 				if (request.getMethod().equals("POST")) {
+| 				    // Bezahlung durchführen
+| 
+| 					holder = request.getParameter("holder");
+| 					number = request.getParameter("number");
+| 					expiration = request.getParameter("expiration");
+| 					cvv = request.getParameter("cvv");
+| 
+| 					if (holder == null || holder.isEmpty() || number == null || number.isEmpty() || expiration == null || expiration.isEmpty() || cvv == null || cvv.isEmpty()) {
+| 					    // Nicht alles ausgefüllt
+| 						invalidData = true;
+| 					} else {
+| 					    if (number.equals("4000 0027 6000 0016")) {
+| 					        // Fail
+| 							paymentError = true;
+| 						} else {
+| 					        // Ok
+| 
+| 					        statement = conn.prepareStatement("UPDATE bookings SET paid = TRUE WHERE id = ?");
+| 					        statement.setString(1, invoice);
+| 
+| 					        statement.execute();
+| 
+| 					        paymentOk = true;
+| 						}
+| 					}
+| 				}
+| 
+| 			}
+| 		} else {
+| 		    // Rechnung existiert nicht
+| 			invalidInvoice = true;
+| 		}
+|     } catch (Exception e) {
+|         // MySQL Error
+| 		error = true;
+|         e.printStackTrace();
+|     }
+| %>
+
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no")
+	
+		title Checkout – FESTIVAL Aviation Support
+		
+		link(rel="stylesheet", href="css/aviation.css")
+		link(rel="stylesheet", href="css/modal.built.css")
+		link(rel="stylesheet", href="css/flag.built.css")
+		link(rel="stylesheet", href="css/checkout.built.css")
+	body
+		include _nav
+		
+		include _sc-modal
+		
+		.content-wrapper
+			section.checkout
+				.section-content
+
+					| 
+					| <%
+					| 	if (invalidInvoice) {
+					| %>
+
+					article.flag.error
+						.header
+							.icon
+								span
+									span.ai.ai-error
+							span.title Rechnung existiert nicht
+						.content
+							p Die angegebene Rechnung konnte nicht gefunden werden.
+
+					| 
+					| <%
+					| 	} else if (alreadyPaid) {
+					| %>
+
+					article.flag.error
+						.header
+							.icon
+								span
+									span.ai.ai-error
+							span.title Rechnung bereits bezahlt
+						.content
+							p Die angegebene Rechnung wurde bereits bezahlt.
+
+					| 
+					| <%
+					| 	} else if (invalidData) {
+					| %>
+
+					article.flag.error
+						.header
+							.icon
+								span
+									span.ai.ai-error
+							span.title Ungültige Eingabe
+						.content
+							p Du musst alle Felder, die nicht als optional gekennzeichnet sind, ausfüllen.
+
+					| 
+					| <%
+					| 	} else if (error) {
+					| %>
+
+					article.flag.error
+						.header
+							.icon
+								span
+									span.ai.ai-error
+							span.title Hier funktioniert etwas nicht
+						.content
+							p Beim Bezahlen der Rechnung ist ein Fehler aufgetreten. Bitte versuch es später noch einmal.
+
+					| 
+					| <%
+					| 	}
+					| 
+					| 	if (!invalidInvoice && !alreadyPaid) {
+					| %>
+
+					.container
+						article.invoice
+							h2 Rechnung #<%= invoice %>
+
+							table
+								tr
+									td Flugticket für <%= flightId %>#[br]<%= fromIATA %> &rarr; <%= toIATA %>
+									td
+								tr
+									td <%= flightClass %>
+									td
+								tr
+									td <%= extras %>
+									td
+							
+							h3 Total: <%= price %>€
+
+						article.card-input
+							form(method="POST", action="checkout.jsp", novalidate)
+								.card(class!="<% if (paymentError) { %>error<% } else if (paymentOk) { %>success<% } %>")
+									img(src="img/visa-logo-black-and-white.png")
+
+									.chip
+
+									.number(id="card-number")
+										span ••••
+										span ••••
+										span ••••
+										span ••••
+
+									span.holder(id="card-holder")
+
+									span.expiration(id="card-expiration")
+
+								| 
+								| <%
+								| 	if (!paymentError && !paymentOk) {
+								| %>
+
+								input(type="hidden", id="invoice", name="invoice", value="<%= invoice %>")
+
+								.input-wrapper
+									input(type="text", data-corresponds="holder", id="holder", name="holder", placeholder=" ", value="<%= holder %>")
+									span Karteninhaber
+
+								.input-wrapper
+									input(type="text", data-corresponds="number", id="number", name="number", maxlength="19", placeholder=" ", value="<%= number %>")
+									span Kartennummer
+
+								.input-wrapper
+									input(type="text", data-corresponds="expiration", id="expiration", name="expiration", maxlength="5", placeholder=" ", value="<%= expiration %>")
+									span Gültig bis
+
+								.input-wrapper
+									input(type="password", maxlength="3", id="cvv", name="cvv", placeholder=" ")
+									span CVV
+
+								| 
+								| <%
+								| 	}
+								| %>
+
+								.button-wrapper
+
+									| 
+									| <%
+									| 	if (paymentError) {
+									| %>
+
+									button.error(disabled)
+										span.ai.ai-error
+										span Zahlung fehlgeschlagen
+
+									| 
+									| <%
+									| 	} else if (paymentOk) {
+									| %>
+
+									button.success(disabled)
+										span.ai.ai-success
+										span Zahlung erfolgreich
+
+									| 
+									| <%
+									| 	} else {
+									| %>
+
+									button.modal-trigger(data-modal-type="warning", data-modal-title="Kauf bestätigen", data-modal-text="Bitte bestätige, dass du den Kauf wirklich tätigen willst.", data-modal-primary="Kostenpflichtig kaufen", data-modal-primary-action="submit", data-modal-primary-action-timeout="3000", data-modal-secondary="Kauf abbrechen") <%= price %>€ Bezahlen
+
+									| 
+									| <%
+									| 	}
+									| %>
+
+									.sk-folding-cube
+										.sk-cube1.sk-cube
+										.sk-cube2.sk-cube
+										.sk-cube4.sk-cube
+										.sk-cube3.sk-cube
+								
+								| 
+								| <%
+								| 	if (paymentError) {
+								| %>
+
+								a(href!="checkout.jsp?invoice=<%= invoice %>") Zahlung wiederholen
+
+								| 
+								| <%
+								| 	} else if (paymentOk) {
+								| %>
+
+								a(href="index.jsp") Zurück zur Startseite
+
+								| 
+								| <%
+								| 	}
+								| %>
+									
+								p Powered by #[span VirtuaMonetenPay]
+
+		include _footer
+		
+	script(src="js/checkout.js")
+	script(src="js/modal.js")
+	script(src="js/icons.js")
+
+| 
+| <%
+| 	if (conn != null)
+| 	    conn.close();
+| %>
