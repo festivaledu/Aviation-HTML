@@ -117,8 +117,8 @@ document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\
 			suggestionWrapper.classList.add("visible");
 			suggestionContainer.innerHTML = "";
 
-			if (suggestionData.length) {
-				suggestionData.forEach(suggestion => {
+			if (suggestionData["code"] == 200) {
+				suggestionData["items"].forEach(suggestion => {
 					let child = document.createElement("li");
 					child.className = "suggestion-item";
 					child.setAttribute("data-iata", suggestion["iata_code"]);
@@ -133,6 +133,11 @@ document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\
 
 					suggestionContainer.appendChild(child);
 				});
+			} else if (suggestionData["code"] == 500) {
+				let child = document.createElement("li");
+				child.className = "suggestion-item no-results";
+				child.innerHTML = "Internal Server Error";
+				suggestionContainer.appendChild(child);
 			} else {
 				let child = document.createElement("li");
 				child.className = "suggestion-item no-results";
