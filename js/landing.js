@@ -94,13 +94,13 @@ const loadJSON = (file, callback, callbackError) => {
 
 
 let inputTimeout;
-document.querySelectorAll(".hero-search-bar .input-wrapper:not([data-key=\"date\"])").forEach(container => {
+document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]:not([data-key=\"date\"])").forEach(container => {
 	container.querySelector("input:not([name])").addEventListener("input", e => {
 		const suggestionWrapper = container.querySelector(".suggestions");
 		const suggestionContainer = container.querySelector(".suggestions .suggestions-list");
 
 		if (!e.target.value.length) {
-			suggestionContainer.classList.remove("visible");
+			suggestionWrapper.classList.remove("visible");
 
 			if (inputTimeout) {
 				clearTimeout(inputTimeout);
@@ -161,6 +161,7 @@ document.querySelectorAll(".calendar").forEach(item => {
 				year: "numeric"
 			});
 			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
+			item.classList.remove("visible");
 		},
 		hidePast: true
 	});

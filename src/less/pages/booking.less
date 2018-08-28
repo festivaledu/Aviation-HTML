@@ -16,6 +16,7 @@ section.search-results {
 	
 	.section-content {
 		max-width: 1366px;
+		padding: 0 20px;
 	}
 	
 	.progress-overview {
@@ -127,6 +128,7 @@ section.search-results {
 				padding: 0 18px;
 				
 				.column {
+					position: relative;
 					height: 56px;
 					display: flex;
 					flex-direction: column;
@@ -168,6 +170,90 @@ section.search-results {
 					}
 					::placeholder {
 						color: rgba(0, 0, 0, 0.4);
+					}
+					
+					select {
+						width: 100%;
+					}
+					
+					.suggestions {
+						position: absolute;
+						top: 56px;
+						right: 0;
+						background-color: #FFFFFF;
+						list-style: none;
+						// box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
+						z-index: 50;
+						
+						&:not(.visible) {
+							display: none;
+						}
+						
+						.suggestions-header {
+							padding: 16px;
+							background-color: #00B0EE;
+							color: #FFFFFF;
+							
+							.header-eyebrow {
+								font-size: 12px;
+								text-transform: uppercase;
+							}
+							
+							.header-title {
+								font-size: 22px;
+							}
+						}
+						
+						ul.suggestions-list {
+							list-style: none;
+						
+							.suggestion-item {
+								min-height: 44px;
+								padding: 13px 16px;
+								overflow: hidden ;
+								text-overflow: ellipsis;
+								cursor: pointer;
+								
+								&:hover:not(:active) {
+									background-color: #F3F3F3;
+								}
+								
+								&:not(:last-child) {
+									border-bottom: 1px solid #F3F3F3;
+								}
+								
+								&.no-results {
+									font-style: italic;
+									opacity: 0.75;
+									pointer-events: none;
+									cursor: default;
+								}
+							}
+						}
+					}
+					
+					&[data-key="departure"] {
+						.suggestions {
+							left: -18px;
+						}
+					}
+					
+					&[data-key="arrival"] {
+						.suggestions {
+							left: 0;
+							right: -18px;
+						}
+					}
+					
+					&[data-key="date"] {
+						.calendar {
+							position: absolute;
+							top: 56px;
+							left: -18px;
+							right: 0;
+							width: auto;
+							// width: 100%;
+						}
 					}
 				}
 				
@@ -347,7 +433,18 @@ section.search-results {
 		
 		.fill-background {
 			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
 			background-color: #F3F3F3;
+			
+			p.placeholder-text {
+				text-align: center;
+				color: rgba(0, 0, 0, 0.4);
+				font-size: 18px;
+				font-weight: 500;
+				line-height: 20px;
+			}
 		}
 		
 		.results-footer {
