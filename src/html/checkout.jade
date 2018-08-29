@@ -226,7 +226,7 @@ html
 								| 	}
 								| %>
 							
-							h3 Total: <%= price %>€
+							h3 Total: <%= String.format("%.2f", price) %>€
 
 						article.card-input
 							form(method="POST", action="checkout.jsp", novalidate)
