@@ -43,7 +43,7 @@ document.querySelectorAll("[data-spring-animatable]").forEach(item => {
 		classList: ["promo-animatable"],	// A list of CSS classes to add to the item
 		originElement: item,	// This is the element where the animation begins from
 		targetElement: document.querySelector(`[data-spring-animatable-target="${item.getAttribute("data-spring-animatable")}"]`),	// This is the element where the animation should stop
-		
+
 		// Return a function to be called everytime this animation is triggered
 		// This controls the target frame
 		targetFrame: () => {
@@ -71,7 +71,7 @@ document.querySelectorAll("[data-spring-animatable]").forEach(item => {
 				}
 			}
 		},
-		
+
 		// Some math stuff
 		// The iOS app I created for this calculated these for me
 		spring: {
@@ -88,10 +88,10 @@ document.querySelectorAll("[data-spring-animatable]").forEach(item => {
 		})
 
 		animatable.start();
-		
+
 		// Unhide the background
 		document.querySelector(".spring-background").classList.add("visible");
-		
+
 		// Reset the scroll offset because it looks better
 		target.querySelector(".content-scroll-wrapper").scrollTop = 0;
 	});
@@ -100,7 +100,7 @@ document.querySelectorAll("[data-spring-animatable]").forEach(item => {
 	if (target.querySelector(".close-button")) {
 		target.querySelector(".close-button").addEventListener("click", () => {
 			animatable.reverse();
-			
+
 			// Hide the background
 			document.querySelector(".spring-background").classList.remove("visible");
 		});
@@ -112,8 +112,8 @@ document.querySelectorAll("[data-spring-animatable]").forEach(item => {
 
 /**
  * Load JSON data from a URL and return a Promise to resolve
- * @param {*} file The URL to load JSON data from
- * @returns {*} A Promise that is resolved when the request is completed
+ * @param {String} file The URL to load JSON data from
+ * @returns {Promise} A Promise that is resolved when the request is completed
  */
 const loadJSON = (file) => {
 	return new Promise((resolve, reject) => {
@@ -147,7 +147,7 @@ document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]:not([data-k
 			}
 			return;
 		}
-		
+
 		// Clear the input timeout if it exists
 		if (inputTimeout) {
 			clearTimeout(inputTimeout);
@@ -175,7 +175,7 @@ document.querySelectorAll(".hero-search-bar .input-wrapper[data-key]:not([data-k
 					child.addEventListener("click", () => {
 						container.querySelector("input:not([name])").value = suggestion["name"];
 						container.querySelector("input[name]").value = suggestion["iata_code"];
-						
+
 						// Item clicked, hide suggestions
 						suggestionWrapper.classList.remove("visible");
 					});
@@ -212,10 +212,10 @@ document.querySelectorAll(".hero-search-bar .input-wrapper[data-key=\"date\"] .c
 				month: "long",
 				year: "numeric"
 			});
-			
+
 			// Convert the date into a ISO string (Zulu time) and insert it into the hidden input field
 			document.querySelector(".hero-search-bar .input-wrapper[data-key=\"date\"] input[name]").value = date.toISOString();
-			
+
 			// Hide the calendar
 			item.classList.remove("visible");
 		},

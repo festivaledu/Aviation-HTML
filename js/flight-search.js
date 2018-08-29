@@ -1,7 +1,17 @@
 /**
+ * flight-search.js
+ * FESTIVAL Aviation
+ * 
+ * This file contains all the logic client for the flight search
+ * 
+ * @author Janik Schmidt (jani.schmidt@ostfalia.de)
+ * @version 1.0
+ */
+
+/**
  * Load JSON data from a URL and return a Promise to resolve
- * @param {*} file The URL to load JSON data from
- * @returns {*} A Promise that is resolved when the request is completed
+ * @param {String} file The URL to load JSON data from
+ * @returns {Promise} A Promise that is resolved when the request is completed
  */
 const loadJSON = (file) => {
 	return new Promise((resolve, reject) => {
@@ -16,8 +26,8 @@ const loadJSON = (file) => {
 
 /**
  * POST form data to a URL and return a Promise to resolve
- * @param {*} file The URL to load POST form data to
- * @param {*} data The form data to POST
+ * @param {String} file The URL to load POST form data to
+ * @param {Array} data The form data to POST
  */
 const postData = (file, data) => {
 	return new Promise((resolve, reject) => {
@@ -34,7 +44,7 @@ const postData = (file, data) => {
 /**
  * Called when the passenger count is changed
  * Updates a hidden input field with a value between 1 and 10
- * @param {*} e The event target that is passed from within the callee
+ * @param {HTMLElement} e The event target that is passed from within the callee
  */
 const passengerCountChanged = (e) => {
 	document.forms["selectedItem"]["passengers"].value = e.value;
@@ -43,7 +53,7 @@ const passengerCountChanged = (e) => {
 /**
  * Called when the flight class is changed
  * Updates a hidden input field with a string value
- * @param {*} e The event target that is passed from within the callee
+ * @param {HTMLElement} e The event target that is passed from within the callee
  */
 const classChanged = (e) => {
 	document.forms["selectedItem"]["flight_class"].value = e.value;
