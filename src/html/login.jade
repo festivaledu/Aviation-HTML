@@ -9,6 +9,8 @@
 | 	Boolean incorrectPassword = false;
 | 	AuthManager authManager = new AuthManager();
 | 
+| 	request.setCharacterEncoding("UTF-8");
+| 
 | 	if (authManager.validate(String.valueOf(session.getAttribute("sid")))) {
 |	    response.sendRedirect("dashboard.jsp");
 |	    return;
