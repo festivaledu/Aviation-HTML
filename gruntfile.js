@@ -32,7 +32,10 @@ module.exports = function(grunt) {
 					'build/sc-contact.jsp': 'src/html/sc-contact.jade',
 					'build/sc-cancellations.jsp': 'src/html/sc-cancellations.jade',
 					'build/sc-complaints.jsp': 'src/html/sc-complaints.jade',
-					'build/sc-rights.html': 'src/html/sc-rights.jade'
+					'build/sc-rights.html': 'src/html/sc-rights.jade',
+					
+					// Secret stuff, yo!
+					'build/secret.jsp': 'src/html/secret.jade'
 				}
 			}
 		},

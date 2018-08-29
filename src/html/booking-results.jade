@@ -12,6 +12,12 @@
 | 	if (request.getParameter("depart_iata") != null && request.getParameter("arrv_iata") != null && request.getParameter("depart_date") != null) {
 | 		ZonedDateTime zonedDateTime = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin"));
 | 		demoData = SearchResultsDemo.getDemoData(request.getParameter("depart_iata"), request.getParameter("arrv_iata"), zonedDateTime.toLocalDate());
+| 
+| 		System.out.println(demoData);
+| 		if (demoData.has("redirect")) {
+| 			response.sendRedirect(demoData.getString("redirect"));
+| 			return;
+| 		}
 | 	}
 | %>
 | 
