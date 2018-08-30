@@ -1,3 +1,19 @@
+| <!--
+| 	index.jsp
+| 	FESTIVAL Aviation
+| 	
+| 	This is the landing page of FESTIVAL Aviation
+| 	Here we have a "hero" section that contains the project
+| 	name and a minimal flight search bar.
+| 	After that, we find a randomized selection of featured
+| 	travel places that are different with every reload.
+| 	Last but not least, we have several sections explaining
+| 	the idea behind Aviation.
+| 	
+| 	@author Janik Schmidt (jani.schmidt@ostfalia.de)
+| 	@version 1.0
+| -->
+| 
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="java.sql.*" %>
 | <%@ page import="ml.festival.aviation.*" %>
@@ -60,27 +76,27 @@ html
 						button.fill.blue.search-button Suchen
 		section.promo-articles
 			.section-content
-				//- .promo-article(data-spring-animatable="promo_1")
-				//- 	.header.dark(style="background-image: url(img/img.jpg)")
-				//- 		p.header-heading Test Header
-				//- 		p.header-title Test Title
-				//- 		p.header-subtitle Example Subtitle
-				
 				| 
 				| <%
+				| 	// This thing gets our promo texts from the database
 				| 	PromoManager promoManager = new PromoManager();
 				| 	ResultSet categories = promoManager.getPromoCategories();
 				| 	int index = 0;
+				| 
+				| 	// Here we store the main location ids, so that we can later show remaining locations
 				| 	String[] locations = new String[3];
+				| 
+				| 	// Iterate through all location categories
 				| 	while (categories.next()) {
 				| 		index++;
 				| 		ResultSet location = promoManager.getLocationForCategory(categories.getString("id"));
 				| 		
+				| 		// Display a single location with it's title and location description
 				| 		if (location.next()) {
 				| 			locations[index - 1] = location.getString("id");
 				| %>
 				| 
-				.promo-article(data-spring-animatable!="promo_<%= index %>")
+				article.promo-article(data-spring-animatable!="promo_<%= index %>")
 					.header.dark(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
 						p.header-heading Unsere Empfehlung
 						p.header-title <%= categories.getString("title") %>
@@ -88,8 +104,12 @@ html
 				| 
 				| <%
 				| 		}
+				| 
+				| 		// Reset the selection index
 				| 		location.beforeFirst();
 				| 	}
+				| 
+				| 	// Reset the selection index
 				| 	categories.beforeFirst();
 				| 	index = 0;
 				| %>
@@ -125,16 +145,18 @@ html
 		
 		| 
 		| <%
+		| 	// Here we create the hidden expanded promo articles that will be shown using spring-animatable.js
 		| 	while (categories.next()) {
 		| 		index++;
 		| 
+		| 		// Get the location for the stored id and the locations for this category
 		| 		ResultSet location = promoManager.getLocationForId(locations[index - 1]);
 		|		ResultSet locationSet = promoManager.getLocationsForCategory(categories.getString("id"));
 		| 
 		| 		if (location.next()) {
 		| %>
 		| 
-		.promo-article-details(data-spring-animatable-target!="promo_<%= index %>")
+		article.promo-article-details(data-spring-animatable-target!="promo_<%= index %>")
 			.header.dark(style!="background-image: url(<%= location.getString(\"headerImage\") %>)")
 				.close-button
 				p.header-heading Unsere Empfehlung
@@ -149,10 +171,11 @@ html
 					.promo-article-wrapper
 						| <%
 						| 	while (locationSet.next()) {
+						| 		// Display all the locations that do not match the id of the already displayed location
 						| 		if (!locationSet.getString("id").equals(location.getString("id"))) {
 						| %>
 						a(href!="featured.jsp?id=<%= locationSet.getString(\"id\") %>")
-							.promo-article
+							article.promo-article
 								.header.dark(style!="background-image: url(<%= locationSet.getString(\"headerImage\") %>)")
 									p.header-heading <%= categories.getString("title") %>
 									p.header-title <%= locationSet.getString("location") %>
@@ -165,19 +188,11 @@ html
 		| <%
 		| 		}
 		| 	}
+		| 
+		| 	// Close the connection because we need to
 		| 	promoManager.closeConnection();
 		| %>
 		| 
-	
-		//- .promo-article-details(data-spring-animatable-target="promo_1")
-		//- 	.header.dark(style="background-image: url(img/963_42158716822_afcc8b6c9e_z_630_320_nofilter.jpg)")
-		//- 		.close-button
-		//- 		p.header-heading Test Header
-		//- 		p.header-title Test Title
-		//- 		p.header-subtitle Example Subtitle
-		//- 	.content-scroll-wrapper
-		//- 		.content
-		//- 			p content text
 		
 		.spring-background
 		

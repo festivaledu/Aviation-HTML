@@ -51,7 +51,7 @@ html
 		
 		section.search-results
 			.section-content.row
-				.progress-overview.column.medium-3
+				aside.progress-overview.column.medium-3
 					p.progress-title Flug buchen
 					p.progress-section-title Vorbereitung
 					ul
@@ -205,8 +205,8 @@ html
 						| %>
 					.fill-background
 					.results-footer
-						button.outline.red(onclick!="if (confirm(\\\"Möchtest du wirklich abbrechen?\\\")) history.back()") Abbrechen
-						button.fill.blue.continue-button(disabled, onclick!="document.forms[\\\"selectedItem\\\"].submit()") Fortfahren
+						button.outline.blue(onclick="history.back()") Zurück
+						button.fill.blue.continue-button(disabled, onclick="document.forms[\"selectedItem\"].submit()") Fortfahren
 						
 		form.hidden(action="booking-services.jsp", method="POST", name="selectedItem")
 			| <%
@@ -239,6 +239,8 @@ html
 			
 			input(name="arrv_date")
 			input(name="flight_number")
+			| 
+			| 
 			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
 			<!-- This is for demonstration purposes only! -->
 			input(name="duration")

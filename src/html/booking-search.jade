@@ -8,6 +8,7 @@
 | 	@author Jonas Zadach (j.zadach@ostfalia.de)
 | 	@version 1.0
 | -->
+| 
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | 
 
@@ -27,7 +28,7 @@ html
 		
 		section.search-results
 			.section-content.row
-				.progress-overview.column.medium-3
+				aside.progress-overview.column.medium-3
 					p.progress-title Flug buchen
 					p.progress-section-title Vorbereitung
 					ul
@@ -110,7 +111,7 @@ html
 					.fill-background
 						p.placeholder-text Klicke auf "Suchen", um mit der Suche zu beginnen.
 					.results-footer
-						button.outline.red(onclick!="if (confirm(\\\"Möchtest du wirklich abbrechen?\\\")) history.back()") Abbrechen
+						button.outline.red(onclick="if (confirm(\"Möchtest du wirklich abbrechen?\")) history.back()") Abbrechen
 						button.fill.blue.continue-button(onclick="document.forms[0].submit()") Suchen
 		script(type="text/javascript", src="lib/calendar.js")
 		script(type="text/javascript", src="js/flight-search.js")
