@@ -290,9 +290,10 @@ html
 									
 								.column.column-6
 									select(name="title" id="title")
-										option(value="" selected!="<%= bPrefix.isEmpty() ? \"true\" : \"false\" %>")
-										option(value="male" selected!="<%= bPrefix.equals(\"male\") ? \"true\" : \"false\" %>") Herr
-										option(value="female" selected!="<%= bPrefix.equals(\"female\") ? \"true\" : \"false\" %>") Frau
+
+										| <option value="" <%= bPrefix.isEmpty() ? "selected" : null %>></option>
+										| <option value="male" <%= bPrefix.equals("male") ? "selected" : null %>>Herr</option>
+										| <option value="female" <%= bPrefix.equals("female") ? "selected" : null %>>Frau</option>
 									
 							.row.no-justify
 								.column.column-3
@@ -331,9 +332,10 @@ html
 
 								.column.column-6
 									select(name="country" id="country")
-										option(value="de" selected!="<%= (bCountry.isEmpty() || bCountry.equals(\"de\")) ? \"true\" : \"false\" %>") Deutschland
-										option(value="at" selected!="<%= bCountry.equals(\"at\") ? \"true\" : \"false\" %>") Österreich
-										option(value="ch" selected!="<%= bCountry.equals(\"ch\") ? \"true\" : \"false\" %>") Schweiz
+
+										| <option value="de" <%= (bCountry.isEmpty() || bCountry.equals("de")) ? "selected" : null %>>Deutschland</option>
+										| <option value="at" <%= bCountry.equals("at") ? "selected" : null %>>Österreich</option>
+										| <option value="ch" <%= bCountry.equals("ch") ? "selected" : null %>>Schweiz</option>
 							
 							.row.no-justify
 								.column.column-3
