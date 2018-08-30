@@ -1,3 +1,15 @@
+| <!--
+| 	booking-results.jsp
+| 	FESTIVAL Aviation
+| 	
+| 	This page shows flight data returned from the server
+| 	The query must contain the following: depart_iata, arrv_iata, depart_date
+| 	Optional data: passengers, flight_class
+| 	
+| 	@author Janik Schmidt (jani.schmidt@ostfalia.de)
+| 	@version 1.0
+| -->
+| 
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
 | <%@ page import="org.json.*" %>
@@ -9,11 +21,13 @@
 | <%
 | 	JSONObject demoData = new JSONObject();
 | 
+| 	// Do stuff only if we have the minimum required data
 | 	if (request.getParameter("depart_iata") != null && request.getParameter("arrv_iata") != null && request.getParameter("depart_date") != null) {
+| 		// Fix Java's shitty UTC handling when using ISO date strings
 | 		ZonedDateTime zonedDateTime = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin"));
 | 		demoData = SearchResultsDemo.getDemoData(request.getParameter("depart_iata"), request.getParameter("arrv_iata"), zonedDateTime.toLocalDate());
 | 
-| 		System.out.println(demoData);
+| 		// There are no Easter Eggs up here
 | 		if (demoData.has("redirect")) {
 | 			response.sendRedirect(demoData.getString("redirect"));
 | 			return;
@@ -37,7 +51,7 @@ html
 		
 		section.search-results
 			.section-content.row
-				.progress-overview.column.medium-3
+				aside.progress-overview.column.medium-3
 					p.progress-title Flug buchen
 					p.progress-section-title Vorbereitung
 					ul
@@ -75,20 +89,17 @@ html
 								.column-title
 									img(src="img/icon-departure.svg")
 									p Von
-								//- input.column-content(value!="<%= demoData.has(\"departureName\") ? demoData.get(\"departureName\") : \"\" %>", placeholder="Abreiseort eingeben", required)
 								p.column-content <%= demoData.getString("departureName") %>
 							.column.column-12.medium-6(data-key="arrival")
 								.column-title
 									img(src="img/icon-arrival.svg")
 									p Nach
-								//- input.column-content(value!="<%= demoData.has(\"arrivalName\") ? demoData.get(\"arrivalName\") : \"\" %>", placeholder="Ankunftsort eingeben", required)
 								p.column-content <%= demoData.getString("arrivalName") %>
 						.row
 							.column.column-12.medium-6(data-key="date")
 								.column-title
 									img(src="img/icon-date.svg")
 									p Abflugdatum
-								//- input.column-content(type="date", value!="<%= demoData.has(\"departureDate\") ? ((LocalDate)demoData.get(\"departureDate\")).format(DateTimeFormatter.ofPattern(\"EEEE, dd. MMMM yyyy\")) : \"\" %>", placeholder="Abflugdatum auswählen", required)
 								p.column-content <%= ((LocalDate)demoData.get("departureDate")).format(DateTimeFormatter.ofPattern("EEEE, dd. MMMM yyyy")) %>
 							.column.column-12.medium-2
 								.column-title
@@ -101,6 +112,7 @@ html
 									p Klasse
 								| 
 								| <%
+								| 	// If we got flight_class data, don't display that <select>
 								| 	if (request.getParameter("flight_class") != null) {
 								| %>
 								p.column-content
@@ -122,7 +134,9 @@ html
 					.scroll-container
 						| 
 						| <%
+						| 	// Check if we have got data from the server
 						| 	if (demoData.has("items")) {
+						| 		// Iterate through the available data
 						| 	 	for (int i=0; i<((JSONArray)demoData.get("items")).length(); i++) {
 						| 			JSONObject resultObj = ((JSONArray)demoData.get("items")).getJSONObject(i);
 						| 			LocalDate departureDate = (LocalDate)resultObj.get("departureDate");
@@ -145,14 +159,18 @@ html
 						.results
 							| 
 							| <%
+							| 		// Iterate through every flight in a single date object
 							| 		for (int j=0; j<((JSONArray)resultObj.get("items")).length(); j++) {
 							| 			JSONObject flightObj = ((JSONArray)resultObj.get("items")).getJSONObject(j);
 							| 			
+							| 			// Parse departure and arrival times
 							| 			LocalTime departureTime = ((Time)flightObj.get("departureTime")).toLocalTime().withSecond(0);
 							| 			LocalTime arrivalTime = ((Time)flightObj.get("arrivalTime")).toLocalTime().withSecond(0);
 							| 
+							| 			// Calculate the duration between departure and arrival
 							| 			Duration duration = Duration.between(departureTime, arrivalTime);
 							| 			if (duration.isNegative()) {
+							| 				// If the arrival time is before departure, add 24 hours	
 							| 				duration = duration.plusDays(1);
 							| 			}
 							| %>
@@ -187,24 +205,12 @@ html
 						| %>
 					.fill-background
 					.results-footer
-						button.outline.red(onclick="if (confirm(\"Möchtest du wirklich abbrechen?\")) history.back()") Abbrechen
+						button.outline.blue(onclick="history.back()") Zurück
 						button.fill.blue.continue-button(disabled, onclick="document.forms[\"selectedItem\"].submit()") Fortfahren
 						
 		form.hidden(action="booking-services.jsp", method="POST", name="selectedItem")
-			//- input(name="depart_iata", value!="<%= demoData.get(\"departureIATA\") %>")
-			//- input(name="arrv_iata", , value!="<%= demoData.get(\"arrivalIATA\") %>")
-			
-			//- input(name="passengers")
-			//- input(name="flight_class")
-			//- | 
-			//- | 
-			//- <!-- DO NOT USE THIS IN PRODUCTION!!! -->
-			//- <!-- This is for demonstration purposes only! -->
-			//- input(name="duration")
-			//- input(name="stops")
-			//- input(name="price")
-			
 			| <%
+			| 	// Create input fields for every request parameter
 			| 	Map<String, String[]> parameters = request.getParameterMap();
 			| 	for(String parameter : parameters.keySet()) {
 			| %>
@@ -212,20 +218,29 @@ html
 			| 
 			| <%
 			| 	}
+			| 
+			| 	// Create an input field for passengers only if we dont have any passenger data
+			| 	if (request.getParameter("passengers") == null) {
 			| %>
-			
-			| 
-			| <% if (request.getParameter("passengers") == null) { %>
 			input(name="passengers")
-			| <% } %>
 			| 
-			| <% if (request.getParameter("flight_class") == null) { %>
+			| <%
+			|  	}
+			| 
+			| 	// Create an input field for flight_class only if we dont have any flight class data
+			| 	if (request.getParameter("flight_class") == null) {
+			| %>
 			input(name="flight_class")
-			| <% } %>
+			| 
+			| <%
+			| 	}
+			| %>
 			
 			
 			input(name="arrv_date")
 			input(name="flight_number")
+			| 
+			| 
 			<!-- DO NOT USE THIS IN PRODUCTION!!! -->
 			<!-- This is for demonstration purposes only! -->
 			input(name="duration")
