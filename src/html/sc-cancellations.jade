@@ -191,12 +191,12 @@ html
 										span(class="ai ai-warning")
 								span(class="title") Hinweis
 							div(class="content")
-								p Wenn du auf den Account, mit dem die Buchung durchgeführt wurde, Zugriff hast, storniere deine Buchung bitte im #[a(href="dashboard.jsp") Dashboard]. Nur wenn du die Buchung ohne Account durchgeführt hast oder keinen Zugriff auf den Account hast, solltest du die Buchung hier stornieren.
+								p Hier kannst du nur Buchungen stornieren, die ohne Account erstellt wurden. Wenn du deine Buchung von einem Account aus getätigt hast, storniere deine sie bitte im #[a(href="dashboard.jsp?p=completedBookings") Dashboard].
 						
 						form(method="POST", action="sc-cancellations.jsp", novalidate)
 							label(for="holder") Name des Passagiers
 							input(type="text", name="holder", id="holder", value!="<%= holder %>")
-							label(for="bookingId") BuchungsId-ID
+							label(for="bookingId") Buchungs-ID
 							input(type="text", name="bookingId", id="bookingId", value!="<%= ticketId %>")
 							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Was ist die Buchungs-ID?", data-modal-text="Die Buchungs-ID ist eine für jede Buchung einzigartige Nummer, die es ermöglicht eine Buchung eindeutig zu identifizieren. Sie befindet sich auf der Rechnung.") Was ist das?
 							label(for="svid") Storno-Verifizierungs-ID (SVID)
