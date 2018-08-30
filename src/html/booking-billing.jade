@@ -1,3 +1,14 @@
+| <!--
+| 	booking-billing.jsp
+| 	FESTIVAL Aviation
+| 	
+| 	This page deals with creating and updating billing
+| 	addresses while booking a flight
+| 	
+| 	@author Janik Schmidt (jani.schmidt@ostfalia.de)
+| 	@version 1.0
+| -->
+| 
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
 | <%@ page import="ml.festival.aviation.AuthManager" %>
@@ -10,19 +21,18 @@
 | <%
 | 	AuthManager authManager = new AuthManager();
 | 	JSONObject requestData = new JSONObject();
-| 	JSONObject demoData = new JSONObject();
 | 
 | 	try {
+| 		// Map every request parameter into a JSON object
 | 		Map<String, String[]> parameters = request.getParameterMap();
 | 		for(String parameter : parameters.keySet()) {
 | 			requestData.put(parameter, request.getParameter(parameter));
 | 		}
-| 
-| 		demoData = SearchResultsDemo.getJSONData(requestData);
 | 	} catch (Exception e) {
 | 		e.printStackTrace();
 | 	}
 | 
+| 	// Fill the billing address if we're already logged in
 |	ResultSet billingAddress = null;
 | 	if (authManager.validate(String.valueOf(session.getAttribute("sid")))) {
 | 		billingAddress = authManager.getBillingAddress(String.valueOf(session.getAttribute("sid")));
@@ -48,7 +58,7 @@ html
 		
 		section.search-results
 			.section-content.row
-				.progress-overview.column.medium-3
+				aside.progress-overview.column.medium-3
 					p.progress-title Flug buchen
 					p.progress-section-title Vorbereitung
 					ul
@@ -96,6 +106,7 @@ html
 										
 										| 
 										| <%
+										| 	// A dirty workaround to select an existing <select> value by default
 										| 	if (billingAddress != null) {
 										| 		if (billingAddress.getString("prefix").equals("male")) {
 										| %>
@@ -148,6 +159,7 @@ html
 									select(name="country", id="country", required)
 										| 
 										| <%
+										| 	// A dirty workaround to select an existing <select> value by default
 										| 	if (billingAddress != null) {
 										| 		if (billingAddress.getString("country").equals("de")) {
 										| %>
@@ -195,6 +207,7 @@ html
 						button.fill.blue.continue-button Buchung abschließen
 		form.hidden(action="booking-complete.jsp", method="POST", name="selectedItem")
 			| <%
+			| 	// Create input fields for every request parameter
 			| 	Map<String, String[]> parameters = request.getParameterMap();
 			| 	for(String parameter : parameters.keySet()) {
 			| %>
@@ -209,4 +222,7 @@ html
 		script(src="js/modal.js")
 		script(type="text/javascript",src="js/flight-search.js")
 | 
-| <% authManager.closeConnection(); %>
+| <%
+| 	// Close the database connection just like always
+| 	authManager.closeConnection();
+| %>

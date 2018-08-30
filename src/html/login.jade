@@ -1,19 +1,41 @@
+| <!--
+| 	login.jsp
+| 	FESTIVAL Aviation
+| 	
+| 	This page deals with the login of users
+| 	We use a single-page concept here to keep
+| 	the page count at a minimum
+| 	(Early development used a multi-page concept)
+| 	
+| 	@author Janik Schmidt (jani.schmidt@ostfalia.de)
+| 	@version 1.0
+| -->
+| 
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="ml.festival.aviation.AuthManager" %>
 | <%@ page import="java.util.*" %>
 | <%@ page import="java.nio.charset.StandardCharsets" %>
 | <%@ page import="java.security.MessageDigest" %>
 | <%
+| 	// Create some variables that we need later to display error messages
 | 	Boolean invalidForm = false;
 | 	Boolean userNotFound = false;
 | 	Boolean incorrectPassword = false;
+| 	Boolean serverError = false;
+| 
+| 	// Our authentication manager manages authentication
 | 	AuthManager authManager = new AuthManager();
 | 
+| 	// Since we're dealing with text in a database, we need to set the character encoding to UTF-8
+| 	request.setCharacterEncoding("UTF-8");
+| 
+| 	// If we're already logged in, redirect to dashboard.jsp
 | 	if (authManager.validate(String.valueOf(session.getAttribute("sid")))) {
 |	    response.sendRedirect("dashboard.jsp");
 |	    return;
 |	}
 | 
+| 	// If this page is part of a POST request, we can verify the login details
 | 	if (request.getParameter("email") != null &&
 | 		request.getParameter("password") != null) {
 | 		if (!request.getParameter("email").isEmpty() &&
@@ -21,20 +43,41 @@
 | 			String email = request.getParameter("email");
 | 			String hashedPassword = new String(Base64.getEncoder().encode(MessageDigest.getInstance("SHA-256").digest(request.getParameter("password").getBytes(StandardCharsets.UTF_8))));
 | 
-| 			if (authManager.login(email, hashedPassword) == AuthManager.ErrorCode.OK) {
-| 				if (authManager.generateSession(email) == AuthManager.ErrorCode.OK) {
-| 					session.setAttribute("sid", authManager.getCurrentSessionId(email)); 
+| 			// Store the error code returned by AuthManager
+| 			AuthManager.ErrorCode errorCode = authManager.login(email, hashedPassword);
 | 
-| 					response.sendRedirect("dashboard.jsp");
-| 				}
-| 			} else {
-| 				incorrectPassword = true;
+| 			// Now check the error code
+| 			switch (errorCode) {
+| 				case OK:
+| 					// User credentials are correct, generate a session and redirect to dashboard.jsp
+| 					if (authManager.generateSession(email) == AuthManager.ErrorCode.OK) {
+| 						session.setAttribute("sid", authManager.getCurrentSessionId(email));
+| 
+| 						response.sendRedirect("dashboard.jsp");
+| 					}
+| 					break;
+| 				case USER_NOT_FOUND:
+| 					// The E-Mail address specified isn't registered with Aviation
+| 					userNotFound = true;
+| 					break;
+| 				case PASSWORD_INCORRECT:
+| 					// User submitted an incorrect password
+| 					incorrectPassword = true;
+| 					break;
+| 				case SERVER_ERROR:
+| 					// Something happened on the server, clearly not our fault
+| 					serverError = true;
+| 					break;
+| 				default:
+| 					break;
 | 			}
 | 		} else {
+| 			// Not every required field was filled
 | 			invalidForm = true;
 | 		}
 | 	}
 | 
+| 	// Close the database connection because we need to
 | 	authManager.closeConnection();
 | 
 | %>
@@ -59,28 +102,51 @@ html
 						img(src="img/logo-dark.svg")
 			
 			| 
-			| <% if (invalidForm || incorrectPassword || userNotFound) { %>
+			| <%
+			| 	// This is only displayed if we have an error condition
+			| 	if (invalidForm || incorrectPassword || userNotFound || serverError) {
+			| %>
 			
 			section.form-error
 				.section-content.row.centered
 					.column.column-12.medium-4
 						| 
-						| <% if (invalidForm) { %>
+						| <%
+						| 	if (invalidForm) {
+						|	 	// Not every required field was filled
+						| %>
 					
 						p Bitte fülle das komplette Formular aus, um dich zu anzumelden.
 						| 
-						| <% } else if (incorrectPassword) { %>
+						| <%
+						| 	} else if (incorrectPassword) {
+						| 		// User submitted an incorrect password
+						| %>
 					
 						p Das von dir angegebene Passwort ist nicht korrekt. Bitte versuche es erneut.
 						| 
-						| <% } else if (userNotFound) { %>
+						| <%
+						| 	} else if (userNotFound) {
+						| 		// The E-Mail address specified isn't registered with Aviation
+						| %>
 					
 						p Das von dir angegebene Konto wurde nicht gefunden.
 						| 
-						| <% } %>
+						| <% 
+						| 	} else if (serverError) {
+						| 		// The server returned an error code we can't handle
+						| %>
+					
+						p Da hat etwas nicht geklappt. Bitte versuche es erneut.
+						| 
+						| <%
+						| 	}
+						| %>
 						| 
 			| 
-			| <% } %>
+			| <%
+			| 	}
+			| %>
 			| 
 			section.login
 				.section-content.row.centered
