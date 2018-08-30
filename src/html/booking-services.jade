@@ -1,3 +1,14 @@
+| <!--
+| 	booking-services.jsp
+| 	FESTIVAL Aviation
+| 	
+| 	This page shows a selection of services a user
+| 	can add to his booked flight
+| 	
+| 	@author Janik Schmidt (jani.schmidt@ostfalia.de)
+| 	@version 1.0
+| -->
+| 
 | <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 | <%@ page import="ml.festival.aviation.SearchResultsDemo" %>
 | <%@ page import="org.json.*" %>
@@ -10,25 +21,19 @@
 | 	JSONObject requestData = new JSONObject();
 | 	JSONObject demoData = new JSONObject();
 | 
-| 	// FIX JAVA'S FUCKING TIMEZONE HANDLING!!!
 | 	LocalDateTime depart_time = null;
 | 	LocalDateTime arrv_time = null;
 | 
 | 	try {
+| 		// FIX JAVA'S FUCKING TIMEZONE HANDLING!!!
 | 		depart_time = Instant.parse(request.getParameter("depart_date")).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime();
 | 		arrv_time = Instant.parse(request.getParameter("arrv_date")).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime();
 | 
-| 		requestData.put("depart_iata", request.getParameter("depart_iata"));
-| 		requestData.put("arrv_iata", request.getParameter("arrv_iata"));
-| 		requestData.put("depart_date", request.getParameter("depart_date"));
-| 		requestData.put("arrv_date", request.getParameter("arrv_date"));
-| 		requestData.put("flight_number", request.getParameter("flight_number"));
-| 		requestData.put("passengers", request.getParameter("passengers"));
-| 		requestData.put("flight_class", request.getParameter("flight_class"));
-| 
-| 		requestData.put("duration", request.getParameter("duration"));
-| 		requestData.put("stops", request.getParameter("stops"));
-| 		requestData.put("price", request.getParameter("price"));
+| 		// Map every request parameter into a JSON object
+| 		Map<String, String[]> parameters = request.getParameterMap();
+| 		for(String parameter : parameters.keySet()) {
+| 			requestData.put(parameter, request.getParameter(parameter));
+| 		}
 | 
 | 		demoData = SearchResultsDemo.getJSONData(requestData);
 | 	} catch (Exception e) {
@@ -126,6 +131,7 @@ html
 									p Dauer
 								| 
 								| <%
+								| 	// Parse the passed duration in millis into a Duration object
 								| 	Duration duration = Duration.ofMillis(requestData.getInt("duration"));
 								| %>
 								p.column-content <%= String.format("%02dh %02dmin", duration.getSeconds() / 3600, (duration.getSeconds() % 3600) / 60) %>
@@ -150,6 +156,7 @@ html
 						.results
 							| 
 							| <%
+							| 	// Print the services we got from the database
 							| 	JSONArray serviceData = SearchResultsDemo.getServiceData();
 							| 	for (int i=0; i<serviceData.length(); i++) {
 							| %>
@@ -167,22 +174,8 @@ html
 						button.outline.blue(onclick="window.history.back()") Zurück
 						button.fill.blue.continue-button(onclick="document.forms[\"selectedItem\"].submit()") Fortfahren
 		form.hidden(action="booking-billing.jsp", method="POST", name="selectedItem")
-			//- input(name="depart_iata", value!="<%= requestData.get(\"depart_iata\") %>")
-			//- input(name="arrv_iata", value!="<%= requestData.get(\"arrv_iata\") %>")
-			//- input(name="depart_date", value!="<%= requestData.get(\"depart_date\") %>")
-			//- input(name="arrv_date", value!="<%= requestData.get(\"arrv_date\") %>")
-			//- input(name="flight_number", value!="<%= requestData.get(\"flight_number\") %>")
-			//- input(name="passengers", value!="<%= requestData.get(\"passengers\") %>")
-			//- input(name="flight_class", value!="<%= requestData.get(\"flight_class\") %>")
-			//- input(name="services")
-			//- | 
-			//- | 
-			//- <!-- DO NOT USE THIS IN PRODUCTION!!! -->
-			//- <!-- This is for demonstration purposes only! -->
-			//- input(name="duration", value!="<%= requestData.get(\"duration\") %>")
-			//- input(name="stops", value!="<%= requestData.get(\"stops\") %>")
-			//- input(name="price", value!="<%= requestData.get(\"price\") %>")
 			| <%
+			| 	// Create input fields for every request parameter
 			| 	Map<String, String[]> parameters = request.getParameterMap();
 			| 	for(String parameter : parameters.keySet()) {
 			| %>
