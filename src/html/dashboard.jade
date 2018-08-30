@@ -245,7 +245,7 @@ html
 						h2 Profil
 						p Hier kannst du die Details deines Profils anpassen.
 
-						form(method="POST" action="update-profile.jsp" novalidate)
+						form(method="POST" action="update_profile.jsp" novalidate)
 							input(type="hidden" name="method" value="update-profile")
 							input(type="hidden" name="id" value!="<%= accountId %>")
 							label(for="firstName") Vorname
@@ -258,7 +258,7 @@ html
 							
 						h3 Passwort ändern
 
-						form(method="POST" action="update-profile.jsp" novalidate)
+						form(method="POST" action="update_profile.jsp" novalidate)
 							input(type="hidden" name="method" value="update-password")
 							input(type="hidden" name="id" value!="<%= accountId %>")
 							label(for="oldPassword") Altes Passwort
@@ -279,7 +279,7 @@ html
 						h2 Rechnungsadresse
 						p Zum Buchen von Flügen benötigst du eine gültige Rechnungsadresse. Diese kannst du hier jederzeit ändern.
 
-						form(method="POST" action="update-profile.jsp" novalidate)
+						form(method="POST" action="update_profile.jsp" novalidate)
 							input(type="hidden" name="method" value="update-billing")
 							input(type="hidden" name="id" value!="<%= accountId %>")
 							input(type="hidden" name="billingId" value!="<%= bId %>")
