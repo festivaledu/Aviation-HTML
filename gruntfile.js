@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'build/index.jsp': 'src/html/index.jade',
+					'build/about.html': 'src/html/about.jade',
 					'build/booking-search.jsp': 'src/html/booking-search.jade',
 					'build/booking-results.jsp': 'src/html/booking-results.jade',
 					'build/booking-services.jsp': 'src/html/booking-services.jade',
