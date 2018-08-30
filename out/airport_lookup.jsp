@@ -31,9 +31,11 @@
 		JSONObject returnObj = new JSONObject();
 		
 		if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) {
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM `airports` WHERE `name` LIKE ? OR `municipality` LIKE ? ORDER BY `name` ASC LIMIT 5");
-			statement.setString(1, "%" + request.getParameter("query") + "%");
-			statement.setString(2, "%" + request.getParameter("query") + "%");
+			PreparedStatement statement = conn.prepareStatement("(SELECT * FROM `airports` WHERE `iata_code` = ? OR `gps_code` = ?) UNION (SELECT * FROM `airports` WHERE `name` LIKE ? OR `municipality` LIKE ? ORDER BY `name` ASC LIMIT 5)");
+			statement.setString(1, request.getParameter("query"));
+			statement.setString(2, request.getParameter("query"));
+			statement.setString(3, "%" + request.getParameter("query") + "%");
+			statement.setString(4, "%" + request.getParameter("query") + "%");
 			ResultSet results = statement.executeQuery();
 
 			if (results.next()) {
