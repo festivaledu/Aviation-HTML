@@ -27,7 +27,7 @@
 | 
 | 	if ("POST".equals(request.getMethod())) {
 | 		holder = request.getParameter("holder");
-| 		ticketId = request.getParameter("ticketId");
+| 		ticketId = request.getParameter("bookingId");
 | 		svid = request.getParameter("svid");
 | 		email = request.getParameter("email");
 | 		message = request.getParameter("message");
@@ -39,7 +39,7 @@
 | 				dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
 | 				conn = dataSource.getConnection();
 | 
-| 				PreparedStatement statement = conn.prepareStatement("SELECT svid, holder FROM tickets WHERE id = ?");
+| 				PreparedStatement statement = conn.prepareStatement("SELECT svid, holder FROM bookings WHERE id = ?");
 | 
 | 				statement.setString(1, ticketId);
 | 
@@ -47,11 +47,12 @@
 | 
 | 				if (ticket != null && ticket.next()) {
 | 				    if (ticket.getString("holder").equals(holder) && ticket.getString("svid").equals(svid)) {
-| 						statement = conn.prepareStatement("INSERT INTO `cancellations` VALUES (DEFAULT, ?, ?, ?)");
+| 						statement = conn.prepareStatement("INSERT INTO `cancellations` VALUES (?, ?, ?, ?, DEFAULT, DEFAULT)");
 | 
 | 						statement.setString(1, ticketId);
-| 						statement.setString(2, email);
-| 						statement.setString(3, message);
+| 						statement.setString(2, ticketId);
+| 						statement.setString(3, email);
+| 						statement.setString(4, message);
 | 
 | 						statement.execute();
 | 
@@ -142,7 +143,7 @@ html
 										span(class="ai ai-error")
 								span(class="title") Hier funktioniert etwas nicht
 							div(class="content")
-								p Beim Absenden deiner Stornierung ist ein Fehler aufgetreten. Bitte versuch es später noch einmal oder überprüfe deine Ticket-ID.
+								p Beim Absenden deiner Stornierung ist ein Fehler aufgetreten. Bitte versuch es später noch einmal oder überprüfe deine Buchungs-ID.
 
 						| 
 						| <%
@@ -179,6 +180,8 @@ html
 						| 
 						| <%
 						| 	}
+						| 
+						|    if (!send) {
 						| %>
 
 						article(class="flag warning")
@@ -188,14 +191,14 @@ html
 										span(class="ai ai-warning")
 								span(class="title") Hinweis
 							div(class="content")
-								p Wenn du auf den Account, mit dem das Ticket gekauft wurde, Zugriff hast, storniere dein Ticket bitte im #[a(href="dashboard.jsp") Dashboard]. Nur wenn du dein Ticket ohne Account erworben hast oder keinen Zugriff auf den Account hast, solltest du dein Ticket hier stornieren.
+								p Hier kannst du nur Buchungen stornieren, die ohne Account erstellt wurden. Wenn du deine Buchung von einem Account aus getätigt hast, storniere deine sie bitte im #[a(href="dashboard.jsp?p=completedBookings") Dashboard].
 						
 						form(method="POST", action="sc-cancellations.jsp", novalidate)
 							label(for="holder") Name des Passagiers
 							input(type="text", name="holder", id="holder", value!="<%= holder %>")
-							label(for="ticketId") Ticket-ID
-							input(type="text", name="ticketId", id="ticketId", value!="<%= ticketId %>")
-							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Was ist die Ticket-ID?", data-modal-text="Die Ticket-ID ist eine für jedes Ticket einzigartige Nummer, die es ermöglicht ein Ticket eindeutig zu identifizieren. Sie befindet sich auf der Rechnung und am unteren Rand des Tickets.") Was ist das?
+							label(for="bookingId") Buchungs-ID
+							input(type="text", name="bookingId", id="bookingId", value!="<%= ticketId %>")
+							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Was ist die Buchungs-ID?", data-modal-text="Die Buchungs-ID ist eine für jede Buchung einzigartige Nummer, die es ermöglicht eine Buchung eindeutig zu identifizieren. Sie befindet sich auf der Rechnung.") Was ist das?
 							label(for="svid") Storno-Verifizierungs-ID (SVID)
 							input(type="text", name="svid", id="svid", value!="<%= svid %>")
 							a(class="help modal-trigger", data-modal-type="question", data-modal-title="Was ist die Storno-Verifizierungs-ID?", data-modal-text="Bei der Storno-Verifizierungs-ID handelt es sich um eine Nummer die als Sicherheit benötigt wird, um die Stornierung durchzuführen. Die Storno-Verifizierungs-ID findest du in deiner Rechnung.") Was ist das?
@@ -205,6 +208,11 @@ html
 							label(for="message") Grund der Stornierung (optional)
 							textarea(name="message", id="message", rows="12")
 							button.fill.blue.modal-trigger(data-modal-type="error", data-modal-title="Ticket wirklich stornieren?", data-modal-text="Wenn alle Eingaben korrekt sind, wird das Ticket unwiderruflich storniert und unbrauchbar. Die Stornierung kann nicht rückgängig gemacht werden.", data-modal-primary="Ticket stornieren", data-modal-primary-action="submit") Absenden
+		
+						| 
+						| <%
+						| 	}
+						| %>
 		include _footer
 		
 	script(src="js/support-center.js")

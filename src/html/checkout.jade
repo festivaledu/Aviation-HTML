@@ -201,7 +201,7 @@ html
 
 							table
 								tr
-									td Flugticket für <%= flightId %>#[br]<%= fromIATA %> &rarr; <%= toIATA %>#[br]<%= flightClass.toUpperCase() %>
+									td Flugticket für <%= flightId %>#[br]<%= fromIATA %> &rarr; <%= toIATA %>#[br]<%= flightClass.toUpperCase().replace("_", " ") %>
 									td <%= String.format("%.2f", price) %>€
 								
 								| 
@@ -226,7 +226,7 @@ html
 								| 	}
 								| %>
 							
-							h3 Total: <%= price %>€
+							h3 Total: <%= String.format("%.2f", price) %>€
 
 						article.card-input
 							form(method="POST", action="checkout.jsp", novalidate)
@@ -323,7 +323,7 @@ html
 								| 	} else if (paymentOk) {
 								| %>
 
-								a(href="index.jsp") Zurück zur Startseite
+								a(href="dashboard.jsp") Zurück zum Dashboard
 
 								| 
 								| <%
