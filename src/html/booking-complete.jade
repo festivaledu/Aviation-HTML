@@ -94,10 +94,18 @@ html
 							| 	}
 							| %>
 					.fill-background
+						| 
+						| <%
+						| 	if (bookingResultId != null && !bookingResultId.isEmpty()) {
+						| %>
 						p.placeholder-text Hier klicken, um zu bezahlen
 						.placeholder-text
 							a(href!="checkout.jsp?invoice=<%= bookingResultId %>")
 								button.call.fill.red Jetzt bezahlen
+						| 
+						| <%
+						| 	}
+						| %>
 					.results-footer
 						button.outline.blue(onclick="location.href = \"index.jsp\"") Zur Startseite
 						button.fill.blue.continue-button(onclick="location.href = \"dashboard.jsp\"") Zum Dashboard
