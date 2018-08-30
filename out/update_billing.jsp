@@ -54,9 +54,8 @@
 		DataSource dataSource = (DataSource)environmentContext.lookup("jdbc/aviation");
 		Connection conn = dataSource.getConnection();
 		
-		// Check if we already have a billing address with the specified email address or account ID
-		PreparedStatement statement = conn.prepareStatement("SELECT * FROM billing_addresses WHERE email = ? OR accountId = ?");
-		statement.setString(1, requestObj.getString("email"));
+		// Check if we already have a billing address with the specified account ID that's not empty
+		PreparedStatement statement = conn.prepareStatement("SELECT * FROM billing_addresses WHERE accountId = ? AND accountId NOT LIKE ''");
 		
 		// If we have a session ID, try to get the corresponding account ID
 		if (String.valueOf(session.getAttribute("sid")) != null) {
@@ -66,10 +65,10 @@
 			
 			if (sessionAccount.next()) {
 				// If we have an account ID, add it to the query
-				statement.setString(2, sessionAccount.getString("accountId"));
+				statement.setString(1, sessionAccount.getString("accountId"));
 			} else {
 				// Otherwise add an empty string
-				statement.setString(2, "");
+				statement.setString(1, "");
 			}
 		} else {
 			// Otherwise add an empty string
@@ -81,7 +80,7 @@
 		// Now it's time to do billing address stuff
 		JSONObject returnObj = new JSONObject();
 		if (existingBilling.next()) {
-			// If there is already a billing address, we can go ahead and just update it
+			// If there is already a billing address associated to an account, we can go ahead and just update it
 			statement = conn.prepareStatement("UPDATE `billing_addresses` SET `prefix` = ?, `firstName` = ?, `lastName` = ?, `street` = ?, `postalCode` = ?, `postalCity` = ?, `country` = ?, `email` = ?, `phoneNumber` = ?;");
 			
 			// Just fill in the data

@@ -1,15 +1,3 @@
-<!--
-	airport_lookup.jsp
-	FESTIVAL Aviation
-	
-	Search for airports using a query and
-	return JSON data
-	
-	@author Jonas Zadach (j.zadach@ostfalia.de)
-	@version 1.0
--->
-
-<!-- Java imports -->
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.sql.*" %>
@@ -17,6 +5,19 @@
 <%@ page import="org.json.*" %>
 
 <%!
+	// This is a file that returns JSON data, so if we put this header at the very top, the application fails
+	/**
+	 * airport_lookup.jsp
+	 * FESTIVAL Aviation
+	 * 
+	 * Search for airports using a query and
+	 * return JSON data
+	 * 
+	 * @author Jonas Zadach (j.zadach@ostfalia.de)
+	 * @version 1.0
+	 */
+
+
 	/**
 	 * Convert a SQL ResultSet into JSON
 	 * @param resultSet The result set to convert
