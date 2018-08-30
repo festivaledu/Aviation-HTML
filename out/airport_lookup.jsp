@@ -65,7 +65,7 @@
 		
 		// Check if the "query" parameter is usable
 		if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) {
-			// We're getting every airport matching a IATA (eg HAJ) or GPS code (eg EDDV) or
+			// We're getting every airport matching an IATA (eg HAJ) or GPS code (eg EDDV) or
 			// at max 5 airports matching a name (Hannover Airport) or municipality (Hannover)
 			PreparedStatement statement = conn.prepareStatement("(SELECT * FROM `airports` WHERE `iata_code` = ? OR `gps_code` = ?) UNION (SELECT * FROM `airports` WHERE `name` LIKE ? OR `municipality` LIKE ? ORDER BY `name` ASC LIMIT 5)");
 			
