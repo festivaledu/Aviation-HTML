@@ -290,9 +290,9 @@ html
 									
 								.column.column-6
 									select(name="title" id="title")
-										option(value="" selected!="<%= bPrefix.isEmpty() ? \"\" : null %>")
-										option(value="male" selected!="<%= bPrefix.equals(\"male\") ? \"\" : null %>") Herr
-										option(value="female" selected!="<%= bPrefix.equals(\"female\") ? \"\" : null %>") Frau
+										option(value="" selected!="<%= bPrefix.isEmpty() ? \"true\" : \"false\" %>")
+										option(value="male" selected!="<%= bPrefix.equals(\"male\") ? \"true\" : \"false\" %>") Herr
+										option(value="female" selected!="<%= bPrefix.equals(\"female\") ? \"true\" : \"false\" %>") Frau
 									
 							.row.no-justify
 								.column.column-3
@@ -331,9 +331,9 @@ html
 
 								.column.column-6
 									select(name="country" id="country")
-										option(value="de" selected!="<%= (bCountry.isEmpty() || bCountry.equals(\"de\")) ? \"\" : null %>") Deutschland
-										option(value="at" selected!="<%= bCountry.equals(\"at\") ? \"\" : null %>") Österreich
-										option(value="ch" selected!="<%= bCountry.equals(\"ch\") ? \"\" : null %>") Schweiz
+										option(value="de" selected!="<%= (bCountry.isEmpty() || bCountry.equals(\"de\")) ? \"true\" : \"false\" %>") Deutschland
+										option(value="at" selected!="<%= bCountry.equals(\"at\") ? \"true\" : \"false\" %>") Österreich
+										option(value="ch" selected!="<%= bCountry.equals(\"ch\") ? \"true\" : \"false\" %>") Schweiz
 							
 							.row.no-justify
 								.column.column-3
